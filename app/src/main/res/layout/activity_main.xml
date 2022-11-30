@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_button"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/login_logpartner"
+        android:layout_width="0dp"
+        android:layout_height="403dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pairwithlogo" />
+
+    <ImageView
+        android:id="@+id/login_logo"
+        android:layout_width="287dp"
+        android:layout_height="286dp"
+        app:layout_constraintBottom_toBottomOf="@+id/login_logpartner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/login_logpartner"
+        app:layout_constraintVertical_bias="0.811"
+        app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/txt_signin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="S I G N   I N"
+        app:layout_constraintBottom_toBottomOf="@+id/login_logpartner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/login_logo"
+        app:layout_constraintVertical_bias="0.854" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardh_login"
+        android:layout_width="336dp"
+        android:layout_height="336dp"
+        android:layout_marginBottom="54dp"
+
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_logpartner">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/editTextUsername"
+                android:layout_width="265dp"
+                android:layout_height="51dp"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/edit_text_radius"
+                android:ems="10"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:paddingLeft="10dp"
+
+
+                android:paddingRight="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.492"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.147" />
+
+            <EditText
+                android:id="@+id/edittextpass"
+                android:layout_width="265dp"
+                android:layout_height="51dp"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/edit_text_radius"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textPersonName"
+                android:paddingLeft="10dp"
+
+
+                android:paddingRight="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.492"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.392" />
+
+            <Button
+                android:id="@+id/loginbutton"
+                android:layout_width="224dp"
+                android:layout_height="49dp"
+                android:background="@drawable/my_button"
+
+                android:text="Log In"
+
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittextpass"
+                app:layout_constraintVertical_bias="0.298" />
+
+            <TextView
+                android:id="@+id/txt_fgpass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="Forgot Password?"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+
+                android:textColor="#8383fc"
+                android:textSize="12dp"
+
+                app:layout_constraintBottom_toTopOf="@+id/loginbutton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.838"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittextpass"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/txt_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't have an account?"
+
+
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.165"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/loginbutton"
+                app:layout_constraintVertical_bias="0.901" />
+
+            <TextView
+                android:id="@+id/txt_signuplink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+
+                android:text="Sign Up."
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+
+
+
+                android:textColor="#8383fc"
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.529"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/loginbutton"
+                app:layout_constraintVertical_bias="0.901" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

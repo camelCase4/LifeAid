@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">MobileApp - LifeAid</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_in">Sign In.</string>
+    <string name="proceed">Proceed</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="age">Age</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+
+    <string-array name="roles">
+        <item>Aid - Seeker</item>
+        <item>Aid - Provider</item>
+        <item>Admin</item>
+    </string-array>
+</resources>
