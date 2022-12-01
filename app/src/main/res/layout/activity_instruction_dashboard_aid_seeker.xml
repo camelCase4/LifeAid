@@ -8,6 +8,18 @@
     tools:context=".AddTrustedContactDashboard">
 
 
+    <ImageView
+        android:id="@+id/imageView17"
+        android:layout_width="127dp"
+        android:layout_height="141dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.010"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.871"
+        app:srcCompat="@drawable/doneblue" />
+
     <TextView
         android:id="@+id/tv_registration2"
         android:layout_width="wrap_content"
@@ -25,52 +37,71 @@
         app:layout_constraintVertical_bias="0.015" />
 
     <TextView
-        android:id="@+id/tv_registration5"
+        android:id="@+id/tv_registration6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="14dp"
-        android:text="IS LIFEAID?"
+        android:text="H O W   C A N   W E"
         android:textColor="@color/black"
-        android:textSize="14dp"
+        android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.854"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.151" />
+        app:layout_constraintVertical_bias="0.185" />
 
     <TextView
-        android:id="@+id/tv_registration10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tv_registration9"
+        android:layout_width="227dp"
+        android:layout_height="85dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="14dp"
-        android:text="CONTACTS"
+        android:lineSpacingExtra="6sp"
+        android:text="DOUBLE TAP RED BUTTON TO REQUEST ASSISTANCE FROM "
         android:textColor="@color/black"
-        android:textSize="14dp"
+        android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.854"
+        app:layout_constraintHorizontal_bias="0.712"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.749" />
+        app:layout_constraintVertical_bias="0.407" />
 
     <TextView
-        android:id="@+id/tv_registration7"
-        android:layout_width="208dp"
-        android:layout_height="26dp"
+        android:id="@+id/tv_registration11"
+        android:layout_width="227dp"
+        android:layout_height="85dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="14dp"
-        android:text="HOW ARE THEY GONNA SOLVE"
+        android:lineSpacingExtra="6sp"
+        android:text="DOUBLE TAP RED BUTTON TO REQUEST ASSISTANCE FROM "
         android:textColor="@color/black"
-        android:textSize="14dp"
+        android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.70"
+        app:layout_constraintHorizontal_bias="0.712"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.395" />
+        app:layout_constraintVertical_bias="0.617" />
+
+    <TextView
+        android:id="@+id/tv_registration12"
+        android:layout_width="227dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:lineSpacingExtra="6sp"
+        android:text="DOUBLE TAP RED BUTTON TO REQUEST ASSISTANCE FROM "
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.712"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.813" />
 
     <TextView
         android:id="@+id/tv_registration3"
@@ -101,52 +132,64 @@
         app:srcCompat="@drawable/stranger" />
 
     <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="121dp"
-        android:layout_height="209dp"
+        android:id="@+id/img_next"
+        android:layout_width="52dp"
+        android:layout_height="41dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.191"
-        app:srcCompat="@drawable/faq" />
+        app:layout_constraintVertical_bias="0.962"
+        app:srcCompat="@drawable/right" />
 
     <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="124dp"
-        android:layout_height="205dp"
+        android:id="@+id/imageView13"
+        android:layout_width="126dp"
+        android:layout_height="148dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintHorizontal_bias="0.014"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.642"
-        app:srcCompat="@drawable/confused" />
+        app:layout_constraintVertical_bias="0.19"
+        app:srcCompat="@drawable/userguide" />
 
     <ImageView
-        android:id="@+id/imageView12"
-        android:layout_width="120dp"
-        android:layout_height="184dp"
+        android:id="@+id/imageView15"
+        android:layout_width="102dp"
+        android:layout_height="110dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.994"
-        app:srcCompat="@drawable/trust" />
+        app:layout_constraintVertical_bias="0.45"
+        app:srcCompat="@drawable/redbuts" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="102dp"
+        android:layout_height="110dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65"
+        app:srcCompat="@drawable/accept" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="130dp"
+        android:layout_width="200dp"
         android:layout_height="35dp"
         app:cardBackgroundColor="#7575a3"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.68"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.160" >
+        app:layout_constraintVertical_bias="0.250" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -156,7 +199,7 @@
                 android:id="@+id/tv_fbold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="WHAT EXACTLY"
+                android:text="R E Q U E S T   F O R   A I D ?"
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -168,29 +211,28 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="250dp"
-        android:layout_height="130dp"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        app:cardBackgroundColor="#7575a3"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.893"
+        app:layout_constraintHorizontal_bias="0.59"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.256">
+        app:layout_constraintVertical_bias="0.463" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tv_registration8"
-                android:layout_width="208dp"
-                android:layout_height="109dp"
-                android:layout_marginEnd="3dp"
-                android:justificationMode="inter_word"
-                android:text="LifeAid is an application developed by BSIT students from University of Cebu, Lapu-Lapu and Mandaue. The students are devoted to deliver a solution that they foresaw as a rampant problem in the society. That is no other than, emergency-time-response."
-                android:textColor="@color/black"
-                android:textSize="12dp"
+                android:id="@+id/second"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="F I R E M E N"
+                android:textColor="@color/white"
+                android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -199,6 +241,36 @@
 
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        app:cardBackgroundColor="#7575a3"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.654" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/third"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="H E A L T H - W O R K E R S"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         android:layout_width="130dp"
         android:layout_height="35dp"
@@ -206,20 +278,20 @@
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.67"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.443" >
+        app:layout_constraintVertical_bias="0.830" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tv_registration4"
+                android:id="@+id/fourth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="THIS PROBLEM?"
+                android:text="P O L I C E M E N"
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -229,148 +301,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <!-- START-->
-    <androidx.cardview.widget.CardView
-        android:layout_width="250dp"
-        android:layout_height="170dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.88"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.623">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_INS"
-                android:layout_width="208dp"
-                android:layout_height="145dp"
-                android:layout_marginEnd="3dp"
-                android:justificationMode="inter_word"
-                android:text="This is where LifeAid comes in. LifeAid will serve as the bridge that connects Aid-Seekers, which are people that requests or utterly need emergency assistance, and Aid-Providers, which are licensed people who can voluntarily offer assistanace. Aid-Providers will temporarily provide aid via responding physically to the current location of the Aid-Seeker."
-                android:textColor="@color/black"
-                android:textSize="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="130dp"
-        android:layout_height="35dp"
-        app:cardBackgroundColor="#7575a3"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.760" >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_last"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TRUSTED"
-                android:textColor="@color/white"
-                android:textSize="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.88"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.981">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <EditText
-                android:id="@+id/et_phonenum"
-                android:layout_width="231dp"
-                android:layout_height="37dp"
-                android:layout_centerInParent="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/edit_text_radius"
-                android:ems="10"
-                android:hint="Phone Number"
-                android:inputType="textPersonName"
-                android:paddingLeft="10dp"
-
-
-                android:paddingRight="10dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.526"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.601" />
-
-            <EditText
-                android:id="@+id/et_name"
-                android:layout_width="231dp"
-                android:layout_height="39dp"
-                android:layout_centerInParent="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/edit_text_radius"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName"
-                android:paddingLeft="10dp"
-
-
-                android:paddingRight="10dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.526"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.141" />
-
-            <ImageView
-                android:id="@+id/img_buttonnext"
-                android:layout_width="40dp"
-                android:layout_height="35dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.954"
-                app:srcCompat="@drawable/letsgo" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
