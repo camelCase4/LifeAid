@@ -33,8 +33,18 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //PATH TO THE AID SEEKER DASHBOARD
                 Intent intent = new Intent(MainActivity.this,AddTrustedContactDashboard.class);
                 startActivity(intent);
+
+                //PATH TO THE AID PROVIDER DASHBOARD
+                /*Intent intent = new Intent(MainActivity.this, InstructionDashboardAidProvider.class);
+                startActivity(intent);/*
+
+                //PATH TO THE ADMIN DASHBOARD
+                /*
+                Intent intent = new Intent(MainActivity.this, AdminMainDash.class);
+                startActivity(intent);*/
             }
         });
     }
