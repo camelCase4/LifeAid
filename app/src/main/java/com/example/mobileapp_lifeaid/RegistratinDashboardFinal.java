@@ -28,6 +28,10 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
     Button donebutton;
     ProgressBar progressBar;
     String firstName,lastName,edad,phoneNumber,lugar,kasarian;
+
+    //FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

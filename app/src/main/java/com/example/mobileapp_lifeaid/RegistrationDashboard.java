@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class RegistrationDashboard extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     //firebase
-    public static FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth =  FirebaseAuth.getInstance();
     private boolean checker = true;
 
     public static String username_holder;
@@ -40,7 +40,7 @@ public class RegistrationDashboard extends AppCompatActivity implements AdapterV
         setContentView(R.layout.activity_registration_dashboard);
 
         //firebase
-        mAuth = FirebaseAuth.getInstance();
+        //mAuth = FirebaseAuth.getInstance(); ------------------------
 
         //the drop down operation
 
@@ -94,14 +94,14 @@ public class RegistrationDashboard extends AppCompatActivity implements AdapterV
             }
         });
 
-        button = (Button) findViewById(R.id.btn_register);
+       /* button = (Button) findViewById(R.id.btn_register);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegistrationDashboard.this,RegistratinDashboardFinal.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         buttonregister = (Button)findViewById(R.id.btn_register);
         buttonregister.setOnClickListener(new View.OnClickListener() {
