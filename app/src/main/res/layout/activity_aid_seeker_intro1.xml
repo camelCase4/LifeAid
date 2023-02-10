@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AidSeekerIntro1"
+    android:background="#D0F0C0">
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023"
+        app:srcCompat="@drawable/stranger" />
+    <TextView
+        android:id="@+id/tv_registration2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:text="S T A Y   S A F E"
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.306"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.015" />
+    <TextView
+        android:id="@+id/tv_registration3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="LOGGED IN AS AN AID - SEEKER"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.378"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.061" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="197dp"
+        android:layout_height="219dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.074"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.212"
+        app:srcCompat="@drawable/faq" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="155dp"
+        android:layout_height="50dp"
+        app:cardBackgroundColor="#7575a3"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.932"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.239">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_fbold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WHAT EXACTLY"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_registration5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:text="IS LIFEAID?"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.832"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+
+    <TextView
+        android:id="@+id/tv_registration22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:text="|"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.912" />
+
+    <TextView
+        android:id="@+id/tv_registration21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:text="SKIP"
+        android:textColor="#8383fc"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.34"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.905" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="250dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.706">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_registration8"
+                android:layout_width="305dp"
+                android:layout_height="195dp"
+                android:layout_marginEnd="3dp"
+                android:gravity="center"
+                android:text="LifeAid is an application developed by BSIT students from University of Cebu, Lapu-Lapu and Mandaue. The students are devoted to deliver a solution that they foresaw as a rampant problem in the society. That is no other than,"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.547"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.018" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="255dp"
+                android:layout_height="40dp"
+                app:cardBackgroundColor="#7575a3"
+                app:cardElevation="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.552"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.887">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_fbold2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Emergency - Time - Response."
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/imageView33"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.646"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.924"
+        app:srcCompat="@drawable/next" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

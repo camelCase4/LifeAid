@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddContactsAidSeeker"
+    android:background="#D0F0C0">
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023"
+        app:srcCompat="@drawable/stranger" />
+    <TextView
+        android:id="@+id/tv_registration2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:text="S T A Y   S A F E"
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.306"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.015" />
+    <TextView
+        android:id="@+id/tv_registration3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="LOGGED IN AS AN AID - SEEKER"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.378"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.061" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="197dp"
+        android:layout_height="219dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.074"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.212"
+        app:srcCompat="@drawable/trust" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        app:cardBackgroundColor="#7575a3"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.772"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.269">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_fbold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TRUSTED"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/tv_registration18"
+        android:layout_width="84dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:text="CONTACTS"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.753"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.333" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="130dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.536">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_registration8"
+                android:layout_width="307dp"
+                android:layout_height="119dp"
+                android:layout_marginEnd="3dp"
+                android:gravity="center"
+                android:text="To operate well. As an Aid - Seeker you are required to input the name and the contact number of your two trusted contacts."
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.55"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.483" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/imageView33"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.646"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.961"
+        app:srcCompat="@drawable/next" />
+
+    <TextView
+        android:id="@+id/tv_registration22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:text="|"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.949" />
+
+    <TextView
+        android:id="@+id/tv_registration21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:text="SKIP"
+        android:textColor="#8383fc"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.338"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.942" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="185dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.84">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <EditText
+                android:id="@+id/et_phonenum"
+                android:layout_width="281dp"
+                android:layout_height="55dp"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/edit_text_radius"
+                android:ems="10"
+                android:hint="Phone Number"
+                android:inputType="textPersonName"
+                android:paddingLeft="10dp"
+
+
+                android:paddingRight="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.526"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.601" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="281dp"
+                android:layout_height="55dp"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/edit_text_radius"
+                android:ems="10"
+                android:hint="Name"
+                android:inputType="textPersonName"
+                android:paddingLeft="10dp"
+
+
+                android:paddingRight="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.526"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.141" />
+
+            <ImageView
+                android:id="@+id/img_buttonnext"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.953"
+                app:srcCompat="@drawable/right" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RegistrationDashboardContinuation extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
@@ -18,6 +19,8 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
     RegistrationDashboard rd = new RegistrationDashboard();
     TextView textview;
     Button button;
+
+    String admin_password = "LifeAidAdmin";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +39,9 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
 
 
 
-        EditText email = (EditText) findViewById(R.id.et_fname);
-        EditText username = (EditText) findViewById(R.id.et_lname);
-        EditText password = (EditText) findViewById(R.id.et_age);
+        EditText email = (EditText) findViewById(R.id.et_email);
+        EditText username = (EditText) findViewById(R.id.et_username);
+        EditText password = (EditText) findViewById(R.id.et_password);
 
         if(!rd.email_holder.equals(""))
         {
@@ -69,8 +72,27 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RegistrationDashboardContinuation.this,RegistratinDashboardFinal.class);
-                startActivity(intent);
+                rd.user_role = "Admin";
+
+                EditText passinput = (EditText) findViewById(R.id.et_pass2);
+                if(passinput.getText().toString().equals(admin_password)) {
+
+                    EditText email = (EditText)findViewById(R.id.et_email);
+                    EditText username = (EditText)findViewById(R.id.et_username);
+                    EditText password = (EditText)findViewById(R.id.et_password);
+
+                    rd.email_holder = email.getText().toString();
+                    rd.username_holder = username.getText().toString();
+                    rd.password_holder = password.getText().toString();
+
+                    Intent intent = new Intent(RegistrationDashboardContinuation.this, RegistratinDashboardFinal.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(RegistrationDashboardContinuation.this, "Admin Password Incorrect! Try again!", Toast.LENGTH_LONG).show();
+                    passinput.setText("");
+                }
             }
         });
 
@@ -87,9 +109,9 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
             if(temp.equals("Aid - Seeker")) rd.role_holder = 0;
             else rd.role_holder = 1;
 
-            EditText email = (EditText)findViewById(R.id.et_fname);
-            EditText username = (EditText)findViewById(R.id.et_lname);
-            EditText password = (EditText)findViewById(R.id.et_age);
+            EditText email = (EditText)findViewById(R.id.et_email);
+            EditText username = (EditText)findViewById(R.id.et_username);
+            EditText password = (EditText)findViewById(R.id.et_password);
 
             //getting the edit text values
             rd.email_holder = email.getText().toString();
@@ -99,6 +121,7 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
             Intent intent = new Intent(RegistrationDashboardContinuation.this,RegistrationDashboard.class);
             startActivity(intent);
         }
+
     }
 
     @Override
