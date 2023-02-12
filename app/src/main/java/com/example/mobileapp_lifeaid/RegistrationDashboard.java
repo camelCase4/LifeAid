@@ -22,8 +22,8 @@ public class RegistrationDashboard extends AppCompatActivity implements AdapterV
     private boolean checker = true;
 
     public static String username_holder;
-    public static String password_holder;
-    public static String email_holder;
+    public static String password_holder ="";
+    public static String email_holder = "";
     public static int role_holder = 0;//decider number
     public static String user_role = "AidSeeker";//actual user role
 
@@ -195,6 +195,7 @@ public class RegistrationDashboard extends AppCompatActivity implements AdapterV
                         }
                     }
                 });*/
+
         email_holder = email.getText().toString().trim();
         username_holder = username.getText().toString().trim();
         password_holder = password.getText().toString().trim();

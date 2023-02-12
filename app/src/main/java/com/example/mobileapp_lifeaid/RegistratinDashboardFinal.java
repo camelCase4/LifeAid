@@ -71,20 +71,21 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                 kasarian = gender.getText().toString().trim();
                 boolean addedcontacts = true; //--------------------------newly
                 String trustedname_1 ="",trustedname_2="",trustednum_1="",trustednum_2="";
+                boolean admin_approved = false;
                 //--
 
                 progressBar.setVisibility(View.VISIBLE);
-                rd.mAuth.createUserWithEmailAndPassword(rd.email_holder,rd.password_holder)
+                (rd.mAuth).createUserWithEmailAndPassword(rd.email_holder,rd.password_holder)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful())
                                 {
-                                    User us = new User(rd.email_holder,rd.username_holder,rd.password_holder,rd.user_role,firstName,lastName,edad,phoneNumber,lugar,kasarian,addedcontacts,trustednum_1,trustednum_2,trustedname_1,trustedname_2);
+                                    User us = new User(rd.email_holder,rd.username_holder,rd.password_holder,rd.user_role,firstName,lastName,edad,phoneNumber,lugar,kasarian,addedcontacts,trustednum_1,trustednum_2,trustedname_1,trustedname_2,admin_approved);
                                     if(rd.user_role.equals("AidSeeker"))
                                     {
                                         FirebaseDatabase.getInstance().getReference("Aid-Seeker")
-                                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .child(rd.mAuth.getCurrentUser().getUid()) //this line change the auth logic
                                                 .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {

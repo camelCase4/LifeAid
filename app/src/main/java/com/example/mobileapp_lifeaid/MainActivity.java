@@ -28,7 +28,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     //user values
-    public static String fullname,gender,age,useremail,address,phonenum,userrole,username,addedcontact;
+    public static String fullname,gender,age,useremail,address,phonenum,userrole,username,addedcontact,approved_byadmin;
 
     //--
     EditText et_signin, et_passin;//for the username and password input
@@ -166,18 +166,24 @@ public class MainActivity extends AppCompatActivity {
                                                             userrole = String.valueOf(ds.child("role").getValue());
                                                             phonenum = String.valueOf(ds.child("phonenum").getValue());
                                                             addedcontact = String.valueOf(ds.child("prompt_trustedContacts").getValue());
+                                                            approved_byadmin = String.valueOf(ds.child("admin_approved").getValue());
 
-                                                            if(addedcontact.equals("true"))
-                                                            {
+                                                            if(approved_byadmin.equals("true")) {
+
+                                                                if (addedcontact.equals("true")) {
 
 
-                                                                Intent intent = new Intent(MainActivity.this, AidSeekerIntro1.class);
-                                                                startActivity(intent);
+                                                                    Intent intent = new Intent(MainActivity.this, AidSeekerIntro1.class);
+                                                                    startActivity(intent);
+                                                                } else {
+                                                                    Intent intent = new Intent(MainActivity.this, AidSeekerMainDash.class);
+                                                                    startActivity(intent);
+                                                                }
                                                             }
                                                             else
                                                             {
-                                                                Intent intent = new Intent(MainActivity.this, AidSeekerMainDash.class);
-                                                                startActivity(intent);
+                                                                Toast.makeText(MainActivity.this,"Pending Approval!",Toast.LENGTH_SHORT).show();
+                                                                progressBarlog.setVisibility(View.INVISIBLE);
                                                             }
 
 
