@@ -121,7 +121,8 @@
                 android:background="@drawable/edit_text_radius"
                 android:ems="10"
                 android:hint="Password"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
+
                 android:paddingLeft="10dp"
 
 
@@ -143,8 +144,9 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/edit_text_radius"
                 android:ems="10"
+
                 android:hint="Admin Password"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:paddingLeft="10dp"
 
 
