@@ -266,7 +266,7 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
         for(int i = 1; i < names.length; i++)
         {
             if(i <= 5) {
-                show += Integer.toString(i) + "." + names[i].split(" ")[0] + " \n";
+                show += Integer.toString(i) + ". " + names[i].split(" ")[0] + "\n";
             }
             else
             {
