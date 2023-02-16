@@ -72,6 +72,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                 boolean addedcontacts = true; //--------------------------newly
                 String trustedname_1 ="",trustedname_2="",trustednum_1="",trustednum_2="";
                 boolean admin_approved = false;
+                String image_URL = "";
                 //--
 
                 progressBar.setVisibility(View.VISIBLE);
@@ -81,11 +82,11 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful())
                                 {
-                                    User us = new User(rd.email_holder,rd.username_holder,rd.password_holder,rd.user_role,firstName,lastName,edad,phoneNumber,lugar,kasarian,addedcontacts,trustednum_1,trustednum_2,trustedname_1,trustedname_2,admin_approved);
-                                    if(rd.user_role.equals("AidSeeker"))
+                                    User us = new User(rd.email_holder,rd.username_holder,rd.password_holder,rd.user_role,firstName,lastName,edad,phoneNumber,lugar,kasarian,addedcontacts,trustednum_1,trustednum_2,trustedname_1,trustedname_2,admin_approved,image_URL);
+                                    if((rd.user_role).equals("AidSeeker"))
                                     {
                                         FirebaseDatabase.getInstance().getReference("Aid-Seeker")
-                                                .child(rd.mAuth.getCurrentUser().getUid()) //this line change the auth logic
+                                                .child((rd.mAuth).getCurrentUser().getUid()) //this line change the auth logic
                                                 .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
@@ -101,7 +102,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
 
 
                                     }
-                                    else if(rd.user_role.equals("AidProvider"))
+                                    else if((rd.user_role).equals("AidProvider"))
                                     {
                                         FirebaseDatabase.getInstance().getReference("Aid-Provider")
                                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

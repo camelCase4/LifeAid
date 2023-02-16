@@ -1,8 +1,11 @@
 package com.example.mobileapp_lifeaid;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -10,10 +13,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationDashboard extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -26,6 +32,10 @@ public class RegistrationDashboard extends AppCompatActivity implements AdapterV
     public static String email_holder = "";
     public static int role_holder = 0;//decider number
     public static String user_role = "AidSeeker";//actual user role
+    public static String IMG_URI = "";
+    public static Uri imageUri;
+
+
 
 
     EditText email,username,password;
@@ -34,11 +44,15 @@ public class RegistrationDashboard extends AppCompatActivity implements AdapterV
     TextView textview;
     Button button,buttonregister;
 
+    ImageView img;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_dashboard);
 
+
+        img = (ImageView) findViewById(R.id.imageholder);
         //firebase
         //mAuth = FirebaseAuth.getInstance(); ------------------------
 
@@ -119,7 +133,38 @@ public class RegistrationDashboard extends AppCompatActivity implements AdapterV
             }
         });
 
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent,2);
+            }
+        });
+
+
     }
+
+    //checkpoint
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 2 && resultCode == RESULT_OK && data != null)
+        {
+            imageUri = data.getData();
+            img.setImageURI(imageUri);
+        }
+    }
+
+
+    public void gettingImage()
+    {
+
+    }
+    //--------------
 
     private void validateInputs()
     {
