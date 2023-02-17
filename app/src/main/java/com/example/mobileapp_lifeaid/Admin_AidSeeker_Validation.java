@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +27,7 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
 
     Button b,b2,b3;
     TextView tv_fullname,tv_email,tv_address,tv_contact,tv_gender,tv_age,tv_queue;
+    ImageView iv;
 
 
 
@@ -41,6 +44,7 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
     List<String> contacts = new ArrayList<>();
     List<String> genders = new ArrayList<>();
     List<String> ages = new ArrayList<>();
+    List<String> ID_proofs = new ArrayList<>();//new ------
     //--------
 
 
@@ -54,6 +58,7 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
         b = (Button) findViewById(R.id.validatebutton);
         b3 = (Button) findViewById(R.id.validatefetch);
         b2 = (Button) findViewById(R.id.denybutton);
+        iv = (ImageView) findViewById(R.id.imageView35);//new ----
 
         tv_fullname = (TextView) findViewById(R.id.tv_asName);
         tv_email = (TextView) findViewById(R.id.tv_asEmail);
@@ -74,6 +79,7 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
         contacts.clear();
         genders.clear();
         ages.clear();
+        ID_proofs.clear();
         //
 
 
@@ -95,12 +101,14 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
                     tv_contact.setText(contacts.get(index));
                     tv_gender.setText(genders.get(index));
                     tv_age.setText(ages.get(index));
+                    imageDisplayer();//new ---
                     checker = true;
                 }
                 else
                 {
                     Toast.makeText(Admin_AidSeeker_Validation.this,"No Applicants!",Toast.LENGTH_SHORT).show();
                     b3.setEnabled(false);
+
                 }
             }
         });
@@ -127,9 +135,14 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
                                     tv_contact.setText(contacts.get(index));
                                     tv_gender.setText(genders.get(index));
                                     tv_age.setText(ages.get(index));
+                                    imageDisplayer();
                                 } else {
                                     Toast.makeText(Admin_AidSeeker_Validation.this, "No more Applicants!", Toast.LENGTH_SHORT).show();
+                                    /*
                                     b.setEnabled(false);
+                                    b2.setBackgroundTintList(null);
+                                    b2.setEnabled(false);*/
+                                    checker = false;
                                     tv_fullname.setText("------------------------");
                                     tv_email.setText("------------------------");
                                     tv_address.setText("------------------------");
@@ -137,6 +150,7 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
                                     tv_gender.setText("------------------------");
                                     tv_age.setText("------------------------");
                                     tv_queue.setText("-----------");
+                                    iv.setImageResource(R.drawable.mtfolder);
                                 }
 
 
@@ -169,9 +183,12 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
                         tv_contact.setText(contacts.get(index));
                         tv_gender.setText(genders.get(index));
                         tv_age.setText(ages.get(index));
+                        imageDisplayer();
                     } else {
                         Toast.makeText(Admin_AidSeeker_Validation.this, "No more Applicants!", Toast.LENGTH_SHORT).show();
-                        b.setEnabled(false);
+                        /*b.setEnabled(false);
+                        b2.setBackgroundTintList(null);
+                        b2.setEnabled(false);*/
                         tv_fullname.setText("------------------------");
                         tv_email.setText("------------------------");
                         tv_address.setText("------------------------");
@@ -180,6 +197,7 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
                         tv_age.setText("------------------------");
                         tv_queue.setText("-----------");
                         checker = false;
+                        iv.setImageResource(R.drawable.mtfolder);
                     }
                 }
                 else
@@ -217,6 +235,7 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
                                         String temp_contact = String.valueOf(snaps.child("phonenum").getValue());
                                         String temp_gender = String.valueOf(snaps.child("gender").getValue());
                                         String temp_age = String.valueOf(snaps.child("age").getValue());
+                                        String temp_ID = String.valueOf(snaps.child("imageURL").getValue());//new ---
 
                                         if(temp_n.equals("false"))
                                         {
@@ -227,6 +246,7 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
                                             contacts.add(temp_contact);
                                             genders.add(temp_gender);
                                             ages.add(temp_age);
+                                            ID_proofs.add(temp_ID);
 
                                         }
 
@@ -279,5 +299,11 @@ public class Admin_AidSeeker_Validation extends AppCompatActivity {
         return remaining == 0? show:show +"And "+Integer.toString(remaining)+" more....";
     }
 
+    //checkpoint 2/17/2023
+    public void imageDisplayer()
+    {
+        Picasso.get().load(ID_proofs.get(index)).into(iv);
+    }
+    //---------
 
 }
