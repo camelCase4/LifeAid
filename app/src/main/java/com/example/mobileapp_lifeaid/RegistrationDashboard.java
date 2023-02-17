@@ -1,14 +1,17 @@
 package com.example.mobileapp_lifeaid;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,15 +19,26 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class RegistrationDashboard extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     //firebase
     public static FirebaseAuth mAuth =  FirebaseAuth.getInstance();
+
+    //checkpoint 2/17/2023
+    public static StorageReference sr = FirebaseStorage.getInstance().getReference();
+    //--------
     private boolean checker = true;
 
     public static String username_holder;
@@ -156,15 +170,48 @@ public class RegistrationDashboard extends AppCompatActivity implements AdapterV
         {
             imageUri = data.getData();
             img.setImageURI(imageUri);
+
+            //checkpoint 2/17/2023
+            if(imageUri != null)
+            {
+                StorageReference storRef = sr.child(System.currentTimeMillis()+"."+fileExt(imageUri));
+                storRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        storRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                IMG_URI = uri.toString();
+                            }
+                        });
+
+
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(RegistrationDashboard.this, "Image Accumulation failed!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            //---------
+
         }
     }
-
-
-    public void gettingImage()
+    //checkpoint 2/17/2023
+    private String fileExt(Uri im_uri)
     {
-
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap m = MimeTypeMap.getSingleton();
+        return m.getExtensionFromMimeType(cr.getType(im_uri));
     }
-    //--------------
+    //
+
 
     private void validateInputs()
     {
