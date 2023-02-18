@@ -137,8 +137,14 @@ public class RegistrationDashboard extends AppCompatActivity implements AdapterV
             public void onClick(View view) {
                 validateInputs();
                 if(checker) {
-                    Intent intent = new Intent(RegistrationDashboard.this, RegistratinDashboardFinal.class);
-                    startActivity(intent);
+                    if(!IMG_URI.equals("")) {
+                        Intent intent = new Intent(RegistrationDashboard.this, RegistratinDashboardFinal.class);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        Toast.makeText(RegistrationDashboard.this, "Requirement Incomplete!", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else
                 {

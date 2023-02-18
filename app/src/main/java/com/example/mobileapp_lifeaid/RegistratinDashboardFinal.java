@@ -105,7 +105,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                     else if(rd.user_role.equals("AidProvider"))
                                     {
                                         FirebaseDatabase.getInstance().getReference("Aid-Provider")
-                                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .child(rd.mAuth.getCurrentUser().getUid())
                                                 .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
