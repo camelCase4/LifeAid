@@ -15,10 +15,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+
 // i added a new implements 2/22/2023
 public class AidSeekerMainDash extends AppCompatActivity implements LocationListener {
 
     ImageView alertallbtn;
+
+    MainActivity ma = new MainActivity();
+
+    int presscounter = 0;
+
+    String theLatInStr = "",theLongInStr = "";
     //checkpoint 2/22/20233
     LocationManager lm;
     //----
@@ -29,10 +42,18 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
         alertallbtn = (ImageView) findViewById(R.id.imageView34);
 
+
         alertallbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getLoc();
+
+                presscounter++;
+                if(presscounter >= 2) {
+                    getLoc();
+                    presscounter = 0;
+                }
+                //storing();
+
             }
         });
     }
@@ -49,13 +70,36 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,AidSeekerMainDash.this);
 
 
-
     }
     //-------
     //checkpoint 2/22/2023
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        Toast.makeText(this, location.getLatitude()+", "+location.getLongitude(), Toast.LENGTH_SHORT).show();
+        theLatInStr = Double.toString(location.getLatitude());
+        theLongInStr = Double.toString(location.getLongitude());
+
+
+        storing();
+
     }
     //-------
+
+    //checkpoint 2/22/2023
+    public void storing()
+    {
+        HashMap hm = new HashMap();
+        hm.put("lati",theLatInStr);
+        hm.put("longi",theLongInStr);
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                    Toast.makeText(AidSeekerMainDash.this, "Hang in there!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+    //----
 }

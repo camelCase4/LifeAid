@@ -72,6 +72,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                 boolean addedcontacts = true; //--------------------------newly
                 String trustedname_1 ="",trustedname_2="",trustednum_1="",trustednum_2="";
                 boolean admin_approved = false;
+                String lati = "",longi = "";
 
                 //--
 
@@ -82,7 +83,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful())
                                 {
-                                    User us = new User(rd.email_holder,rd.username_holder,rd.password_holder,rd.user_role,firstName,lastName,edad,phoneNumber,lugar,kasarian,addedcontacts,trustednum_1,trustednum_2,trustedname_1,trustedname_2,admin_approved,rd.IMG_URI);
+                                    User us = new User(rd.email_holder,rd.username_holder,rd.password_holder,rd.user_role,firstName,lastName,edad,phoneNumber,lugar,kasarian,addedcontacts,trustednum_1,trustednum_2,trustedname_1,trustedname_2,admin_approved,rd.IMG_URI,lati,longi);
                                     if(rd.user_role.equals("AidSeeker"))
                                     {
                                         FirebaseDatabase.getInstance().getReference("Aid-Seeker")
@@ -122,7 +123,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                     else
                                     {
                                         FirebaseDatabase.getInstance().getReference("Admin")
-                                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .child(rd.mAuth.getCurrentUser().getUid())
                                                 .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
