@@ -92,7 +92,7 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
             }
         });
 
-        //checkifnameExists();
+        checkifnameExists();//new
 
         button = (Button) findViewById(R.id.btn_register);
         button.setOnClickListener(new View.OnClickListener() {
