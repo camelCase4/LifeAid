@@ -13,4 +13,5 @@
         <item>Aid - Provider</item>
         <item>Admin</item>
     </string-array>
+    <string name="title_activity_maps_aid_provider">MapsActivityAidProvider</string>
 </resources>
