@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,6 +32,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     private final long min_time = 1000;
 
     private LatLng latLng;
+
+    AidProviderMainDash apm = new AidProviderMainDash();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +77,19 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             public void onLocationChanged(@NonNull Location location) {
                 try {
                         latLng = new LatLng(location.getLatitude(),location.getLongitude());
-                        mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!"));
+                        mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
+                        seekerloc();
+
+
                 }catch (Exception e)
                 {
 
                 }
             }
         };
+
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         try {
@@ -93,6 +100,14 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
         }
         //--------
+    }
+
+    public void seekerloc()
+    {
+        LatLng seekerPosition = new LatLng(Double.parseDouble(apm.latiOfSeeker),Double.parseDouble(apm.longiOfSeeker));
+        mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location!")).showInfoWindow();
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition));
+
     }
 
 
