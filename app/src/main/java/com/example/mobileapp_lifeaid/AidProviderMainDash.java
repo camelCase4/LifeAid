@@ -3,11 +3,13 @@ package com.example.mobileapp_lifeaid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 public class AidProviderMainDash extends AppCompatActivity {
 
     ImageView seekerAlerts,alarmimage,alarm2;
+    TextView tap;
+    TextView als;
 
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
@@ -36,6 +40,8 @@ public class AidProviderMainDash extends AppCompatActivity {
         alarmimage = (ImageView) findViewById(R.id.imageView25);
         alarm2 = (ImageView) findViewById(R.id.imageView23);
 
+        tap = (TextView) findViewById(R.id.taptap);
+        als = (TextView) findViewById(R.id.tvAlertings);
 
         checkForSeekers();
 
@@ -56,7 +62,10 @@ public class AidProviderMainDash extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
+
 
     public void checkForSeekers()
     {
@@ -101,7 +110,8 @@ public class AidProviderMainDash extends AppCompatActivity {
                     if(!latiOfSeeker.equals(""))
                     {
                         Toast.makeText(AidProviderMainDash.this, "Please Respond!", Toast.LENGTH_SHORT).show();
-                        alarmimage.setImageResource(R.drawable.siren);
+                        tap.setText("S E E K E R   F O U N D !");
+                        als.setText("ALERT FOUND!");
                         alarm2.setImageResource(R.drawable.redsiren);
                         break;
                     }

@@ -16,6 +16,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mobileapp_lifeaid.databinding.ActivityMapsAidProviderBinding;
@@ -77,7 +78,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             public void onLocationChanged(@NonNull Location location) {
                 try {
                         latLng = new LatLng(location.getLatitude(),location.getLongitude());
-                        mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
+                        //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
+                    mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
                         seekerloc();
