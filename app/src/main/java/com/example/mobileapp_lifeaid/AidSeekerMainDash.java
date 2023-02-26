@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -80,6 +81,9 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
 
         storing();
+        smsSending();
+
+
 
     }
     //-------
@@ -100,6 +104,31 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
             }
         });
+
+
     }
     //----
+
+    //checkpoint 2/26/2023
+    public void smsSending()
+    {
+
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},PackageManager.PERMISSION_GRANTED);
+
+        String messagetobesent = ma.fullname+" is at, Latitude: "+ theLatInStr+", "+"Longitude: "+theLongInStr+", and in need of aid!";
+        SmsManager smsManager = SmsManager.getDefault();
+
+        for(int i = 0; i < 2; i++) {
+            if(i == 0) {
+                smsManager.sendTextMessage(ma.trustedcontact1,null,messagetobesent,null,null);
+            }
+            else
+            {
+                smsManager.sendTextMessage(ma.trustedcontact2, null, messagetobesent,null,null);
+            }
+        }
+
+        Toast.makeText(AidSeekerMainDash.this, "Trusted contacts informed!",Toast.LENGTH_SHORT).show();
+    }
+    //
 }

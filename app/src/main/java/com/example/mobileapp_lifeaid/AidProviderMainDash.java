@@ -29,6 +29,8 @@ public class AidProviderMainDash extends AppCompatActivity {
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
 
+    boolean findSeekerClicked = false;
+
     public static String latiOfSeeker = "",longiOfSeeker = "";
 
     @Override
@@ -49,6 +51,7 @@ public class AidProviderMainDash extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkForSeekers();
+                findSeekerClicked = true;
             }
         });
 
@@ -118,6 +121,15 @@ public class AidProviderMainDash extends AppCompatActivity {
 
                 }
 
+                // checkpoint 2/26/2023
+                if(latiOfSeeker.equals("") && findSeekerClicked)
+                {
+                    findSeekerClicked = false;
+                    Toast.makeText(AidProviderMainDash.this, "No seekers for now!", Toast.LENGTH_SHORT).show();
+
+                }
+                //-----
+
 
             }
             @Override
@@ -126,4 +138,5 @@ public class AidProviderMainDash extends AppCompatActivity {
             }
         });
     }
+
 }

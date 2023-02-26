@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     //user values
     public static String fullname,gender,age,useremail,address,phonenum,userrole,username,addedcontact,approved_byadmin;
+    public static String trustedcontact1,trustedcontact2;
 
     //--
     EditText et_signin, et_passin;//for the username and password input
@@ -167,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
                                                             phonenum = String.valueOf(ds.child("phonenum").getValue());
                                                             addedcontact = String.valueOf(ds.child("prompt_trustedContacts").getValue());
                                                             approved_byadmin = String.valueOf(ds.child("admin_approved").getValue());
+                                                            trustedcontact1 = String.valueOf(ds.child("trustedphonenum_1").getValue());
+                                                            trustedcontact2 = String.valueOf(ds.child("trustedphonenum_2").getValue());
 
                                                             if(approved_byadmin.equals("true")) {
 
