@@ -18,8 +18,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -31,6 +34,9 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     MainActivity ma = new MainActivity();
 
     int presscounter = 0;
+
+    FirebaseDatabase fd = FirebaseDatabase.getInstance();
+    DatabaseReference dr = fd.getReference().child("Aid-Seeker");
 
     String theLatInStr = "",theLongInStr = "";
     //checkpoint 2/22/20233
@@ -113,22 +119,65 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     public void smsSending()
     {
 
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},PackageManager.PERMISSION_GRANTED);
+        if(ma.trustedcontact1.isEmpty() || ma.trustedcontact1.equals(""))
+        {
+            dr.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                    dr.child(ma.userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if(task.isSuccessful())
+                            {
+                                if(task.getResult().exists())
+                                {
+                                    DataSnapshot snaps = task.getResult();
 
-        String messagetobesent = ma.fullname+" is at, Latitude: "+ theLatInStr+", "+"Longitude: "+theLongInStr+", and in need of aid!";
+                                    ma.trustedcontact1 = String.valueOf(snaps.child("trustedphonenum_1").getValue());
+                                    ma.trustedcontact2 = String.valueOf(snaps.child("trustedphonenum_2").getValue());
+
+                                    partnerSMS();
+                                }
+                                else
+                                {
+                                    Toast.makeText(AidSeekerMainDash.this, "Data does not exist!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(AidSeekerMainDash.this,"Task was not successful!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+        else {
+            partnerSMS();
+        }
+    }
+    //
+
+    public void partnerSMS()
+    {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, PackageManager.PERMISSION_GRANTED);
+
+        String messagetobesent = ma.fullname + " is at, Latitude: " + theLatInStr + ", " + "Longitude: " + theLongInStr + ", and in need of aid!";
         SmsManager smsManager = SmsManager.getDefault();
 
-        for(int i = 0; i < 2; i++) {
-            if(i == 0) {
-                smsManager.sendTextMessage(ma.trustedcontact1,null,messagetobesent,null,null);
-            }
-            else
-            {
-                smsManager.sendTextMessage(ma.trustedcontact2, null, messagetobesent,null,null);
+        for (int i = 0; i < 2; i++) {
+            if (i == 0) {
+                smsManager.sendTextMessage(ma.trustedcontact1, null, messagetobesent, null, null);
+            } else {
+                smsManager.sendTextMessage(ma.trustedcontact2, null, messagetobesent, null, null);
             }
         }
 
-        Toast.makeText(AidSeekerMainDash.this, "Trusted contacts informed!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(AidSeekerMainDash.this, "Trusted contacts informed!", Toast.LENGTH_SHORT).show();
     }
-    //
 }
