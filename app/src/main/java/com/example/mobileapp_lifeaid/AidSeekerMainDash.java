@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -30,10 +31,11 @@ import java.util.HashMap;
 public class AidSeekerMainDash extends AppCompatActivity implements LocationListener {
 
     ImageView alertallbtn;
+    Button btncrime,btnfire,btnhealth;
 
     MainActivity ma = new MainActivity();
 
-    int presscounter = 0;
+    int presscounter = 0, whatjob = 0; //0? all, 1?crime, 2?fire, 3?health
 
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
@@ -48,6 +50,9 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         setContentView(R.layout.activity_aid_seeker_main_dash);
 
         alertallbtn = (ImageView) findViewById(R.id.imageView34);
+        btncrime = (Button) findViewById(R.id.btn_register2);
+        btnfire = (Button) findViewById(R.id.btn_register3);
+        btnhealth = (Button) findViewById(R.id.btn_register5);
 
 
         alertallbtn.setOnClickListener(new View.OnClickListener() {
@@ -58,11 +63,67 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 if(presscounter >= 2) {
                     getLoc();
                     presscounter = 0;
+                    //3/1/2023 checkpoint
+                    btncrime.setEnabled(false);
+                    btnfire.setEnabled(false);
+                    btnhealth.setEnabled(false);
+                    whatjob = 0;
+                    //---------
                 }
                 //storing();
 
             }
         });
+
+        //checkpoint 3/1/2023
+        btncrime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presscounter++;
+                if(presscounter >= 2)
+                {
+                    getLoc();
+                    presscounter = 0;
+                    whatjob = 1;
+                    alertallbtn.setEnabled(false);
+                    btnfire.setEnabled(false);
+                    btnhealth.setEnabled(false);
+                }
+            }
+        });
+
+        btnfire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presscounter++;
+                if(presscounter >= 2)
+                {
+                    getLoc();
+                    presscounter = 0;
+                    whatjob = 2;
+                    alertallbtn.setEnabled(false);
+                    btncrime.setEnabled(false);
+                    btnhealth.setEnabled(false);
+                }
+            }
+        });
+
+        btnhealth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presscounter++;
+                if(presscounter >= 2)
+                {
+                    getLoc();
+                    presscounter = 0;
+                    whatjob = 3;
+                    alertallbtn.setEnabled(false);
+                    btncrime.setEnabled(false);
+                    btnfire.setEnabled(false);
+                }
+            }
+        });
+        //-------
     }
 
     //checkpoint 2/22/2023
@@ -97,9 +158,29 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     //checkpoint 2/22/2023
     public void storing()
     {
+        //3/1/2023 checkpoint
+        String jobDesc = "";
+        if(whatjob == 1)
+        {
+            jobDesc = "policeman";
+        }
+        else if(whatjob == 2)
+        {
+            jobDesc = "fireman";
+        }
+        else if(whatjob == 3)
+        {
+            jobDesc = "health";
+        }
+        else
+        {
+            jobDesc = "all";
+        }
+        //-----
         HashMap hm = new HashMap();
         hm.put("lati",theLatInStr);
         hm.put("longi",theLongInStr);
+        hm.put("job",jobDesc);//checkopint 3/1/2023
 
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
         dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -20,7 +20,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Locale;
+
 public class AidProviderMainDash extends AppCompatActivity {
+
+    MainActivity ma = new MainActivity();
 
     ImageView seekerAlerts,alarmimage,alarm2;
     TextView tap;
@@ -89,12 +93,17 @@ public class AidProviderMainDash extends AppCompatActivity {
 
                                     String temp_lat = String.valueOf(snaps.child("lati").getValue());
                                     String temp_longi = String.valueOf(snaps.child("longi").getValue());
+                                    String jobchoice = String.valueOf(snaps.child("job").getValue()); //checkpoint 3/1/2023
 
-                                    if(!temp_lat.equals(""))
+
+                                    if(jobchoice.toLowerCase().equals(ma.ap_job.toLowerCase()) || jobchoice.equals("all"))
                                     {
-                                        latiOfSeeker = temp_lat;
-                                        longiOfSeeker = temp_longi;
+                                        if(!temp_lat.equals(""))
+                                        {
+                                            latiOfSeeker = temp_lat;
+                                            longiOfSeeker = temp_longi;
 
+                                        }
                                     }
 
                                 }

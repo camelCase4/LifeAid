@@ -31,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     public static String fullname,gender,age,useremail,address,phonenum,userrole,username,addedcontact,approved_byadmin;
     public static String trustedcontact1,trustedcontact2;
 
+    //checkpoint 3/1/2023
+    public static String ap_job;
+    //--
+
     //--
     EditText et_signin, et_passin;//for the username and password input
     TextView textview;//for the signin text view nga murag button
@@ -258,9 +262,61 @@ public class MainActivity extends AppCompatActivity {
                                 DatabaseReference ap_details = ref.child(userid);
                                 ap_details.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        Intent intent = new Intent(MainActivity.this, InstructionDashboardAidProvider.class);
-                                        startActivity(intent);
+                                    public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+
+
+
+                                        //checkpoint 3/1/2023
+                                        DatabaseReference testref = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+                                        testref.child(userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                if(task.isSuccessful())
+                                                {
+                                                    if(task.getResult().exists())
+                                                    {
+                                                        String fname,lname;
+                                                        DataSnapshot ds = task.getResult();
+                                                        fname = String.valueOf(ds.child("fname").getValue());
+                                                        lname = String.valueOf(ds.child("lname").getValue());
+                                                        fullname = fname +" "+lname;
+
+                                                        age = String.valueOf(ds.child("age").getValue());
+                                                        gender = String.valueOf(ds.child("gender").getValue());
+                                                        username = String.valueOf(ds.child("username").getValue());
+                                                        address = String.valueOf(ds.child("address").getValue());
+                                                        useremail = String.valueOf(ds.child("email").getValue());
+                                                        userrole = String.valueOf(ds.child("role").getValue());
+                                                        phonenum = String.valueOf(ds.child("phonenum").getValue());
+                                                        addedcontact = String.valueOf(ds.child("prompt_trustedContacts").getValue());//check if first time login or not
+                                                        approved_byadmin = String.valueOf(ds.child("admin_approved").getValue());
+                                                        ap_job = String.valueOf(ds.child("job").getValue());
+
+                                                        if(approved_byadmin.equals("true"))
+                                                        {
+                                                            if(addedcontact.equals("true"))
+                                                            {
+                                                                Intent intent = new Intent(MainActivity.this, InstructionDashboardAidProvider.class);
+                                                                startActivity(intent);
+                                                            }
+                                                            else
+                                                            {
+                                                                Intent intent = new Intent(MainActivity.this, AidProviderMainDash.class);
+                                                                startActivity(intent);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            Toast.makeText(MainActivity.this,"Pending Approval!",Toast.LENGTH_SHORT).show();
+                                                            progressBarlog.setVisibility(View.INVISIBLE);
+
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        });
+                                        //-----
                                     }
 
                                     @Override
