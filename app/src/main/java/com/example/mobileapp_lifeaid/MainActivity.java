@@ -309,7 +309,6 @@ public class MainActivity extends AppCompatActivity {
                                                         {
                                                             Toast.makeText(MainActivity.this,"Pending Approval!",Toast.LENGTH_SHORT).show();
                                                             progressBarlog.setVisibility(View.INVISIBLE);
-
                                                         }
 
                                                     }

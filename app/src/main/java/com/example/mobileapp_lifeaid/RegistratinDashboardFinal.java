@@ -60,6 +60,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
         jobchoices.add("doctor");
         jobchoices.add("police");
         jobchoices.add("lgu");
+        jobchoices.add("policeman");
         //-------
 
         fname = (EditText) findViewById(R.id.et_fname);
