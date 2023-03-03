@@ -10,6 +10,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,6 +38,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
     AidProviderMainDash apm = new AidProviderMainDash();
 
+    Button resp_btn, supp_btn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +54,20 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.INTERNET},PackageManager.PERMISSION_GRANTED);
+
+        //checkpoint 3/3/2023
+        resp_btn = (Button) findViewById(R.id.respondbutton);
+        supp_btn = (Button) findViewById(R.id.supportbutton);
+
+        resp_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MapsActivityAidProvider.this, "The button auto clicks!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        resp_btn.performClick();
+        //----
 
     }
 

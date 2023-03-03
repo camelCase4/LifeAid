@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapsActivityAidProvider">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MapsActivityAidProvider"
+    android:background="#D0F0C0">
 
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -12,7 +14,53 @@
     android:id="@+id/map"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
+    android:layout_height="300dp"
     tools:context=".MapsActivityAidProvider" />
 
+
+    <Button
+        android:id="@+id/respondbutton"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:background="@drawable/my_button"
+
+        android:text="Respond"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop = "310dp"
+        android:backgroundTint="#345eeb"
+        android:textColor="#f0f5f4"
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+
+    <Button
+        android:id="@+id/supportbutton"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:background="@drawable/my_button"
+
+        android:text="Support"
+        android:layout_marginStart="214dp"
+        android:layout_marginTop = "310dp"
+        android:backgroundTint="#ff6666"
+        android:textColor="#f0f5f4"
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="370dp"
+        android:layout_height="330dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop = "420dp"
+        android:elevation="8dp"
+        app:cardBackgroundColor="@color/white"
+        >
+    </androidx.cardview.widget.CardView>
+
+
+
+
 </FrameLayout>
+
