@@ -26,6 +26,8 @@ public class AidProviderMainDash extends AppCompatActivity {
 
     MainActivity ma = new MainActivity();
 
+    String seeker_id = "",seekerfName = ""; //checkpoint 3/3/2023
+
     ImageView seekerAlerts,alarmimage,alarm2;
     TextView tap;
     TextView als;
@@ -33,7 +35,7 @@ public class AidProviderMainDash extends AppCompatActivity {
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
 
-    boolean findSeekerClicked = false;
+    boolean findSeekerClicked = false, seekerfound = false;
 
     public static String latiOfSeeker = "",longiOfSeeker = "";
 
@@ -65,8 +67,15 @@ public class AidProviderMainDash extends AppCompatActivity {
         seekerAlerts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
-                startActivity(intent);
+                if(seekerfound) {
+                    Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
+                    startActivity(intent);
+                    seekerfound = false;
+                }
+                else
+                {
+                    Toast.makeText(AidProviderMainDash.this, "Find Seekers First!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -81,6 +90,7 @@ public class AidProviderMainDash extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
                 for (DataSnapshot ds : datasnapshot.getChildren()) {
                     String key = ds.getKey();
+                    seeker_id = key;
 
                     dr.child(key).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
@@ -94,6 +104,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                                     String temp_lat = String.valueOf(snaps.child("lati").getValue());
                                     String temp_longi = String.valueOf(snaps.child("longi").getValue());
                                     String jobchoice = String.valueOf(snaps.child("job").getValue()); //checkpoint 3/1/2023
+                                    seekerfName = String.valueOf(snaps.child("fname").getValue()); // checkpoint 3/3/2023
 
 
                                     if(jobchoice.toLowerCase().equals(ma.ap_job.toLowerCase()) || jobchoice.equals("all"))
@@ -125,6 +136,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                         tap.setText("S E E K E R   F O U N D !");
                         als.setText("ALERT FOUND!");
                         alarm2.setImageResource(R.drawable.redsiren);
+                        seekerfound = true;
                         break;
                     }
 

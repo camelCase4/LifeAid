@@ -22,6 +22,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mobileapp_lifeaid.databinding.ActivityMapsAidProviderBinding;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class MapsActivityAidProvider extends FragmentActivity implements OnMapReadyCallback {
 
@@ -36,9 +41,13 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
     private LatLng latLng;
 
+    String whatdidyoudo = "";
+
     AidProviderMainDash apm = new AidProviderMainDash();
 
     Button resp_btn, supp_btn;
+
+    String dateAndTime = ""; //checkpoint 3/3/2023
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +71,22 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         resp_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MapsActivityAidProvider.this, "The button auto clicks!", Toast.LENGTH_SHORT).show();
+                whatdidyoudo = "Respond";
+                Date currentDTime = Calendar.getInstance().getTime();
+                dateAndTime = currentDTime.toString();
+
             }
         });
 
-        resp_btn.performClick();
+        supp_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                whatdidyoudo = "Support";
+                Date currentDateTime = Calendar.getInstance().getTime();
+                dateAndTime = currentDateTime.toString();
+            }
+        });
+
         //----
 
     }
@@ -130,5 +150,11 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
     }
 
+    //checkpoint 3/3/2023
+    public void savingToHistory()
+    {
+        //FirebaseDatabase.getInstance().getReference("AidProviderHistory")
+    }
+    //----------
 
 }
