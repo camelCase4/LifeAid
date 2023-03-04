@@ -22,6 +22,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mobileapp_lifeaid.databinding.ActivityMapsAidProviderBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
@@ -44,10 +46,12 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     String whatdidyoudo = "";
 
     AidProviderMainDash apm = new AidProviderMainDash();
+    MainActivity ma = new MainActivity();
 
     Button resp_btn, supp_btn;
 
     String dateAndTime = ""; //checkpoint 3/3/2023
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 whatdidyoudo = "Respond";
                 Date currentDTime = Calendar.getInstance().getTime();
                 dateAndTime = currentDTime.toString();
+                savingToHistory();
 
             }
         });
@@ -84,6 +89,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 whatdidyoudo = "Support";
                 Date currentDateTime = Calendar.getInstance().getTime();
                 dateAndTime = currentDateTime.toString();
+                savingToHistory();
             }
         });
 
@@ -153,7 +159,23 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     //checkpoint 3/3/2023
     public void savingToHistory()
     {
-        //FirebaseDatabase.getInstance().getReference("AidProviderHistory")
+
+        //checkpoint 3/4/2023
+        ProviderHistory ph = new ProviderHistory(dateAndTime,apm.seekerfName,whatdidyoudo,apm.seeker_id,ma.userid);
+        //-----
+        FirebaseDatabase.getInstance().getReference("AidProviderHistory").push().setValue(ph).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful())
+                {
+                    Toast.makeText(MapsActivityAidProvider.this, "God Speed!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(MapsActivityAidProvider.this, "Failed to record!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
     //----------
 

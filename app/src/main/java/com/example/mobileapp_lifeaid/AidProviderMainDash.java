@@ -26,7 +26,7 @@ public class AidProviderMainDash extends AppCompatActivity {
 
     MainActivity ma = new MainActivity();
 
-    String seeker_id = "",seekerfName = ""; //checkpoint 3/3/2023
+    public static String seeker_id = "",seekerfName = ""; //checkpoint 3/3/2023
 
     ImageView seekerAlerts,alarmimage,alarm2;
     TextView tap;
