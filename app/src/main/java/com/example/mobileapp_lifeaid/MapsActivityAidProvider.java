@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,10 +25,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mobileapp_lifeaid.databinding.ActivityMapsAidProviderBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+
+import java.util.Random;
 
 
 public class MapsActivityAidProvider extends FragmentActivity implements OnMapReadyCallback {
@@ -52,6 +60,13 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
     String dateAndTime = ""; //checkpoint 3/3/2023
 
+    //checkpoint 3/4/2023
+    String providerChecker = "";
+    boolean isItFinal = false;
+    Random rand = new Random();
+    int sleepTime = rand.nextInt(701) + 1000; // ge buhat ni siya nako para walay instance na mag dungan og accept ang duha ka providers, all of them will be given a random number, and if ever gani nga nay magka parihas, then ang lowest na generate nga number ang first aight guyss
+    //-----
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +90,13 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         resp_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                whatdidyoudo = "Respond";
-                Date currentDTime = Calendar.getInstance().getTime();
-                dateAndTime = currentDTime.toString();
-                savingToHistory();
+                checkWhoIsFirst();
+                /*if(isItFinal) {
+                    whatdidyoudo = "Respond";
+                    Date currentDTime = Calendar.getInstance().getTime();
+                    dateAndTime = currentDTime.toString();
+                    savingToHistory();
+                }*/
 
             }
         });
@@ -178,5 +196,85 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         });
     }
     //----------
+
+    //checkpoint 3/4/2023
+    public void removeLatandLong()
+    {
+        //isItFinal = true;
+
+        HashMap hm = new HashMap();
+        hm.put("lati","");
+        hm.put("longi","");
+        hm.put("partner_uid",ma.userid);
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+        dr.child(apm.seeker_id).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+
+        whatdidyoudo = "Respond";
+        Date currentDTime = Calendar.getInstance().getTime();
+        dateAndTime = currentDTime.toString();
+        savingToHistory();
+    }
+
+    public void checkWhoIsFirst()
+    {
+        for(;;)
+        {
+            try{
+                Thread.sleep(sleepTime);
+                findIfProviderIdExists();
+                break;
+
+            }catch(InterruptedException e)
+            {
+
+            }
+        }
+    }
+
+    public void findIfProviderIdExists()
+    {
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+        dr.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dr.child(apm.seeker_id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            if(task.getResult().exists())
+                            {
+                                DataSnapshot snaps = task.getResult();
+                                providerChecker = String.valueOf(snaps.child("partner_uid").getValue());
+                                if(providerChecker.equals("") || providerChecker.isEmpty())
+                                {
+                                    removeLatandLong();
+                                }
+                                else
+                                {
+                                    Toast.makeText(MapsActivityAidProvider.this,"Supported! Somebody else is on the move!",Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    //-----
 
 }

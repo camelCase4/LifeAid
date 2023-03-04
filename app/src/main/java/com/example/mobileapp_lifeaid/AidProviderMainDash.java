@@ -68,9 +68,10 @@ public class AidProviderMainDash extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(seekerfound) {
+                    seekerfound = false;
                     Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
                     startActivity(intent);
-                    seekerfound = false;
+
                 }
                 else
                 {
@@ -83,7 +84,7 @@ public class AidProviderMainDash extends AppCompatActivity {
     }
 
 
-    public void checkForSeekers()
+    protected void checkForSeekers()
     {
         dr.addValueEventListener(new ValueEventListener() {
             @Override
@@ -132,7 +133,7 @@ public class AidProviderMainDash extends AppCompatActivity {
 
                     if(!latiOfSeeker.equals(""))
                     {
-                        Toast.makeText(AidProviderMainDash.this, "Please Respond!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(AidProviderMainDash.this, "Please Respond!", Toast.LENGTH_SHORT).show();
                         tap.setText("S E E K E R   F O U N D !");
                         als.setText("ALERT FOUND!");
                         alarm2.setImageResource(R.drawable.redsiren);
