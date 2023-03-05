@@ -306,8 +306,7 @@
                 android:layout_width="59dp"
                 android:layout_height="53dp"
                 android:lineSpacingExtra="9sp"
-                android:text="WAITING ALERTS
-"
+                android:text="WAITING ALERTS"
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"

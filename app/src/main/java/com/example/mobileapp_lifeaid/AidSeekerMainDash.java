@@ -44,6 +44,11 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     //checkpoint 2/22/20233
     LocationManager lm;
     //----
+
+    //3/5/2023
+    boolean providerFound = false;
+    String responderUID = "";
+    //--------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +143,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,AidSeekerMainDash.this);
 
 
+
     }
     //-------
     //checkpoint 2/22/2023
@@ -187,7 +193,8 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                    Toast.makeText(AidSeekerMainDash.this, "Hang in there!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                waitforresponder();//test 3/5/2023
 
             }
         });
@@ -261,4 +268,69 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
         Toast.makeText(AidSeekerMainDash.this, "Trusted contacts informed!", Toast.LENGTH_SHORT).show();
     }
+
+    //checkpoint 3/5/2023
+    public void waitforresponder()
+    {
+        for(;;)
+        {
+            try {
+
+                gettingtheproviderID();
+                if(providerFound)
+                {
+                    Toast.makeText(AidSeekerMainDash.this, "Aid Provider coming! Go To Provider Info!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                Thread.sleep(5000);
+
+
+            }catch(InterruptedException e)
+            {
+
+            }
+
+        }
+    }
+
+    public void gettingtheproviderID()
+    {
+        dr.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dr.child(ma.userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            if(task.getResult().exists())
+                            {
+                                DataSnapshot snaps = task.getResult();
+
+                                responderUID = String.valueOf(snaps.child("partner_uid").getValue());
+                                if(!responderUID.equals(""))
+                                {
+                                    providerFound = true;
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(AidSeekerMainDash.this, "Data does not exist!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(AidSeekerMainDash.this,"Task was not successful!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    //--------
 }

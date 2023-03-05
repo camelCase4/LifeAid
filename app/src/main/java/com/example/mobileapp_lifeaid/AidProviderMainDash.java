@@ -39,6 +39,9 @@ public class AidProviderMainDash extends AppCompatActivity {
 
     public static String latiOfSeeker = "",longiOfSeeker = "";
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +54,17 @@ public class AidProviderMainDash extends AppCompatActivity {
         tap = (TextView) findViewById(R.id.taptap);
         als = (TextView) findViewById(R.id.tvAlertings);
 
+
+
+        latiOfSeeker = "";
+        longiOfSeeker = "";
         checkForSeekers();
+
+        //checkpoint 3/5/2023
+        //tap.setText("T A P   T O   F I N D   S E E K E R S");
+        //alarm2.setImageResource(R.drawable.waitingalertstwo);
+        //als.setText("WAITING ALERTS");
+        //----------
 
         alarmimage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,8 +82,10 @@ public class AidProviderMainDash extends AppCompatActivity {
             public void onClick(View view) {
                 if(seekerfound) {
                     seekerfound = false;
+
                     Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
                     startActivity(intent);
+
 
                 }
                 else
@@ -105,12 +120,22 @@ public class AidProviderMainDash extends AppCompatActivity {
                                     String temp_lat = String.valueOf(snaps.child("lati").getValue());
                                     String temp_longi = String.valueOf(snaps.child("longi").getValue());
                                     String jobchoice = String.valueOf(snaps.child("job").getValue()); //checkpoint 3/1/2023
+                                    String providerID = String.valueOf(snaps.child("partner_uid").getValue()); //checkpoint 3/5/2023
                                     seekerfName = String.valueOf(snaps.child("fname").getValue()); // checkpoint 3/3/2023
 
 
                                     if(jobchoice.toLowerCase().equals(ma.ap_job.toLowerCase()) || jobchoice.equals("all"))
                                     {
-                                        if(!temp_lat.equals(""))
+                                        if(!temp_lat.equals("") && providerID.equals(""))
+                                        {
+                                            latiOfSeeker = temp_lat;
+                                            longiOfSeeker = temp_longi;
+
+                                        }
+                                    }//else if below 3/5/2023
+                                    else if((jobchoice.equals("health") && ma.ap_job.toLowerCase().equals("nurse")) || (jobchoice.equals("health") && ma.ap_job.toLowerCase().equals("doctor")))
+                                    {
+                                        if(!temp_lat.equals("") && providerID.equals(""))
                                         {
                                             latiOfSeeker = temp_lat;
                                             longiOfSeeker = temp_longi;
