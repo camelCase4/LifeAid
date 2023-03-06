@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
@@ -272,6 +273,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     //checkpoint 3/5/2023
     public void waitforresponder()
     {
+        /*
         for(;;)
         {
             try {
@@ -290,7 +292,29 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
             }
 
-        }
+        }*/
+
+        //checkpoint 3/6/2023
+        new CountDownTimer(60000,1000)
+        {
+
+            @Override
+            public void onTick(long l) {
+                if((l/1000) % 2 == 0) {
+                    gettingtheproviderID();
+                    if (providerFound) {
+                        Toast.makeText(AidSeekerMainDash.this, "Aid Provider coming! Go To Provider Info!", Toast.LENGTH_SHORT).show();
+                        cancel();
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+        //-------
     }
 
     public void gettingtheproviderID()
