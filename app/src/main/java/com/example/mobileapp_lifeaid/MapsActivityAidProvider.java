@@ -220,6 +220,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         Date currentDTime = Calendar.getInstance().getTime();
         dateAndTime = currentDTime.toString();
         savingToHistory();
+        savingSeekerID();
     }
 
     public void checkWhoIsFirst()
@@ -272,6 +273,23 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    //-----
+
+    //checkpoint 3/6/2023
+    public void savingSeekerID()
+    {
+        HashMap hm = new HashMap();
+        hm.put("partner_uid",apm.seeker_id);
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
 
             }
         });
