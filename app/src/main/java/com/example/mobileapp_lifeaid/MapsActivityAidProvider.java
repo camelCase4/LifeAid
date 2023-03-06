@@ -7,12 +7,15 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,10 +34,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 
@@ -52,6 +58,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     private LatLng latLng;
 
     String whatdidyoudo = "";
+    TextView seekerlocstr,yourlocstr;
 
     AidProviderMainDash apm = new AidProviderMainDash();
     MainActivity ma = new MainActivity();
@@ -86,6 +93,14 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         //checkpoint 3/3/2023
         resp_btn = (Button) findViewById(R.id.respondbutton);
         supp_btn = (Button) findViewById(R.id.supportbutton);
+        seekerlocstr = (TextView) findViewById(R.id.tv_registration5);//3/7/2023
+        yourlocstr = (TextView) findViewById(R.id.tv_registration6);//3/7/2023
+
+
+        //checkpoint 3/7/2023
+        seekerlocstr.setText(showAddress(apm.latiOfSeeker,apm.longiOfSeeker));
+        //--------
+
 
         resp_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +127,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         });
 
         //----
+
 
     }
 
@@ -145,6 +161,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
                         seekerloc();
+                        yourlocstr.setText(showAddress(Double.toString(location.getLatitude()),Double.toString(location.getLongitude())));
 
 
                 }catch (Exception e)
@@ -295,5 +312,27 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         });
     }
     //-----
+
+    //checkpoint 3/7/2023
+    public String showAddress(String latiloc, String longiloc)
+    {
+        Geocoder geocoder;
+        List<Address> addresses;
+
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        String address = "";
+        try {
+            addresses = geocoder.getFromLocation(Double.parseDouble(latiloc),Double.parseDouble(longiloc),1);
+
+            address = addresses.get(0).getAddressLine(0);
+
+        }catch(IOException e)
+        {
+
+        }
+        return address;
+    }
+    //-------
 
 }
