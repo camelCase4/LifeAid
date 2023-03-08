@@ -40,7 +40,9 @@
             android:value="AIzaSyB4g8hJ11Criq5kKj88FHguQZY9XCv7qV0" />
 
         <activity
+
             android:name=".MapsActivityAidProvider"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false"
             android:label="@string/title_activity_maps_aid_provider" />
         <activity

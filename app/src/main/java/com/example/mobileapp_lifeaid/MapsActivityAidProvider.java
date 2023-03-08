@@ -13,8 +13,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +63,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     String whatdidyoudo = "";
     TextView seekerlocstr,yourlocstr;
 
+
     AidProviderMainDash apm = new AidProviderMainDash();
     MainActivity ma = new MainActivity();
 
@@ -73,6 +77,14 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     Random rand = new Random();
     int sleepTime = rand.nextInt(701) + 1000; // ge buhat ni siya nako para walay instance na mag dungan og accept ang duha ka providers, all of them will be given a random number, and if ever gani nga nay magka parihas, then ang lowest na generate nga number ang first aight guyss
     //-----
+
+    // checkpoint 3/8/2023
+    boolean respondClicked = false;
+    TextView sending,conversation;
+    EditText suwatan;
+    String textHolder = "";
+
+    // -----
 
 
     @Override
@@ -95,6 +107,12 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         supp_btn = (Button) findViewById(R.id.supportbutton);
         seekerlocstr = (TextView) findViewById(R.id.tv_registration5);//3/7/2023
         yourlocstr = (TextView) findViewById(R.id.tv_registration6);//3/7/2023
+        //chcekpoint 3/8/2023
+        sending = (TextView) findViewById(R.id.send);
+        conversation = (TextView) findViewById(R.id.converse);
+        suwatan = (EditText) findViewById(R.id.suwatanan);
+        //--------
+
 
 
         //checkpoint 3/7/2023
@@ -106,6 +124,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             @Override
             public void onClick(View view) {
                 checkWhoIsFirst();
+                respondClicked = true;
                 /*if(isItFinal) {
                     whatdidyoudo = "Respond";
                     Date currentDTime = Calendar.getInstance().getTime();
@@ -127,6 +146,44 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         });
 
         //----
+
+        //checkpoint 3/8/2023
+
+
+        suwatan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                suwatan.requestFocus();
+            }
+        });
+        conversation.setMovementMethod(new ScrollingMovementMethod());
+        sending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(respondClicked)
+                {
+                    if(!suwatan.getText().toString().equals("")) {
+                        textHolder += "                                            " + suwatan.getText().toString() + "\n\n";
+                        /*conversation.setText(textHolder);
+                        suwatan.setText("");
+                        suwatan.setHint("Write Something");*/
+
+                        addMessage("                                            "+suwatan.getText().toString()+"\n");
+                    }
+
+                }
+                else
+                {
+                    Toast.makeText(MapsActivityAidProvider.this,"Click Respond First!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        //-------
+
+        // checkpoint 3/8/2023
+
+        //--------
 
 
     }
@@ -334,5 +391,28 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         return address;
     }
     //-------
+    // checkpoint 3/8/2023
+
+    private void addMessage(String msg) {
+
+        conversation.append(msg + "\n");
+
+        final int scrollAmount = conversation.getLayout().getLineTop(conversation.getLineCount()) - conversation.getHeight();
+
+        if (scrollAmount > 0)
+            conversation.scrollTo(0, scrollAmount);
+        else
+            conversation.scrollTo(0, 0);
+
+        suwatan.setText("");
+        suwatan.setHint("Write Something");
+
+    }
+
+    public void savethemessage()
+    {
+
+    }
+    //--------
 
 }
