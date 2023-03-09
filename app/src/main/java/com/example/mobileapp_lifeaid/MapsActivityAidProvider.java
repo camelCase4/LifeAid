@@ -175,7 +175,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 if(respondClicked)
                 {
                     if(!suwatan.getText().toString().equals("")) {
-                        textHolder = "- " + suwatan.getText().toString() + "\n\n";
+                        textHolder = suwatan.getText().toString() + "\n\n";
                         savethemessage(textHolder);
                         /*conversation.setText(textHolder);
                         suwatan.setText("");
@@ -535,7 +535,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             cd.cancel();
             timerdecider = false;
         }*/
-        cd = new CountDownTimer(60000,1000)
+        cd = new CountDownTimer(300000,1000)
         {
 
             @Override

@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,6 +17,7 @@ import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +35,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
     ImageView alertallbtn;
     Button btncrime,btnfire,btnhealth;
+    TextView openchat;
 
     MainActivity ma = new MainActivity();
 
@@ -51,6 +54,10 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     String responderUID = "";
     //--------
 
+    //3/10/2023
+    boolean foundresponder = false;
+    //-------
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +68,26 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         btncrime = (Button) findViewById(R.id.btn_register2);
         btnfire = (Button) findViewById(R.id.btn_register3);
         btnhealth = (Button) findViewById(R.id.btn_register5);
+        openchat = (TextView) findViewById(R.id.tv_registration15);//3/10/2023
 
 
+        //3/10/2023
+        openchat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(foundresponder)
+                {
+                    foundresponder = false;
+                    Intent intent = new Intent(AidSeekerMainDash.this,AidSeekerChat.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(AidSeekerMainDash.this,"Still Seeking Aid",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        //---------------
         alertallbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -306,6 +331,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                     gettingtheproviderID();
                     if (providerFound) {
                         Toast.makeText(AidSeekerMainDash.this, "Aid Provider coming! Go To Provider Info!", Toast.LENGTH_SHORT).show();
+                        foundresponder = true;
                         cancel();
                     }
                 }

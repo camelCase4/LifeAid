@@ -99,7 +99,7 @@
         app:layout_constraintVertical_bias="0.061" />
 
     <TextView
-        android:id="@+id/tv_registration29"
+        android:id="@+id/tvfullname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -163,7 +163,7 @@
         app:layout_constraintVertical_bias="0.283" />
 
     <TextView
-        android:id="@+id/tv_registration31"
+        android:id="@+id/tvnumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -179,7 +179,7 @@
         app:layout_constraintVertical_bias="0.24" />
 
     <TextView
-        android:id="@+id/tv_registration32"
+        android:id="@+id/tvplace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -261,7 +261,7 @@
                 app:layout_constraintVertical_bias="0.373" />
 
             <EditText
-                android:id="@+id/editTextUsername"
+                android:id="@+id/editTextmsgholder"
                 android:layout_width="310dp"
                 android:layout_height="51dp"
                 android:layout_centerInParent="true"
@@ -284,7 +284,7 @@
                 app:layout_constraintVertical_bias="0.951" />
 
             <TextView
-                android:id="@+id/tv_registration7"
+                android:id="@+id/tv_sendbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -317,7 +317,7 @@
         app:srcCompat="@drawable/logodisplay" />
 
     <Button
-        android:id="@+id/donebutton"
+        android:id="@+id/completeTransac"
         android:layout_width="169dp"
         android:layout_height="61dp"
         android:background="@drawable/my_button"

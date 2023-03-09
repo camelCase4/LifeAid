@@ -1,14 +1,276 @@
 package com.example.mobileapp_lifeaid;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Calendar;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Date;
+import java.util.HashMap;
 
 public class AidSeekerChat extends AppCompatActivity {
 
+    // checkpoint 3/9/2023
+    TextView fullnametv,numbertv,addresstv,sendbtn,conversation;
+    EditText msgHolder;
+    Button complete;
+    AidSeekerMainDash asm = new AidSeekerMainDash();
+    DatabaseReference dbprovs = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+    MainActivity ma = new MainActivity();
+    CountDownTimer cdt;
+
+    String repeaterChecker = "",contentgetter="",dateandtime="",fnameprov="";
+
+    //-----------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aid_seeker_chat);
+
+        //checkpoint 3/9/2023
+        fullnametv = (TextView) findViewById(R.id.tvfullname);
+        numbertv = (TextView) findViewById(R.id.tvnumber);
+        addresstv = (TextView) findViewById(R.id.tvplace);
+        sendbtn = (TextView) findViewById(R.id.tv_sendbtn);
+        msgHolder = (EditText) findViewById(R.id.editTextmsgholder);
+        conversation = (TextView) findViewById(R.id.converse);
+        complete = (Button) findViewById(R.id.completeTransac);
+
+
+        
+
+        sendbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!msgHolder.getText().toString().equals("")) {
+                    contentgetter = msgHolder.getText().toString();
+                    msgSaver(contentgetter);
+                    messageAppender("                                                                       "+contentgetter+"\n");
+                }
+            }
+        });
+
+        complete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            switch (i) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    savingToHistory();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //do nothing
+                                    break;
+
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AidSeekerChat.this);
+                    builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+                }
+
+        });
+
+
+        //------
+
+    }
+
+    public void getProviderData()
+    {
+        dbprovs.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dbprovs.child(asm.responderUID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    DataSnapshot snaps = task.getResult();
+                                    String fullname = String.valueOf(snaps.child("fname").getValue()) + " " + String.valueOf(snaps.child("lname").getValue());
+                                    fullnametv.setText(fullname);
+                                    fnameprov = String.valueOf(snaps.child("fname").getValue());
+                                    numbertv.setText(String.valueOf(snaps.child("phonenum").getValue()));
+                                    addresstv.setText(String.valueOf(snaps.child("address").getValue()));
+                                }
+                            }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getProviderMessage()
+    {
+        dbprovs.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dbprovs.child(asm.responderUID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            if(task.getResult().exists())
+                            {
+                                DataSnapshot snaps = task.getResult();
+                                String msg = String.valueOf(snaps.child("message").getValue());
+                                if(!msg.equals(""))
+                                {
+                                    if(!msg.equals(repeaterChecker))
+                                    {
+                                        messageAppender("- "+msg+"\n");
+                                        repeaterChecker = msg;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void messageAppender(String chatmsg)
+    {
+        conversation.append(chatmsg+"\n");
+        final int scrollAmount = conversation.getLayout().getLineTop(conversation.getLineCount()) - conversation.getHeight();
+
+        if (scrollAmount > 0)
+            conversation.scrollTo(0, scrollAmount);
+        else
+            conversation.scrollTo(0, 0);
+
+        msgHolder.setText("");
+        msgHolder.setHint("Write Something");
+    }
+
+    public void msgLooper()
+    {
+        cdt = new CountDownTimer(300000,1000)
+        {
+
+            @Override
+            public void onTick(long l) {
+                if((l/1000) % 2 == 0) {
+                    getProviderMessage();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                updateChecker();
+
+            }
+        }.start();
+    }
+    public void msgSaver(String tobeput)
+    {
+        HashMap hm = new HashMap();
+        hm.put("message",tobeput);
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+    }
+
+    public void savingToHistory()
+    {
+        Date currentDT = Calendar.getInstance().getTime();
+        dateandtime = currentDT.toString();
+        String emergencyType = "";
+
+        if(asm.whatjob == 1)
+        {
+            emergencyType = "Crime";
+        }
+        else if(asm.whatjob == 2)
+        {
+            emergencyType = "Fire";
+        }
+        else if(asm.whatjob == 3)
+        {
+            emergencyType = "Health";
+        }
+        else
+        {
+            emergencyType = "All";
+        }
+
+        SeekerHistory sh = new SeekerHistory(dateandtime,emergencyType,fnameprov,asm.responderUID);
+        FirebaseDatabase.getInstance().getReference("AidSeekerHistory").push().setValue(sh).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful())
+                {
+                    Toast.makeText(AidSeekerChat.this, "Take care!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(AidSeekerChat.this, "Failed to record!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void updateChecker()
+    {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        msgLooper();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        cdt.cancel();
+                        break;
+
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show();
     }
 }
