@@ -50,6 +50,8 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     boolean providerFound = false;
     String responderUID = "";
     //--------
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

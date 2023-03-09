@@ -5,6 +5,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -13,6 +15,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 
@@ -86,6 +89,13 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
     // -----
 
+    // checkpoint 3/9/2023
+    String comparer = "";
+    boolean cdtimer = false;
+    boolean timerdecider = true;
+    DatabaseReference dbseek = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+    CountDownTimer cd;
+    // -------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,13 +135,14 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             public void onClick(View view) {
                 checkWhoIsFirst();
                 respondClicked = true;
+                msgGetter();
                 /*if(isItFinal) {
                     whatdidyoudo = "Respond";
                     Date currentDTime = Calendar.getInstance().getTime();
                     dateAndTime = currentDTime.toString();
                     savingToHistory();
                 }*/
-
+                resp_btn.setEnabled(false);
             }
         });
 
@@ -164,12 +175,14 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 if(respondClicked)
                 {
                     if(!suwatan.getText().toString().equals("")) {
-                        textHolder += "                                            " + suwatan.getText().toString() + "\n\n";
+                        textHolder = "- " + suwatan.getText().toString() + "\n\n";
+                        savethemessage(textHolder);
                         /*conversation.setText(textHolder);
                         suwatan.setText("");
                         suwatan.setHint("Write Something");*/
+                        //space needed = textHolder = "                                            "
 
-                        addMessage("                                            "+suwatan.getText().toString()+"\n");
+                        addMessage("- "+suwatan.getText().toString()+"\n");
                     }
 
                 }
@@ -409,8 +422,158 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
     }
 
-    public void savethemessage()
+    public void savethemessage(String tobeput)
     {
+        //checkpoint 3/9/2023
+        HashMap hm = new HashMap();
+        hm.put("message",tobeput);
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+
+        //---------
+
+
+    }
+
+    public void gettingSeekerMSG()
+    {
+
+        dbseek.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dbseek.child(apm.seeker_id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            if(task.getResult().exists())
+                            {
+                                DataSnapshot snaps = task.getResult();
+                                String chat = String.valueOf(snaps.child("message").getValue());
+                                if(!chat.equals(""))
+                                {
+                                    if(!chat.equals(comparer))
+                                    {
+                                        //conversation.append("\n                                             "+chat);
+                                        addMessage("                                                                       "+chat+"\n\n");
+                                        comparer = chat;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void msgGetter()
+    {
+        /*new CountDownTimer(60000,1000)
+        {
+
+            @Override
+            public void onTick(long l) {
+                if((l/1000) % 2 == 0) {
+                    gettingSeekerMSG();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if(!askProviderForUpdate())
+                {
+                    cancel();
+                }
+                else
+                {
+                    this.start();
+                }
+
+            }
+        }.start();*/
+
+        /*CountDownTimer cd = new CountDownTimer(60000,1000)
+        {
+
+            @Override
+            public void onTick(long l) {
+                if((l/1000) % 2 == 0) {
+                    gettingSeekerMSG();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+               timerdecider = askProviderForUpdate();
+
+            }
+        };
+
+        if(timerdecider)
+        {
+            cd.cancel();
+            timerdecider = true;
+            //msgGetter();
+            cd.start();
+        }
+        else
+        {
+            cd.cancel();
+            timerdecider = false;
+        }*/
+        cd = new CountDownTimer(60000,1000)
+        {
+
+            @Override
+            public void onTick(long l) {
+                if((l/1000) % 2 == 0) {
+                    gettingSeekerMSG();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                askProviderForUpdate();
+
+            }
+        }.start();
+    }
+
+    public void askProviderForUpdate()
+    {
+
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        msgGetter();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        cd.cancel();
+                        break;
+
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show();
 
     }
     //--------

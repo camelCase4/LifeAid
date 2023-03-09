@@ -105,16 +105,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="12dp"
-                    android:text="Aid Seeker"
+                    android:text="You"
                     android:textColor="@color/white"
                     android:textSize="14dp" />
                 <TextView
                     android:id="@+id/yourname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="337dp"
+                    android:layout_marginStart="290dp"
                     android:layout_marginTop="12dp"
-                    android:text="You"
+                    android:text="Aid Seeker"
                     android:textColor="@color/white"
                     android:textSize="14dp" />
 
@@ -132,7 +132,7 @@
                 android:layout_marginTop="14dp"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="17dp"
+                android:textSize="14dp"
 
                 android:scrollbars = "vertical"
 
