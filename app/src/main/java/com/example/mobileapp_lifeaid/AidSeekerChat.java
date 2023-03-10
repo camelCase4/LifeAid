@@ -315,7 +315,7 @@ public class AidSeekerChat extends AppCompatActivity {
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Did the provider do well?").setPositiveButton("Commended",dialogClickListener).setNegativeButton("Nah",dialogClickListener).show();
+        builder.setMessage("Did the provider do well?").setPositiveButton("Commended",dialogClickListener).setNegativeButton("No",dialogClickListener).show();
     }
 
     public void cleansingData()
@@ -334,7 +334,7 @@ public class AidSeekerChat extends AppCompatActivity {
         });
 
         DatabaseReference dr2 = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
-        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener() {
+        dr2.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
 
