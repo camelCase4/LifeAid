@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.method.ScrollingMovementMethod;
@@ -39,6 +40,7 @@ public class AidSeekerChat extends AppCompatActivity {
     CountDownTimer cdt;
 
     String repeaterChecker = "",contentgetter="",dateandtime="",fnameprov="";
+    String commendCount = "", unsatisfiedCount = "";
 
     //-----------
     @Override
@@ -92,6 +94,8 @@ public class AidSeekerChat extends AppCompatActivity {
                             switch (i) {
                                 case DialogInterface.BUTTON_POSITIVE:
                                     savingToHistory();
+                                    ratingsPrompt();
+                                    cleansingData();
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -129,6 +133,10 @@ public class AidSeekerChat extends AppCompatActivity {
                                     fnameprov = String.valueOf(snaps.child("fname").getValue());
                                     numbertv.setText(String.valueOf(snaps.child("phonenum").getValue()));
                                     addresstv.setText(String.valueOf(snaps.child("address").getValue()));
+                                    // 3/10/2023 10 pm
+                                    commendCount = String.valueOf(snaps.child("commends").getValue());
+                                    unsatisfiedCount = String.valueOf(snaps.child("decommends").getValue());
+                                    //--------
                                 }
                             }
 
@@ -255,7 +263,7 @@ public class AidSeekerChat extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful())
                 {
-                    Toast.makeText(AidSeekerChat.this, "Take care!", Toast.LENGTH_SHORT).show();
+                    //do nothing
                 }
                 else
                 {
@@ -286,4 +294,88 @@ public class AidSeekerChat extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show();
     }
+
+    //3/10/2023 10 pm
+    public void ratingsPrompt()
+    {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        updatingCommendCount();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        updatingUnsatisfiedCount();
+                        break;
+
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Did the provider do well?").setPositiveButton("Commended",dialogClickListener).setNegativeButton("Nah",dialogClickListener).show();
+    }
+
+    public void cleansingData()
+    {
+        HashMap hm = new HashMap();
+        hm.put("message","");
+        hm.put("partner_uid","");
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(asm.responderUID).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+
+        DatabaseReference dr2 = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+
+            }
+        });
+    }
+
+    public void updatingCommendCount()
+    {
+
+        HashMap hm = new HashMap();
+        hm.put("commends",Integer.toString(Integer.parseInt(commendCount)+1));
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(asm.responderUID).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+        Toast.makeText(AidSeekerChat.this, "Take care!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
+        startActivity(intent);
+    }
+    public void updatingUnsatisfiedCount()
+    {
+        HashMap hm = new HashMap();
+        hm.put("decommends",Integer.toString(Integer.parseInt(unsatisfiedCount)+1));
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(asm.responderUID).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+        Toast.makeText(AidSeekerChat.this, "Take care!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
+        startActivity(intent);
+    }
+    //------
 }
