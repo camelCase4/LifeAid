@@ -39,7 +39,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
     MainActivity ma = new MainActivity();
 
-    int presscounter = 0, whatjob = 0; //0? all, 1?crime, 2?fire, 3?health
+    public static int presscounter = 0, whatjob = 0; //0? all, 1?crime, 2?fire, 3?health
 
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
@@ -51,7 +51,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
     //3/5/2023
     boolean providerFound = false;
-    String responderUID = "";
+    public static String responderUID = "";
     //--------
 
     //3/10/2023
@@ -322,7 +322,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         }*/
 
         //checkpoint 3/6/2023
-        new CountDownTimer(60000,1000)
+        new CountDownTimer(300000,1000)
         {
 
             @Override

@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +56,18 @@ public class AidSeekerChat extends AppCompatActivity {
         complete = (Button) findViewById(R.id.completeTransac);
 
 
-        
+
+        getProviderData();
+        msgLooper();
+
+
+        conversation.setMovementMethod(new ScrollingMovementMethod());
+        msgHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                msgHolder.requestFocus();
+            }
+        });
 
         sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +75,8 @@ public class AidSeekerChat extends AppCompatActivity {
                 if(!msgHolder.getText().toString().equals("")) {
                     contentgetter = msgHolder.getText().toString();
                     msgSaver(contentgetter);
-                    messageAppender("                                                                       "+contentgetter+"\n");
+                    messageAppender("                                                                       "+contentgetter+"\n\n");
+
                 }
             }
         });
@@ -236,7 +249,7 @@ public class AidSeekerChat extends AppCompatActivity {
             emergencyType = "All";
         }
 
-        SeekerHistory sh = new SeekerHistory(dateandtime,emergencyType,fnameprov,asm.responderUID);
+        SeekerHistory sh = new SeekerHistory(dateandtime,emergencyType,fnameprov,asm.responderUID,ma.userid);
         FirebaseDatabase.getInstance().getReference("AidSeekerHistory").push().setValue(sh).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
