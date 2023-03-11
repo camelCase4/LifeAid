@@ -457,6 +457,16 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                             {
                                 DataSnapshot snaps = task.getResult();
                                 String chat = String.valueOf(snaps.child("message").getValue());
+                                //3/11/2023
+                                String checkIfStillOngGoing = String.valueOf(snaps.child("partner_uid").getValue());
+                                if(checkIfStillOngGoing.equals(""))
+                                {
+                                    cd.cancel();
+                                    Toast.makeText(MapsActivityAidProvider.this,"Thank you for your service!",Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                                    startActivity(intent);
+                                }
+                                //------
                                 if(!chat.equals(""))
                                 {
                                     if(!chat.equals(comparer))
@@ -566,7 +576,11 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
-                        cd.cancel();
+                        //3/11/2023
+                        msgGetter();
+                        Toast.makeText(MapsActivityAidProvider.this,"Please continue serving",Toast.LENGTH_SHORT).show();
+                        //---
+                        //cd.cancel();
                         break;
 
                 }

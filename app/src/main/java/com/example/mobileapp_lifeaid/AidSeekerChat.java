@@ -285,7 +285,11 @@ public class AidSeekerChat extends AppCompatActivity {
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
-                        cdt.cancel();
+                        //3/11/2023
+                        msgLooper();
+                        Toast.makeText(AidSeekerChat.this,"Operation won't end unless you complete transaction!",Toast.LENGTH_SHORT).show();
+                        //---
+                        //cdt.cancel();
                         break;
 
                 }
@@ -298,6 +302,7 @@ public class AidSeekerChat extends AppCompatActivity {
     //3/10/2023 10 pm
     public void ratingsPrompt()
     {
+        cdt.cancel();//3/11/2023
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 
             @Override
