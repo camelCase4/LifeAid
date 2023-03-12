@@ -35,7 +35,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
     ImageView alertallbtn;
     Button btncrime,btnfire,btnhealth;
-    TextView openchat;
+    TextView openchat,mapcrisis;
 
     MainActivity ma = new MainActivity();
 
@@ -69,6 +69,18 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         btnfire = (Button) findViewById(R.id.btn_register3);
         btnhealth = (Button) findViewById(R.id.btn_register5);
         openchat = (TextView) findViewById(R.id.tv_registration15);//3/10/2023
+        //3/12/2023
+        mapcrisis = (TextView) findViewById(R.id.tv_registration17);
+
+
+        mapcrisis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidSeekerMainDash.this,AidSeekerMapCrisis.class);
+                startActivity(intent);
+            }
+        });
+        //---------
 
 
         //3/10/2023

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".AidSeekerMapCrisis"
+    android:background="#D0F0C0">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        tools:context=".AidSeekerMapCrisis" />
+
+    <ImageView
+        android:id="@+id/imageView39"
+        android:layout_width="37dp"
+        android:layout_height="32dp"
+        android:src="@drawable/locationmapcrisis"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop = "470dp"/>
+    <ImageView
+        android:id="@+id/imageView40"
+        android:layout_width="37dp"
+        android:layout_height="32dp"
+        android:src="@drawable/siren"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop = "510dp"/>
+    <ImageView
+        android:id="@+id/imageView41"
+        android:layout_width="37dp"
+        android:layout_height="32dp"
+        android:src="@drawable/sonar"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop = "550dp"/>
+    <ImageView
+        android:id="@+id/imageView42"
+        android:layout_width="37dp"
+        android:layout_height="32dp"
+        android:src="@drawable/smartphone"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop = "590dp"/>
+
+    <TextView
+        android:id="@+id/tv_locationdis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="475dp"
+        android:text="Your Location :"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        />
+    <TextView
+        android:id="@+id/tv_emergencyTypedis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="515dp"
+        android:text="What Emergency? :"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        />
+    <TextView
+        android:id="@+id/tv_nearestdis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="555dp"
+        android:text="Nearest? :"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        />
+    <TextView
+        android:id="@+id/tv_numberdis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="595dp"
+        android:text="Contact Number :"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="260dp"
+        android:layout_marginTop="475dp"
+        android:text="------------------"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        />
+    <TextView
+        android:id="@+id/tv_emergencyType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="260dp"
+        android:layout_marginTop="515dp"
+        android:text="------------------"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        />
+    <TextView
+        android:id="@+id/tv_nearest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="260dp"
+        android:layout_marginTop="555dp"
+        android:text="------------------"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        />
+    <TextView
+        android:id="@+id/tv_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="260dp"
+        android:layout_marginTop="595dp"
+        android:text="------------------"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        />
+
+    <ImageView
+        android:id="@+id/ivexit"
+        android:layout_width="37dp"
+        android:layout_height="32dp"
+        android:src="@drawable/nextleft"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop = "650dp"/>
+
+    <TextView
+        android:id="@+id/tv_exitdis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="658dp"
+        android:text="Exit"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        />
+
+    <Button
+        android:id="@+id/callingbtn"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:background="@drawable/my_button"
+
+        android:text="Call Now!"
+        android:layout_marginStart="210dp"
+        android:layout_marginTop = "640dp"
+        android:backgroundTint="#ff6666"
+        android:textColor="#f0f5f4"
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+
+
+
+
+
+
+</FrameLayout>
+
