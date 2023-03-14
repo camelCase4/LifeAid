@@ -113,13 +113,15 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
 
         emergency.setText(whatEm+"    >>");
         displayPlaceFirestation();
-        //displayPlacePoliceStation();
+
 
         cdt = new CountDownTimer(300000,1000) {
             @Override
             public void onTick(long l) {
                 if(whatEm.equals("Fire") && newEmFire)
                 {
+                    mMap.clear();
+                    displayPlaceFirestation();
                     markerDisplayerFire();
                     newEmFire = false;
                     newEmCrime = true;
@@ -129,6 +131,8 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                 }
                 else if(whatEm.equals("Crime") && newEmCrime)
                 {
+                    mMap.clear();
+                    displayPlacePoliceStation();
                     markerDisplayCrime();
                     newEmCrime = false;
                     newEmFire = true;
@@ -173,6 +177,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                 }
                 else if(index == 2)
                 {
+
                     whatEm = "Crime";
                     emergency.setText(whatEm+"    >>");
                     stationnames.clear();
@@ -184,6 +189,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                 }
                 else
                 {
+
                     whatEm = "Health";
                     emergency.setText(whatEm+"    >>");
                     index = 0;
@@ -192,7 +198,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                     stationlats.clear();
                     stationlongs.clear();
 
-                    
+
                 }
             }
         });
