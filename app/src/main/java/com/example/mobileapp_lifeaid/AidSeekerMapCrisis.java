@@ -8,6 +8,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,8 +25,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mobileapp_lifeaid.databinding.ActivityAidSeekerMapCrisisBinding;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -34,8 +37,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+//3/15/2023
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+//---
 
 public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCallback {
 
@@ -208,6 +224,8 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         });
 
         //---
+
+
     }
 
     /**
@@ -261,8 +279,132 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         }
         //---
 
+        //3/15/2023
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                LatLng pos = marker.getPosition();
+                double latis = pos.latitude;
+                double longis = pos.longitude;
+
+
+               //gettingPath(latis,longis);
+                Toast.makeText(AidSeekerMapCrisis.this,"Lati: "+latis+", Longi:"+longis,Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
+        //-----
 
     }
+
+    //3/15/2023
+    /*
+    public void gettingPath(double lati, double longi)
+    {
+        LatLng startPoint = new LatLng(latLng.latitude,latLng.longitude);
+        LatLng endPoint = new LatLng(lati,longi);
+
+        String apiKey = "AIzaSyB4g8hJ11Criq5kKj88FHguQZY9XCv7qV0";
+        String url = "https://maps.googleapis.com/maps/api/directions/json?" + "origin="+startPoint.latitude+","+startPoint.longitude+"&destination="+endPoint.latitude+","+endPoint.longitude+"&key="+apiKey;
+
+        String jsonResponse = "";
+
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
+
+        try {
+            URL apiUrl = new URL(url);
+            connection = (HttpURLConnection) apiUrl.openConnection();
+            InputStream inputStream = connection.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while((line = reader.readLine()) != null)
+            {
+                jsonResponse += line;
+            }
+            reader.close();
+
+
+
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }finally {
+            if (connection != null) {
+                try {
+                    InputStream inputStream = connection.getInputStream();
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                connection.disconnect();
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+
+        List<LatLng> polyline = new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONArray routesArray = jsonObject.getJSONArray("routes");
+            JSONObject route = routesArray.getJSONObject(0);
+            JSONObject overviewPolyline = route.getJSONObject("overview_polyline");
+            String encodedPolyline = overviewPolyline.getString("points");
+            polyline = decodedPoly(encodedPolyline);
+
+        }catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+        PolylineOptions polylineOptions = new PolylineOptions().addAll(polyline).color(Color.RED).width(10);
+        mMap.addPolyline(polylineOptions);
+    }
+
+    public List<LatLng> decodedPoly(String encoded)
+    {
+        List<LatLng> poly = new ArrayList<LatLng>();
+        int index = 0, len = encoded.length();
+        int lat = 0, lng = 0;
+
+        while (index < len) {
+            int b, shift = 0, result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            LatLng p = new LatLng((double) lat / 1E5, (double) lng / 1E5);
+            poly.add(p);
+        }
+        return poly;
+
+    }
+    //----------*/
 
     //cp 3/123/2023
     public void displayPlaceFirestation()
