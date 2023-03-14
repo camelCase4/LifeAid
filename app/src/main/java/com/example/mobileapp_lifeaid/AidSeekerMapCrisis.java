@@ -120,8 +120,10 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             public void onTick(long l) {
                 if(whatEm.equals("Fire") && newEmFire)
                 {
+                    //3/14/2023
                     mMap.clear();
                     displayPlaceFirestation();
+                    //----
                     markerDisplayerFire();
                     newEmFire = false;
                     newEmCrime = true;
@@ -142,6 +144,8 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                 }
                 else if(whatEm.equals("Health") && newEmHealth)
                 {
+                    mMap.clear();
+                    displayPlaceHealthStation();
                     markerDisplayHealth();
                     newEmHealth = false;
                     newEmCrime = true;
@@ -318,7 +322,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         for(int i = 0; i < stationnames.size(); i++)
         {
             fireStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)),Double.parseDouble(stationlongs.get(i)));
-            mMap.addMarker(new MarkerOptions().position(fireStationPosition).title(stationnames.get(i)));
+            mMap.addMarker(new MarkerOptions().position(fireStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         }
 
 
@@ -381,11 +385,63 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         for(int i = 0; i < stationnames.size(); i++)
         {
             policeStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)),Double.parseDouble(stationlongs.get(i)));
-            mMap.addMarker(new MarkerOptions().position(policeStationPosition).title(stationnames.get(i)));
+            mMap.addMarker(new MarkerOptions().position(policeStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
         }
     }
     public void displayPlaceHealthStation()
     {
+        healthdb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                for (DataSnapshot ds : datasnapshot.getChildren()) {
+                    String key = ds.getKey();
+
+                    healthdb.child(key).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if(task.isSuccessful())
+                            {
+                                if(task.getResult().exists())
+                                {
+                                    DataSnapshot snaps = task.getResult();
+
+                                    stationnames.add(String.valueOf(snaps.child("name").getValue()));
+                                    stationcontact.add(String.valueOf(snaps.child("contact").getValue()));
+                                    stationlats.add(String.valueOf(snaps.child("lat").getValue()));
+                                    stationlongs.add(String.valueOf(snaps.child("long").getValue()));
+
+                                    //Toast.makeText(AidSeekerMapCrisis.this, String.valueOf(snaps.child("name").getValue()), Toast.LENGTH_SHORT).show();
+
+
+                                }
+                                else
+                                {
+                                    Toast.makeText(AidSeekerMapCrisis.this, "Failed to read!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(AidSeekerMapCrisis.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        LatLng healthStationPosition;
+        for(int i = 0; i < stationnames.size(); i++)
+        {
+            healthStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)),Double.parseDouble(stationlongs.get(i)));
+            mMap.addMarker(new MarkerOptions().position(healthStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        }
 
     }
     public void markerDisplayerFire()
@@ -457,6 +513,36 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     }
     public void markerDisplayHealth()
     {
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                try {
+                    latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                    //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
+                    mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
+
+                    displayPlaceHealthStation();
+
+
+
+                }catch (Exception e)
+                {
+
+                }
+            }
+        };
+
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, min_time,min_dist,locationListener);
+            //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,min_time,min_dist,locationListener);
+        }catch (SecurityException se)
+        {
+
+        }
 
     }
 
