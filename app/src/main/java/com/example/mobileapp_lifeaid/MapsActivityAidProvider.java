@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -32,6 +33,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mobileapp_lifeaid.databinding.ActivityMapsAidProviderBinding;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -39,8 +42,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsLeg;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.EncodedPolyline;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -96,6 +108,12 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     DatabaseReference dbseek = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
     CountDownTimer cd;
     // -------
+
+    //3/15/2023
+    PolylineOptions opts;
+    Polyline polyline;
+    LatLng seekerPosition;
+    //----
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,10 +246,12 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                         latLng = new LatLng(location.getLatitude(),location.getLongitude());
                         //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                     mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
 
                         seekerloc();
                         yourlocstr.setText(showAddress(Double.toString(location.getLatitude()),Double.toString(location.getLongitude())));
+                        gettingPath();
 
 
                 }catch (Exception e)
@@ -252,10 +272,90 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         }
         //--------
     }
+    //cp 3/15/2023
+    public void gettingPath()
+    {
+        LatLng originstart = new LatLng(latLng.latitude, latLng.longitude);
+        LatLng destinationend = new LatLng(seekerPosition.latitude, seekerPosition.longitude);
+
+
+        /*
+        ArrayList<LatLng> coordList = new ArrayList<LatLng>();
+        coordList.add(originstart);
+        coordList.add(destinationend);
+
+        PolylineOptions polylineOptions = new PolylineOptions();
+
+        polylineOptions.addAll(coordList);
+        polylineOptions.width(10).color(Color.RED);
+
+        mMap.addPolyline(polylineOptions);*/
+        List<LatLng> path = new ArrayList();
+
+        GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey("AIzaSyB4g8hJ11Criq5kKj88FHguQZY9XCv7qV0")
+                .build();
+
+        DirectionsApiRequest req = DirectionsApi.getDirections(context, (Double.toString(originstart.latitude)+","+Double.toString(originstart.longitude)),(Double.toString(destinationend.latitude)+","+Double.toString(destinationend.longitude)));
+        try {
+            DirectionsResult res = req.await();
+
+            //Loop through legs and steps to get encoded polylines of each step
+            if (res.routes != null && res.routes.length > 0) {
+                DirectionsRoute route = res.routes[0];
+
+                if (route.legs !=null) {
+                    for(int i=0; i<route.legs.length; i++) {
+                        DirectionsLeg leg = route.legs[i];
+                        if (leg.steps != null) {
+                            for (int j=0; j<leg.steps.length;j++){
+                                DirectionsStep step = leg.steps[j];
+                                if (step.steps != null && step.steps.length >0) {
+                                    for (int k=0; k<step.steps.length;k++){
+                                        DirectionsStep step1 = step.steps[k];
+                                        EncodedPolyline points1 = step1.polyline;
+                                        if (points1 != null) {
+                                            //Decode polyline and add points to list of route coordinates
+                                            List<com.google.maps.model.LatLng> coords1 = points1.decodePath();
+                                            for (com.google.maps.model.LatLng coord1 : coords1) {
+                                                path.add(new LatLng(coord1.lat, coord1.lng));
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    EncodedPolyline points = step.polyline;
+                                    if (points != null) {
+                                        //Decode polyline and add points to list of route coordinates
+                                        List<com.google.maps.model.LatLng> coords = points.decodePath();
+                                        for (com.google.maps.model.LatLng coord : coords) {
+                                            path.add(new LatLng(coord.lat, coord.lng));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch(Exception ex) {
+
+        }
+        if (path.size() > 0) {
+
+            opts = new PolylineOptions().addAll(path).color(Color.RED).width(5);
+            //mMap.addPolyline(opts);
+            polyline = this.mMap.addPolyline(opts);
+        }
+
+
+
+    }
+    //-----
 
     public void seekerloc()
     {
-        LatLng seekerPosition = new LatLng(Double.parseDouble(apm.latiOfSeeker),Double.parseDouble(apm.longiOfSeeker));
+        //3/15/2023 Latlng
+        seekerPosition = new LatLng(Double.parseDouble(apm.latiOfSeeker),Double.parseDouble(apm.longiOfSeeker));
         mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location!")).showInfoWindow();
         mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition));
 
@@ -463,6 +563,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                 {
                                     cd.cancel();
                                     Toast.makeText(MapsActivityAidProvider.this,"Thank you for your service!",Toast.LENGTH_SHORT).show();
+                                    mMap.clear(); //3/15/2023
                                     Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
                                     startActivity(intent);
                                 }
