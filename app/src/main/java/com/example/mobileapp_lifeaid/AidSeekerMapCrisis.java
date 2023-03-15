@@ -48,6 +48,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 //3/15/2023
 import com.google.android.gms.maps.model.LatLng;
@@ -97,6 +99,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     List<String> stationcontact = new ArrayList<>();
     List<String> stationlats = new ArrayList<>();
     List<String> stationlongs = new ArrayList<>();
+    List<Double> distanceBetween = new ArrayList<>();//3/15/2023
 
 
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
@@ -117,6 +120,9 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     //3/15/2023
     PolylineOptions opts;
     Polyline polyline;
+
+    int occur = 0;
+    int compareInstance = 2;
     //----
 
     @Override
@@ -562,12 +568,28 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         });
 
         LatLng fireStationPosition;
+        occur++;
         for(int i = 0; i < stationnames.size(); i++)
         {
             fireStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)),Double.parseDouble(stationlongs.get(i)));
             mMap.addMarker(new MarkerOptions().position(fireStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+            //3/15/2023
+            if(occur > compareInstance) {
+                distanceBetween.add(distance(latLng.latitude, latLng.longitude, Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i))));
+            }
+            //----
         }
 
+        //3/15/2023
+        if(occur > compareInstance) {
+            int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
+
+            Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+            occur = 0;
+            compareInstance = 1;
+            distanceBetween.clear();
+        }
+        //----
 
     }
     public void displayPlacePoliceStation()
@@ -624,12 +646,28 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             }
         });
 
+        occur++;
         LatLng policeStationPosition;
         for(int i = 0; i < stationnames.size(); i++)
         {
             policeStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)),Double.parseDouble(stationlongs.get(i)));
             mMap.addMarker(new MarkerOptions().position(policeStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+            //3/15/2023
+            if(occur > compareInstance) {
+                distanceBetween.add(distance(latLng.latitude, latLng.longitude, Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i))));
+            }
+            //----
         }
+        //3/15/2023
+        if(occur > compareInstance) {
+            int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
+
+            Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+            occur = 0;
+            compareInstance = 1;
+            distanceBetween.clear();
+        }
+        //----
     }
     public void displayPlaceHealthStation()
     {
@@ -679,12 +717,28 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             }
         });
 
+        occur++;
         LatLng healthStationPosition;
         for(int i = 0; i < stationnames.size(); i++)
         {
             healthStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)),Double.parseDouble(stationlongs.get(i)));
             mMap.addMarker(new MarkerOptions().position(healthStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            //3/15/2023
+            if(occur > compareInstance) {
+                distanceBetween.add(distance(latLng.latitude, latLng.longitude, Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i))));
+            }
+            //----
         }
+        //3/15/2023
+        if(occur > compareInstance) {
+            int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
+
+            Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+            occur = 0;
+            compareInstance = 1;
+            distanceBetween.clear();
+        }
+        //----
 
     }
     public void markerDisplayerFire()
@@ -788,6 +842,28 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         }
 
     }
+
+    //3/15/2023
+    private double distance(double lat1, double lng1, double lat2, double lng2) {
+
+        double earthRadius = 3958.75; // in miles, change to 6371 for kilometer output
+
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+
+        double sindLat = Math.sin(dLat / 2);
+        double sindLng = Math.sin(dLng / 2);
+
+        double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        double dist = earthRadius * c;
+
+        return dist; // output distance, in MILES
+    }
+    //-------
 
 
 
