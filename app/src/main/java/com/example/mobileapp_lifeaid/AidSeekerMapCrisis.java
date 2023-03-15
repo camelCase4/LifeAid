@@ -25,9 +25,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mobileapp_lifeaid.databinding.ActivityAidSeekerMapCrisisBinding;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.maps.android.PolyUtil;
+
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -47,10 +51,22 @@ import java.util.ArrayList;
 import java.util.List;
 //3/15/2023
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.errors.ApiException;
+import com.google.maps.internal.PolylineEncoding;
+import com.google.maps.model.DirectionsLeg;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.EncodedPolyline;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+
 //---
 
 public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCallback {
@@ -97,6 +113,11 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     boolean newEmCrime = true;
     boolean newEmHealth = true;
     //----------
+
+    //3/15/2023
+    PolylineOptions opts;
+    Polyline polyline;
+    //----
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,18 +304,98 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
+                if(polyline != null) {
+                    polyline.remove();
+                }
                 LatLng pos = marker.getPosition();
                 double latis = pos.latitude;
                 double longis = pos.longitude;
 
 
-               //gettingPath(latis,longis);
-                Toast.makeText(AidSeekerMapCrisis.this,"Lati: "+latis+", Longi:"+longis,Toast.LENGTH_SHORT).show();
+               gettingPath(latis,longis);
+                //Toast.makeText(AidSeekerMapCrisis.this,"Lati: "+latis+", Longi:"+longis,Toast.LENGTH_SHORT).show();
 
                 return false;
             }
         });
         //-----
+
+    }
+    public void gettingPath(double lati, double longi)
+    {
+        LatLng originstart = new LatLng(latLng.latitude, latLng.longitude);
+        LatLng destinationend = new LatLng(lati, longi);
+
+
+        /*
+        ArrayList<LatLng> coordList = new ArrayList<LatLng>();
+        coordList.add(originstart);
+        coordList.add(destinationend);
+
+        PolylineOptions polylineOptions = new PolylineOptions();
+
+        polylineOptions.addAll(coordList);
+        polylineOptions.width(10).color(Color.RED);
+
+        mMap.addPolyline(polylineOptions);*/
+        List<LatLng> path = new ArrayList();
+
+        GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey("AIzaSyB4g8hJ11Criq5kKj88FHguQZY9XCv7qV0")
+                .build();
+
+        DirectionsApiRequest req = DirectionsApi.getDirections(context, (Double.toString(originstart.latitude)+","+Double.toString(originstart.longitude)),(Double.toString(destinationend.latitude)+","+Double.toString(destinationend.longitude)));
+        try {
+            DirectionsResult res = req.await();
+
+            //Loop through legs and steps to get encoded polylines of each step
+            if (res.routes != null && res.routes.length > 0) {
+                DirectionsRoute route = res.routes[0];
+
+                if (route.legs !=null) {
+                    for(int i=0; i<route.legs.length; i++) {
+                        DirectionsLeg leg = route.legs[i];
+                        if (leg.steps != null) {
+                            for (int j=0; j<leg.steps.length;j++){
+                                DirectionsStep step = leg.steps[j];
+                                if (step.steps != null && step.steps.length >0) {
+                                    for (int k=0; k<step.steps.length;k++){
+                                        DirectionsStep step1 = step.steps[k];
+                                        EncodedPolyline points1 = step1.polyline;
+                                        if (points1 != null) {
+                                            //Decode polyline and add points to list of route coordinates
+                                            List<com.google.maps.model.LatLng> coords1 = points1.decodePath();
+                                            for (com.google.maps.model.LatLng coord1 : coords1) {
+                                                path.add(new LatLng(coord1.lat, coord1.lng));
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    EncodedPolyline points = step.polyline;
+                                    if (points != null) {
+                                        //Decode polyline and add points to list of route coordinates
+                                        List<com.google.maps.model.LatLng> coords = points.decodePath();
+                                        for (com.google.maps.model.LatLng coord : coords) {
+                                            path.add(new LatLng(coord.lat, coord.lng));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch(Exception ex) {
+
+        }
+        if (path.size() > 0) {
+
+            opts = new PolylineOptions().addAll(path).color(Color.RED).width(5);
+            //mMap.addPolyline(opts);
+            polyline = this.mMap.addPolyline(opts);
+        }
+
+
 
     }
 
