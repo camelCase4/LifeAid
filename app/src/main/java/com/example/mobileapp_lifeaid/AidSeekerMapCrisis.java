@@ -7,8 +7,11 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,6 +19,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 //3/15/2023
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.DirectionsApi;
@@ -90,6 +95,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     //cp 3/12/2023
     String[] emTypes = {"Health","Crime","Fire"};
     TextView yourloc,emergency,contactnum,near,exit;
+    ImageView ex;
     Button callbtn;
     //------
 
@@ -150,12 +156,32 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         near = (TextView) findViewById(R.id.tv_nearest);
         exit = (TextView) findViewById(R.id.tv_exitdis);
         callbtn = (Button) findViewById(R.id.callingbtn);
+        ex = (ImageView) findViewById(R.id.ivexit);
         //----
 
         //3/13/2023
 
         emergency.setText(whatEm+"    >>");
         displayPlaceFirestation();
+
+        //3/16/2023 cp
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidSeekerMapCrisis.this,AidSeekerMainDash.class);
+                mMap.clear();
+                startActivity(intent);
+            }
+        });
+        ex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidSeekerMapCrisis.this,AidSeekerMainDash.class);
+                mMap.clear();
+                startActivity(intent);
+            }
+        });
+        //
 
 
         cdt = new CountDownTimer(300000,1000) {
@@ -283,6 +309,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                     mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
+                    showAddress();//3/16/2023
 
 
 
@@ -319,6 +346,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
 
 
                gettingPath(latis,longis);
+               contactnum.setText(  ((stationcontact.get(stationlats.indexOf(Double.toString(latis)))).equals("0")?"No Number":stationcontact.get(stationlats.indexOf(Double.toString(latis))))  );
                 //Toast.makeText(AidSeekerMapCrisis.this,"Lati: "+latis+", Longi:"+longis,Toast.LENGTH_SHORT).show();
 
                 return false;
@@ -584,7 +612,8 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         if(occur > compareInstance) {
             int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
 
-            Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+            near.setText(stationnames.get(nearSilingan));//3/16/2023
             occur = 0;
             compareInstance = 1;
             distanceBetween.clear();
@@ -662,7 +691,8 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         if(occur > compareInstance) {
             int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
 
-            Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+            near.setText(stationnames.get(nearSilingan));//3/16/2023
             occur = 0;
             compareInstance = 1;
             distanceBetween.clear();
@@ -733,7 +763,8 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         if(occur > compareInstance) {
             int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
 
-            Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+            near.setText(stationnames.get(nearSilingan));//3/16/2023
             occur = 0;
             compareInstance = 1;
             distanceBetween.clear();
@@ -864,6 +895,28 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         return dist; // output distance, in MILES
     }
     //-------
+
+    //3/16/2023 cp
+    public void showAddress()
+    {
+        Geocoder geocoder;
+        List<Address> addresses;
+
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        String address = "";
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude,1);
+
+            address = addresses.get(0).getAddressLine(0);
+
+        }catch(IOException e)
+        {
+
+        }
+        yourloc.setText(address);
+    }
+    //-----
 
 
 
