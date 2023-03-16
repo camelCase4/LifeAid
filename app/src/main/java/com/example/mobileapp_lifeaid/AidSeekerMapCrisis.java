@@ -15,6 +15,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -181,7 +182,23 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                 startActivity(intent);
             }
         });
-        //
+
+        callbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!contactnum.getText().toString().contains("-"))
+                {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:"+contactnum.getText().toString()));
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(AidSeekerMapCrisis.this,"Click a station!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        //--------
 
 
         cdt = new CountDownTimer(300000,1000) {
