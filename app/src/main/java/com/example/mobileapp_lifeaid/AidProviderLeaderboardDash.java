@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
@@ -37,6 +38,11 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
     int index = 0;
     int counter = 0;
 
+    String pos = "";
+    String fn  = "";
+
+    CountDownTimer cdt;
+
 
 
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
@@ -54,7 +60,9 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
         //---
        gettingCountAndUID();
 
-        leadProvs.setOnClickListener(new View.OnClickListener() {
+
+
+       leadProvs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -62,6 +70,7 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
 
             }
         });
+        leadProvs.performClick();
 
 
     }
@@ -120,20 +129,42 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
             UIDinOrder.add(i.split(" ")[1]);
         }
 
+        //Toast.makeText(AidProviderLeaderboardDash.this,UIDinOrder.size()+"",Toast.LENGTH_SHORT).show();
+
         if(UIDinOrder.size() != 0) {
             for(int i = 0; i < UIDinOrder.size(); i++)
             {
                 gettingUIDvalue(UIDinOrder.get(i));
+
             }
 
+            cdt = new CountDownTimer(300000,1000) {
+                @Override
+                public void onTick(long l) {
+                    if(Position.size() == provCount_uid.size())
+                    {
+                        cdt.cancel();
+                        showContent();
+                    }
+                    else
+                    {
+                        leadProvs.append("not yet" +Position.size() + " "+provCount_uid.size()+"\n\n");
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+
+                }
+            }.start();
 
 
-           /* String initialNums = Integer.toString( 1) + "       " + Position.get(0) + "       " + provCount_uid.get(0) + "             " + fnames.get(0) + "\n\n";
-            SpannableString spannableString = new SpannableString(initialNums);
-            ForegroundColorSpan goldspan = new ForegroundColorSpan(Color.rgb(255, 215, 0));
-            spannableString.setSpan(goldspan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //String initialNums = "1       " + Position.get(0) + "       " + provCount_uid.get(0) + "             " + fnames.get(0) + "\n\n";
+            //SpannableString spannableString = new SpannableString(initialNums);
+           // ForegroundColorSpan goldspan = new ForegroundColorSpan(Color.rgb(255, 215, 0));
+            //spannableString.setSpan(goldspan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            leadProvs.append(initialNums);*/
+            //leadProvs.append(String.valueOf(Position.get(0)));
 
             /*String initialNums = "";
             for (int i = 0; i < provCount_uid.size(); i++) {
@@ -164,7 +195,6 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
     public void gettingUIDvalue(String id)
     {
 
-
         dr.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
@@ -174,9 +204,10 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             if (task.getResult().exists()) {
                                 DataSnapshot snaps = task.getResult();
-                                Position.add(String.valueOf(snaps.child("job").getValue()));
-                                fnames.add(String.valueOf(snaps.child("fname").getValue()));
-                                Toast.makeText(AidProviderLeaderboardDash.this,String.valueOf(snaps.child("job").getValue()),Toast.LENGTH_SHORT).show();
+                                pos = String.valueOf(snaps.child("job").getValue());
+                                fn = String.valueOf(snaps.child("fname").getValue());
+                                Position.add(pos);
+                                fnames.add(fn);
 
                             }
                         }
@@ -190,8 +221,16 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
             }
         });
 
-
     }
+    public void showContent()
+    {
+        for(int i = 0; i < Position.size(); i++)
+        {
+            leadProvs.append(Position.get(i));
+        }
+    }
+
+
     //---
 
 
