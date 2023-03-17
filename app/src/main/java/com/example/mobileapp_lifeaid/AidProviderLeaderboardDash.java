@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
@@ -36,12 +39,11 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
     List<String> fnames = new ArrayList<>();
 
     int index = 0;
+    int determiner = 0;
     int counter = 0;
 
-    String pos = "";
-    String fn  = "";
+    boolean flag = true;
 
-    CountDownTimer cdt;
 
 
 
@@ -58,19 +60,13 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
         leadProvs.setMovementMethod(new ScrollingMovementMethod());
 
         //---
-       gettingCountAndUID();
+
+        gettingCountAndUID();
+        //amount();
 
 
 
-       leadProvs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                gettingCountAndUID();
-
-            }
-        });
-        leadProvs.performClick();
 
 
     }
@@ -94,7 +90,9 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                                 {
                                     DataSnapshot snaps = task.getResult();
                                     if(!String.valueOf(snaps.child("provision_count").getValue()).equals("0")) {
-                                        provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
+                                       //provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
+                                        //Toast.makeText(AidProviderLeaderboardDash.this, provCount_uid.get(0), Toast.LENGTH_SHORT).show();
+                                        populating(String.valueOf(snaps.child("provision_count").getValue()) + " " + uid);
 
                                     }
 
@@ -113,6 +111,8 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                     });
 
                 }
+               //Collections.sort(provCount_uid);
+
 
 
             }
@@ -120,115 +120,87 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
+
+
         });
 
-        Collections.sort(provCount_uid);
 
-        for(String i : provCount_uid)
-        {
-            UIDinOrder.add(i.split(" ")[1]);
-        }
-
-        //Toast.makeText(AidProviderLeaderboardDash.this,UIDinOrder.size()+"",Toast.LENGTH_SHORT).show();
-
-        if(UIDinOrder.size() != 0) {
-            for(int i = 0; i < UIDinOrder.size(); i++)
-            {
-                gettingUIDvalue(UIDinOrder.get(i));
-
-            }
-
-            cdt = new CountDownTimer(300000,1000) {
-                @Override
-                public void onTick(long l) {
-                    if(Position.size() == provCount_uid.size())
-                    {
-                        cdt.cancel();
-                        showContent();
-                    }
-                    else
-                    {
-                        leadProvs.append("not yet" +Position.size() + " "+provCount_uid.size()+"\n\n");
-                    }
-                }
-
-                @Override
-                public void onFinish() {
-
-                }
-            }.start();
-
-
-            //String initialNums = "1       " + Position.get(0) + "       " + provCount_uid.get(0) + "             " + fnames.get(0) + "\n\n";
-            //SpannableString spannableString = new SpannableString(initialNums);
-           // ForegroundColorSpan goldspan = new ForegroundColorSpan(Color.rgb(255, 215, 0));
-            //spannableString.setSpan(goldspan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            //leadProvs.append(String.valueOf(Position.get(0)));
-
-            /*String initialNums = "";
-            for (int i = 0; i < provCount_uid.size(); i++) {
-                if (i <= 2) {
-                    initialNums = Integer.toString(i + 1) + "       " + Position.get(i) + "       " + provCount_uid.get(i) + "             " + fnames.get(i) + "\n\n";
-                    SpannableString spannableString = new SpannableString(initialNums);
-                    if (i == 0) {
-                        ForegroundColorSpan goldspan = new ForegroundColorSpan(Color.rgb(255, 215, 0));
-                        spannableString.setSpan(goldspan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        leadProvs.append(initialNums);
-                    } else if (i == 1) {
-                        ForegroundColorSpan silverspan = new ForegroundColorSpan(Color.rgb(192, 192, 192));
-                        spannableString.setSpan(silverspan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        leadProvs.append(initialNums);
-                    } else {
-                        ForegroundColorSpan bronzespan = new ForegroundColorSpan(Color.rgb(205, 127, 50));
-                        spannableString.setSpan(bronzespan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        leadProvs.append(initialNums);
-                    }
-                } else {
-                    leadProvs.append(Integer.toString(i + 1) + "       " + Position.get(i) + "       " + provCount_uid.get(i) + "             " + fnames.get(i) + "\n\n");
-                }
-            }*/
-        }
 
 
     }
-    public void gettingUIDvalue(String id)
+
+    public void populating(String i)
+    {
+        provCount_uid.add(i);
+        flag = false;
+        if(!flag)
+        {
+            leadProvs.append(provCount_uid.size()+"");
+        }
+
+    }
+    public void amount()
     {
 
-        dr.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-                dr.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().exists()) {
-                                DataSnapshot snaps = task.getResult();
-                                pos = String.valueOf(snaps.child("job").getValue());
-                                fn = String.valueOf(snaps.child("fname").getValue());
-                                Position.add(pos);
-                                fnames.add(fn);
+    }
+    public void displaying()
+    {
+        String initialNums = "";
+        for (int i = 0; i < provCount_uid.size(); i++) {
+            if (i <= 2) {
+                initialNums = Integer.toString(i + 1) + "       " + Position.get(i) + "       " + provCount_uid.get(i) + "             " + fnames.get(i) + "\n\n";
+                SpannableString spannableString = new SpannableString(initialNums);
+                if (i == 0) {
+                    ForegroundColorSpan goldspan = new ForegroundColorSpan(Color.rgb(255, 215, 0));
+                    spannableString.setSpan(goldspan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    leadProvs.append(initialNums);
+                } else if (i == 1) {
+                    ForegroundColorSpan silverspan = new ForegroundColorSpan(Color.rgb(192, 192, 192));
+                    spannableString.setSpan(silverspan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    leadProvs.append(initialNums);
+                } else {
+                    ForegroundColorSpan bronzespan = new ForegroundColorSpan(Color.rgb(205, 127, 50));
+                    spannableString.setSpan(bronzespan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    leadProvs.append(initialNums);
+                }
+            } else {
+                leadProvs.append(Integer.toString(i + 1) + "       " + Position.get(i) + "       " + provCount_uid.get(i) + "             " + fnames.get(i) + "\n\n");
+            }
+        }
+    }
+    public void gettingUIDvalue()
+    {
 
+        for(;index<UIDinOrder.size(); index++) {
+            dr.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                    dr.child(UIDinOrder.get(index)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    DataSnapshot snaps = task.getResult();
+                                    Position.add(String.valueOf(snaps.child("job").getValue()));
+                                    fnames.add(String.valueOf(snaps.child("fname").getValue()));
+
+                                }
                             }
                         }
-                    }
-                });
-            }
+                    });
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-    }
-    public void showContent()
-    {
-        for(int i = 0; i < Position.size(); i++)
-        {
-            leadProvs.append(Position.get(i));
+                }
+            });
+            determiner++;
         }
+
     }
+
 
 
     //---

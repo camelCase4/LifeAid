@@ -119,7 +119,7 @@ public class AidProviderMainDash extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
                 for (DataSnapshot ds : datasnapshot.getChildren()) {
                     String key = ds.getKey();
-                    seeker_id = key;
+
 
                     dr.child(key).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
@@ -137,12 +137,14 @@ public class AidProviderMainDash extends AppCompatActivity {
                                     seekerfName = String.valueOf(snaps.child("fname").getValue()); // checkpoint 3/3/2023
 
 
+
                                     if(jobchoice.toLowerCase().equals(ma.ap_job.toLowerCase()) || jobchoice.equals("all"))
                                     {
                                         if(!temp_lat.equals("") && providerID.equals(""))
                                         {
                                             latiOfSeeker = temp_lat;
                                             longiOfSeeker = temp_longi;
+                                            seeker_id = key;//checkpoint 3/17/2023
 
                                         }
                                     }//else if below 3/5/2023
@@ -152,6 +154,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                                         {
                                             latiOfSeeker = temp_lat;
                                             longiOfSeeker = temp_longi;
+                                            seeker_id = key;//checkpoint 3/17/2023
 
                                         }
                                     }
