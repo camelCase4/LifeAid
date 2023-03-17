@@ -131,6 +131,9 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                                             if (task.isSuccessful()) {
                                                                 Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
                                                                 progressBar.setVisibility(View.GONE);
+
+                                                                Intent intent = new Intent(RegistratinDashboardFinal.this,MainActivity.class);
+                                                                startActivity(intent);
                                                             } else {
                                                                 Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
                                                                 progressBar.setVisibility(View.GONE);
@@ -149,6 +152,9 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                                             if (task.isSuccessful()) {
                                                                 Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
                                                                 progressBar.setVisibility(View.GONE);
+
+                                                                Intent intent = new Intent(RegistratinDashboardFinal.this,MainActivity.class);
+                                                                startActivity(intent);
                                                             } else {
                                                                 Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
                                                                 progressBar.setVisibility(View.GONE);
@@ -166,6 +172,9 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                                             if (task.isSuccessful()) {
                                                                 Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
                                                                 progressBar.setVisibility(View.GONE);
+
+                                                                Intent intent = new Intent(RegistratinDashboardFinal.this,MainActivity.class);
+                                                                startActivity(intent);
                                                             } else {
                                                                 Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
                                                                 progressBar.setVisibility(View.GONE);
