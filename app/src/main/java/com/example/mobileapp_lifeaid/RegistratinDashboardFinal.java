@@ -101,6 +101,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                 String partner_uid = "";//3/4/2023
                 String message = "";
                 String commends = "0",decommends="0";
+                String suppCount = "0", provCount = "0";
                 //new 2/22/2023
                 if (isProvider) {
                     job = occupation.getText().toString().trim();
@@ -120,7 +121,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        User us = new User(rd.email_holder, rd.username_holder, rd.password_holder, rd.user_role, firstName, lastName, edad, phoneNumber, lugar, kasarian, addedcontacts, trustednum_1, trustednum_2, trustedname_1, trustedname_2, admin_approved, rd.IMG_URI, lati, longi, job,partner_uid,message,commends,decommends);
+                                        User us = new User(rd.email_holder, rd.username_holder, rd.password_holder, rd.user_role, firstName, lastName, edad, phoneNumber, lugar, kasarian, addedcontacts, trustednum_1, trustednum_2, trustedname_1, trustedname_2, admin_approved, rd.IMG_URI, lati, longi, job,partner_uid,message,commends,decommends,suppCount,provCount);
                                         if (rd.user_role.equals("AidSeeker")) {
                                             FirebaseDatabase.getInstance().getReference("Aid-Seeker")
                                                     .child(rd.mAuth.getCurrentUser().getUid()) //this line change the auth logic

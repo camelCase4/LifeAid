@@ -115,6 +115,11 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     LatLng seekerPosition;
     //----
 
+    //3/17/2023
+    String provisionCount = "";
+    String supportCount = "";
+    //---
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,12 +151,14 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         //checkpoint 3/7/2023
         seekerlocstr.setText(showAddress(apm.latiOfSeeker,apm.longiOfSeeker));
         //--------
+        gettingSupportAndRespondCount();//3/17/2023
 
 
         resp_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkWhoIsFirst();
+                updatingProvsCount();//3/17/2023
                 respondClicked = true;
                 msgGetter();
                 /*if(isItFinal) {
@@ -168,6 +175,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             @Override
             public void onClick(View view) {
                 whatdidyoudo = "Support";
+                updatingSuppCount();//3/17/2023
                 Date currentDateTime = Calendar.getInstance().getTime();
                 dateAndTime = currentDateTime.toString();
                 savingToHistory();
@@ -691,6 +699,69 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show();
 
     }
+
+    //3/17/2023 cp
+    public void gettingSupportAndRespondCount()
+    {
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dr.child(ma.userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            if(task.getResult().exists())
+                            {
+                                DataSnapshot snaps = task.getResult();
+                                provisionCount = String.valueOf(snaps.child("provision_count").getValue());
+                                supportCount = String.valueOf(snaps.child("support_count").getValue());
+
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void updatingProvsCount()
+    {
+        HashMap hm = new HashMap();
+        hm.put("provision_count",Integer.toString(Integer.parseInt(provisionCount)+1));
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+
+    }
+    public void updatingSuppCount()
+    {
+        HashMap hm = new HashMap();
+        hm.put("support_count",Integer.toString(Integer.parseInt(supportCount)+1));
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+
+    }
+    //----
     //--------
 
 }
