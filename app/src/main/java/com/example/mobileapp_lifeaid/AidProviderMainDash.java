@@ -31,6 +31,7 @@ public class AidProviderMainDash extends AppCompatActivity {
     ImageView seekerAlerts,alarmimage,alarm2;
     TextView tap;
     TextView als;
+    TextView leaderboard;
 
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
@@ -53,6 +54,8 @@ public class AidProviderMainDash extends AppCompatActivity {
 
         tap = (TextView) findViewById(R.id.taptap);
         als = (TextView) findViewById(R.id.tvAlertings);
+        leaderboard = (TextView) findViewById(R.id.tv_registration15);
+
 
 
 
@@ -73,6 +76,16 @@ public class AidProviderMainDash extends AppCompatActivity {
                 findSeekerClicked = true;
             }
         });
+
+        //3/17/2023 cp
+        leaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderMainDash.this,AidProviderLeaderboardDash.class);
+                startActivity(intent);
+            }
+        });
+        //----
 
 
 
