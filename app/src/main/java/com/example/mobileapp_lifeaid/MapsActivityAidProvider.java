@@ -179,6 +179,11 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 Date currentDateTime = Calendar.getInstance().getTime();
                 dateAndTime = currentDateTime.toString();
                 savingToHistory();
+                //3/19/2023
+                mMap.clear();
+                Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                startActivity(intent);
+                //----
             }
         });
 
