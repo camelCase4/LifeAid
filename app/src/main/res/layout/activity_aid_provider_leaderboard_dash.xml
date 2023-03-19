@@ -111,7 +111,7 @@
             <TextView
                 android:id="@+id/leaders"
                 android:layout_width="362dp"
-                android:layout_height="448dp"
+                android:layout_height="430dp"
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="14dp"

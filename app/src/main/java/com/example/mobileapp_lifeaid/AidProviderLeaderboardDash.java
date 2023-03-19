@@ -78,6 +78,14 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
         dr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                //3/19/2023
+                provCount_uid.clear();
+                UIDinOrder.clear();
+                Position.clear();
+                fnames.clear();
+                leadProvs.setText("");
+                //-----
+
                 for (DataSnapshot ds : datasnapshot.getChildren()) {
                     String uid = ds.getKey();
 
@@ -89,12 +97,14 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                                 if(task.getResult().exists())
                                 {
                                     DataSnapshot snaps = task.getResult();
-                                    if(!String.valueOf(snaps.child("provision_count").getValue()).equals("0")) {
-                                       //provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
-                                        //Toast.makeText(AidProviderLeaderboardDash.this, provCount_uid.get(0), Toast.LENGTH_SHORT).show();
-                                        populating(String.valueOf(snaps.child("provision_count").getValue()) + " " + uid);
 
+                                    provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
+                                    if (provCount_uid.size() == datasnapshot.getChildrenCount()) {
+                                        Collections.sort(provCount_uid);
+                                        Collections.reverse(provCount_uid);
+                                        populatingUID();
                                     }
+
 
 
                                 }
@@ -111,7 +121,6 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                     });
 
                 }
-               //Collections.sort(provCount_uid);
 
 
 
@@ -130,65 +139,90 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
 
     }
 
-    public void populating(String i)
+    public void populatingUID()
     {
-        provCount_uid.add(i);
-        flag = false;
-        if(!flag)
+        for(String i : provCount_uid)
         {
-            leadProvs.append(provCount_uid.size()+"");
+            UIDinOrder.add(i.split(" ")[1]);
+            if(UIDinOrder.size() == provCount_uid.size())
+            {
+                gettingUIDvalue();
+            }
         }
-
     }
-    public void amount()
-    {
 
-    }
     public void displaying()
     {
-        String initialNums = "";
+       /* String initialNums = "";
         for (int i = 0; i < provCount_uid.size(); i++) {
-            if (i <= 2) {
-                initialNums = Integer.toString(i + 1) + "       " + Position.get(i) + "       " + provCount_uid.get(i) + "             " + fnames.get(i) + "\n\n";
+            if (i < 3) {
+                initialNums = Integer.toString(i + 1) + "       " + Position.get(i) + "       " + provCount_uid.get(i).split(" ")[0] + "             " + fnames.get(i) + "\n\n";
                 SpannableString spannableString = new SpannableString(initialNums);
                 if (i == 0) {
                     ForegroundColorSpan goldspan = new ForegroundColorSpan(Color.rgb(255, 215, 0));
-                    spannableString.setSpan(goldspan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(goldspan, 0, Integer.toString(i + 1).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     leadProvs.append(initialNums);
                 } else if (i == 1) {
                     ForegroundColorSpan silverspan = new ForegroundColorSpan(Color.rgb(192, 192, 192));
-                    spannableString.setSpan(silverspan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(silverspan, 0, Integer.toString(i + 1).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     leadProvs.append(initialNums);
                 } else {
                     ForegroundColorSpan bronzespan = new ForegroundColorSpan(Color.rgb(205, 127, 50));
-                    spannableString.setSpan(bronzespan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(bronzespan, 0, Integer.toString(i + 1).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     leadProvs.append(initialNums);
                 }
             } else {
-                leadProvs.append(Integer.toString(i + 1) + "       " + Position.get(i) + "       " + provCount_uid.get(i) + "             " + fnames.get(i) + "\n\n");
+                leadProvs.append(Integer.toString(i + 1) + "       " + Position.get(i) + "       " + provCount_uid.get(i).split(" ")[0] + "             " + fnames.get(i) + "\n\n");
             }
+        }*/
+        for (int i = 0; i < provCount_uid.size(); i++) {
+            String initialNums = "       "+Integer.toString(i + 1) + "              " + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i) + "\n\n";
+            SpannableString spannableString = new SpannableString(initialNums);
+            if (i == 0) {
+                ForegroundColorSpan goldspan = new ForegroundColorSpan(Color.rgb(255, 215, 0));
+                spannableString.setSpan(goldspan, 0, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                leadProvs.append(spannableString);
+            } else if (i == 1) {
+                ForegroundColorSpan silverspan = new ForegroundColorSpan(Color.rgb(192, 192, 192));
+                spannableString.setSpan(silverspan, 0, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                leadProvs.append(spannableString);
+            } else if(i == 2){
+                ForegroundColorSpan bronzespan = new ForegroundColorSpan(Color.rgb(205, 127, 50));
+                spannableString.setSpan(bronzespan, 0, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                leadProvs.append(spannableString);
+            }
+            else
+            {
+                leadProvs.append(initialNums);
+            }
+
         }
     }
     public void gettingUIDvalue()
     {
 
-        for(;index<UIDinOrder.size(); index++) {
+
             dr.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-                    dr.child(UIDinOrder.get(index)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                if (task.getResult().exists()) {
-                                    DataSnapshot snaps = task.getResult();
-                                    Position.add(String.valueOf(snaps.child("job").getValue()));
-                                    fnames.add(String.valueOf(snaps.child("fname").getValue()));
+                    for(int i = 0; i < UIDinOrder.size(); i++) {
+                        dr.child(UIDinOrder.get(i)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (task.getResult().exists()) {
+                                        DataSnapshot snaps = task.getResult();
+                                        Position.add(String.valueOf(snaps.child("job").getValue()));
+                                        fnames.add(String.valueOf(snaps.child("fname").getValue()));
+                                        if (Position.size() == provCount_uid.size()) {
+                                            displaying();
+                                        }
 
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
 
                 @Override
@@ -196,8 +230,7 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
 
                 }
             });
-            determiner++;
-        }
+
 
     }
 
