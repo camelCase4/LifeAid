@@ -33,6 +33,7 @@ public class AidProviderMainDash extends AppCompatActivity {
     TextView als;
     TextView leaderboard;
     TextView viewHistory;
+    TextView providerRecords;
 
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
@@ -57,6 +58,7 @@ public class AidProviderMainDash extends AppCompatActivity {
         als = (TextView) findViewById(R.id.tvAlertings);
         leaderboard = (TextView) findViewById(R.id.tv_registration15);
         viewHistory = (TextView) findViewById(R.id.tv_registration14);
+        providerRecords = (TextView) findViewById(R.id.tv_registration16);
 
 
 
@@ -71,6 +73,15 @@ public class AidProviderMainDash extends AppCompatActivity {
         //als.setText("WAITING ALERTS");
         //----------
 
+        //3/20/2023
+        providerRecords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderMainDash.this,AidProviderRecords.class);
+                startActivity(intent);
+            }
+        });
+        //----
         viewHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
