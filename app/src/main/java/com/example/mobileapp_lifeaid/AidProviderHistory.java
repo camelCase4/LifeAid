@@ -69,6 +69,7 @@ public class AidProviderHistory extends AppCompatActivity {
                                             space = "                ";
                                         }
                                         historyContents.append("   "+dt + "             "+rp+space+sn+"\n\n");
+                                        
                                     }
 
                                 }
