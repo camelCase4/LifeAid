@@ -32,6 +32,7 @@ public class AidProviderMainDash extends AppCompatActivity {
     TextView tap;
     TextView als;
     TextView leaderboard;
+    TextView viewHistory;
 
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
@@ -55,6 +56,7 @@ public class AidProviderMainDash extends AppCompatActivity {
         tap = (TextView) findViewById(R.id.taptap);
         als = (TextView) findViewById(R.id.tvAlertings);
         leaderboard = (TextView) findViewById(R.id.tv_registration15);
+        viewHistory = (TextView) findViewById(R.id.tv_registration14);
 
 
 
@@ -68,6 +70,14 @@ public class AidProviderMainDash extends AppCompatActivity {
         //alarm2.setImageResource(R.drawable.waitingalertstwo);
         //als.setText("WAITING ALERTS");
         //----------
+
+        viewHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderMainDash.this,AidProviderHistory.class);
+                startActivity(intent);
+            }
+        });
 
         alarmimage.setOnClickListener(new View.OnClickListener() {
             @Override
