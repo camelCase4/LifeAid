@@ -37,6 +37,8 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     Button btncrime,btnfire,btnhealth;
     TextView openchat,mapcrisis;
 
+    TextView leaderB;
+
     MainActivity ma = new MainActivity();
 
     public static int presscounter = 0, whatjob = 0; //0? all, 1?crime, 2?fire, 3?health
@@ -71,6 +73,16 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         openchat = (TextView) findViewById(R.id.tv_registration15);//3/10/2023
         //3/12/2023
         mapcrisis = (TextView) findViewById(R.id.tv_registration17);
+        leaderB = (TextView) findViewById(R.id.tv_registration16);
+
+
+        leaderB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidSeekerMainDash.this, AidSeekerLeaderboardDash.class);
+                startActivity(intent);
+            }
+        });
 
 
         mapcrisis.setOnClickListener(new View.OnClickListener() {

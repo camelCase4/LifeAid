@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class AidProviderLeaderboardDash extends AppCompatActivity {
@@ -100,7 +101,27 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
 
                                     provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
                                     if (provCount_uid.size() == datasnapshot.getChildrenCount()) {
-                                        Collections.sort(provCount_uid);
+                                        //Collections.sort(provCount_uid);
+                                        Collections.sort(provCount_uid, new Comparator<String>() {
+                                            @Override
+                                            public int compare(String s1, String s2) {
+                                                int num1 = extractLeadingNumber(s1);
+                                                int num2 = extractLeadingNumber(s2);
+                                                return Integer.compare(num1, num2);
+                                            }
+
+                                            private int extractLeadingNumber(String s) {
+                                                StringBuilder sb = new StringBuilder();
+                                                for (char c : s.toCharArray()) {
+                                                    if (Character.isDigit(c)) {
+                                                        sb.append(c);
+                                                    } else {
+                                                        break;
+                                                    }
+                                                }
+                                                return Integer.parseInt(sb.toString());
+                                            }
+                                        });
                                         Collections.reverse(provCount_uid);
                                         populatingUID();
                                     }
