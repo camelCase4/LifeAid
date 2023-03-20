@@ -16,19 +16,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Collections;
+public class AidSeekerHistory extends AppCompatActivity {
 
-public class AidProviderHistory extends AppCompatActivity {
     TextView historyContents;
 
 
-    DatabaseReference dr = FirebaseDatabase.getInstance().getReference("AidProviderHistory");
+    DatabaseReference dr = FirebaseDatabase.getInstance().getReference("AidSeekerHistory");
     MainActivity ma = new MainActivity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_aid_provider_history);
+        setContentView(R.layout.activity_aid_seeker_history);
 
         historyContents = (TextView) findViewById(R.id.contents);
 
@@ -37,10 +36,7 @@ public class AidProviderHistory extends AppCompatActivity {
         historyContents.setMovementMethod(new ScrollingMovementMethod());
 
         gettingData();
-
-
     }
-
     public void gettingData()
     {
         dr.addValueEventListener(new ValueEventListener() {
@@ -59,28 +55,24 @@ public class AidProviderHistory extends AppCompatActivity {
                                 if(task.getResult().exists())
                                 {
                                     DataSnapshot snaps = task.getResult();
-                                    if(String.valueOf(snaps.child("provider_id").getValue()).equals(ma.userid)) {
+                                    if(String.valueOf(snaps.child("seekeruid").getValue()).equals(ma.userid)) {
                                         String dt = String.valueOf(snaps.child("timedate").getValue()).substring(4,16);
-                                        String rp = String.valueOf(snaps.child("aidORsupport").getValue());
-                                        String sn = String.valueOf(snaps.child("seekername").getValue());
-                                        String space = "                     ";
-                                        if(rp.equals("Support"))
-                                        {
-                                            space = "                      ";
-                                        }
-                                        historyContents.append("   "+dt + "             "+rp+space+sn+"\n\n");
+                                        String et = String.valueOf(snaps.child("emergencytype").getValue());
+                                        String pn = String.valueOf(snaps.child("providername").getValue());
+
+                                        historyContents.append("   "+dt + "                  "+et+"                  "+pn+"\n\n");
 
                                     }
 
                                 }
                                 else
                                 {
-                                    Toast.makeText(AidProviderHistory.this, "Failed to read!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AidSeekerHistory.this, "Failed to read!", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             else
                             {
-                                Toast.makeText(AidProviderHistory.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AidSeekerHistory.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
