@@ -40,6 +40,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.059" />
 
+
+
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="62dp"
@@ -180,7 +182,7 @@
                 android:id="@+id/tv_registration20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="NOTE: IN ORDER TO CLAIM, ABOVE 50 COMMENDS IS RQUIRED"
+                android:text="TAP ENVELOPE TO CLAIM, ABOVE 50 COMMENDS IS REQUIRED"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -190,6 +192,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
 
     <ImageView
         android:id="@+id/cert"
