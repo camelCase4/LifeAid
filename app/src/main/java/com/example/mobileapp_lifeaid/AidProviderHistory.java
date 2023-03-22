@@ -3,8 +3,16 @@ package com.example.mobileapp_lifeaid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
+import android.text.style.ClickableSpan;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +76,34 @@ public class AidProviderHistory extends AppCompatActivity {
                                         {
                                             space = "                      ";
                                         }
-                                        historyContents.append("   "+dt + "             "+rp+space+sn+"\n\n");
+                                        //historyContents.append("   "+dt + "             "+rp+space+sn+"\n\n");
+                                        //3/22/2023
+                                        String temp = "   "+dt+"             "+rp+space+sn+"\n\n";
+                                        SpannableString ss = new SpannableString(temp);
+                                        ClickableSpan clickableSpan = new ClickableSpan() {
+                                            @Override
+                                            public void onClick(View textView) {
+                                                //startActivity(new Intent(AidProviderHistory.this, NextActivity.class));
+                                                Toast.makeText(AidProviderHistory.this,dt+" clicked",Toast.LENGTH_SHORT).show();
+                                            }
+                                            @Override
+                                            public void updateDrawState(TextPaint ds) {
+                                                super.updateDrawState(ds);
+                                                ds.setUnderlineText(false);
+                                            }
+                                        };
+                                        ss.setSpan(clickableSpan, 37, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                                        /*TextView textView = (TextView) findViewById(R.id.hello);
+                                        textView.setText(ss);
+                                        textView.setMovementMethod(LinkMovementMethod.getInstance());
+                                        textView.setHighlightColor(Color.TRANSPARENT);*/
+
+                                        historyContents.append(ss);
+                                        historyContents.setMovementMethod(LinkMovementMethod.getInstance());
+                                        historyContents.setHighlightColor(Color.TRANSPARENT);
+
+                                        //------
 
                                     }
 

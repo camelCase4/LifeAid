@@ -151,7 +151,9 @@
                 app:layout_constraintHorizontal_bias="0.571"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.777" />
+                app:layout_constraintVertical_bias="0.777"
+                android:textColorLink="#0000FF"
+                />
 
             <TextView
                 android:id="@+id/leadersCol"

@@ -361,6 +361,7 @@ public class AidSeekerChat extends AppCompatActivity {
 
             }
         });
+
         Toast.makeText(AidSeekerChat.this, "Take care!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
         startActivity(intent);

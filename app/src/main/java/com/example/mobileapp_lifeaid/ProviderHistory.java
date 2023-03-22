@@ -12,5 +12,6 @@ public class ProviderHistory {
         this.aidORsupport = aidORsupport;
         this.seeker_uid = seeker_uid;
         this.provider_id = provider_id;
+
     }
 }
