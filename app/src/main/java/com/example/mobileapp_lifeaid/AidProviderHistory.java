@@ -84,7 +84,9 @@ public class AidProviderHistory extends AppCompatActivity {
                                             @Override
                                             public void onClick(View textView) {
                                                 //startActivity(new Intent(AidProviderHistory.this, NextActivity.class));
-                                                Toast.makeText(AidProviderHistory.this,dt+" clicked",Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(AidProviderHistory.this,dt+" clicked",Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(AidProviderHistory.this,GeneratedReportAidProvider.class);
+                                                startActivity(intent);
                                             }
                                             @Override
                                             public void updateDrawState(TextPaint ds) {
