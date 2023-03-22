@@ -120,6 +120,10 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     String supportCount = "";
     //---
 
+    //3/22/2023
+    String locationOfIncident = "";
+    //----
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,8 +153,14 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
 
         //checkpoint 3/7/2023
-        seekerlocstr.setText(showAddress(apm.latiOfSeeker,apm.longiOfSeeker));
+
+        //seekerlocstr.setText(showAddress(apm.latiOfSeeker,apm.longiOfSeeker));
+
         //--------
+        //3/22/2023
+        locationOfIncident = showAddress(apm.latiOfSeeker,apm.longiOfSeeker);
+        seekerlocstr.setText(locationOfIncident);
+        //----
         gettingSupportAndRespondCount();//3/17/2023
 
 
@@ -379,7 +389,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     {
 
         //checkpoint 3/4/2023
-        ProviderHistory ph = new ProviderHistory(dateAndTime,apm.seekerfName,whatdidyoudo,apm.seeker_id,ma.userid);
+        ProviderHistory ph = new ProviderHistory(dateAndTime,apm.seekerfName,whatdidyoudo,apm.seeker_id,ma.userid,"",locationOfIncident);
         //-----
         FirebaseDatabase.getInstance().getReference("AidProviderHistory").push().setValue(ph).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -419,7 +429,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         whatdidyoudo = "Respond";
         Date currentDTime = Calendar.getInstance().getTime();
         dateAndTime = currentDTime.toString();
-        savingToHistory();
+        //savingToHistory(); ge kuha nako ge change nako nga adto ra ma save sa history once naka rate na ang seeker 3/22/2023
         savingSeekerID();
     }
 
@@ -514,6 +524,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         {
 
         }
+
+
         return address;
     }
     //-------

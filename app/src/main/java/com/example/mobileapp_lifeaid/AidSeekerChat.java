@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.method.ScrollingMovementMethod;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class AidSeekerChat extends AppCompatActivity {
 
@@ -43,6 +48,7 @@ public class AidSeekerChat extends AppCompatActivity {
     String commendCount = "", unsatisfiedCount = "";
 
     //-----------
+    String locationOfIncident = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +67,7 @@ public class AidSeekerChat extends AppCompatActivity {
 
         getProviderData();
         msgLooper();
+        gettingLocationName();
 
 
         conversation.setMovementMethod(new ScrollingMovementMethod());
@@ -362,7 +369,9 @@ public class AidSeekerChat extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(AidSeekerChat.this, "Take care!", Toast.LENGTH_SHORT).show();
+        //3/22/2023
+        savingProviderHistory("1");
+        //-----
         Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
         startActivity(intent);
     }
@@ -379,9 +388,54 @@ public class AidSeekerChat extends AppCompatActivity {
 
             }
         });
-        Toast.makeText(AidSeekerChat.this, "Take care!", Toast.LENGTH_SHORT).show();
+        //3/22/2023
+        savingProviderHistory("0");
+        //-----
         Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
         startActivity(intent);
+    }
+
+    //------
+    //3/22/2023 cp
+    public void gettingLocationName()
+    {
+        Geocoder geocoder;
+        List<Address> addresses;
+
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        String address = "";
+        try {
+            addresses = geocoder.getFromLocation(Double.parseDouble(asm.theLatInStr),Double.parseDouble(asm.theLongInStr),1);
+
+            address = addresses.get(0).getAddressLine(0);
+
+        }catch(IOException e)
+        {
+
+        }
+        locationOfIncident = address;
+    }
+    public void savingProviderHistory(String fb)
+    {
+        Date currentDateTime = Calendar.getInstance().getTime();
+        String dateAndTime = currentDateTime.toString();
+
+        ProviderHistory ph = new ProviderHistory(dateAndTime,ma.fullname.split(" ")[0],"Respond",ma.userid,asm.responderUID,fb,locationOfIncident);
+
+        FirebaseDatabase.getInstance().getReference("AidProviderHistory").push().setValue(ph).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful())
+                {
+                    Toast.makeText(AidSeekerChat.this, "Thanks! Take care!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(AidSeekerChat.this, "Failed to record!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
     //------
 }

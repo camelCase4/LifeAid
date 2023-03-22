@@ -155,7 +155,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                                     String temp_longi = String.valueOf(snaps.child("longi").getValue());
                                     String jobchoice = String.valueOf(snaps.child("job").getValue()); //checkpoint 3/1/2023
                                     String providerID = String.valueOf(snaps.child("partner_uid").getValue()); //checkpoint 3/5/2023
-                                    seekerfName = String.valueOf(snaps.child("fname").getValue()); // checkpoint 3/3/2023
+                                    //seekerfName = String.valueOf(snaps.child("fname").getValue()); // checkpoint 3/3/2023
 
 
 
@@ -166,6 +166,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                                             latiOfSeeker = temp_lat;
                                             longiOfSeeker = temp_longi;
                                             seeker_id = key;//checkpoint 3/17/2023
+                                            seekerfName = String.valueOf(snaps.child("fname").getValue()); //3/22/2023
 
                                         }
                                     }//else if below 3/5/2023
@@ -176,6 +177,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                                             latiOfSeeker = temp_lat;
                                             longiOfSeeker = temp_longi;
                                             seeker_id = key;//checkpoint 3/17/2023
+                                            seekerfName = String.valueOf(snaps.child("fname").getValue()); //3/22/2023
 
                                         }
                                     }

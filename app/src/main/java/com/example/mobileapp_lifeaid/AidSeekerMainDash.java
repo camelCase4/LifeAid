@@ -47,7 +47,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
 
-    String theLatInStr = "",theLongInStr = "";
+    public static String theLatInStr = "",theLongInStr = "";
     //checkpoint 2/22/20233
     LocationManager lm;
     //----
