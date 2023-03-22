@@ -29,7 +29,9 @@ import java.util.Collections;
 public class AidProviderHistory extends AppCompatActivity {
     TextView historyContents;
 
-
+    //3/23/2023
+    //public static String dat = "",rap = "",san = "",placeOfIncident="",feedback="",seekerID= "";
+    //----
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("AidProviderHistory");
     MainActivity ma = new MainActivity();
 
@@ -71,6 +73,19 @@ public class AidProviderHistory extends AppCompatActivity {
                                         String dt = String.valueOf(snaps.child("timedate").getValue()).substring(4,16);
                                         String rp = String.valueOf(snaps.child("aidORsupport").getValue());
                                         String sn = String.valueOf(snaps.child("seekername").getValue());
+                                        String placeOfIncident =  String.valueOf(snaps.child("locationPlace").getValue());
+                                        String feedback = String.valueOf(snaps.child("feedback").getValue());
+                                        String seekerID = String.valueOf(snaps.child("seeker_uid").getValue());
+
+
+                                        //3/23/2023
+                                        //dt = String.valueOf(snaps.child("timedate").getValue()).substring(4,16);
+                                        //rp = String.valueOf(snaps.child("aidORsupport").getValue());
+                                        //sn = String.valueOf(snaps.child("seekername").getValue());
+                                        //placeOfIncident = String.valueOf(snaps.child("locationPlace").getValue());
+                                        //feedback = String.valueOf(snaps.child("feedback").getValue());
+                                        //seekerID = String.valueOf(snaps.child("seeker_uid").getValue());
+                                        //----
                                         String space = "                     ";
                                         if(rp.equals("Support"))
                                         {
@@ -81,12 +96,23 @@ public class AidProviderHistory extends AppCompatActivity {
                                         String temp = "   "+dt+"             "+rp+space+sn+"\n\n";
                                         SpannableString ss = new SpannableString(temp);
                                         ClickableSpan clickableSpan = new ClickableSpan() {
+
                                             @Override
                                             public void onClick(View textView) {
                                                 //startActivity(new Intent(AidProviderHistory.this, NextActivity.class));
                                                 //Toast.makeText(AidProviderHistory.this,dt+" clicked",Toast.LENGTH_SHORT).show();
+                                                //Intent intent = new Intent(AidProviderHistory.this,GeneratedReportAidProvider.class);
+                                                //startActivity(intent);
+
                                                 Intent intent = new Intent(AidProviderHistory.this,GeneratedReportAidProvider.class);
+                                                intent.putExtra("time_date", dt);
+                                                intent.putExtra("action", rp);
+                                                intent.putExtra("seeker_name", sn);
+                                                intent.putExtra("location_place", placeOfIncident);
+                                                intent.putExtra("feedback", feedback);
+                                                intent.putExtra("seeker_uid", seekerID);
                                                 startActivity(intent);
+
                                             }
                                             @Override
                                             public void updateDrawState(TextPaint ds) {
