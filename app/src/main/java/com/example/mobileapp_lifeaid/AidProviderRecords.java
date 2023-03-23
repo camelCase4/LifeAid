@@ -84,13 +84,18 @@ public class AidProviderRecords extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             if (task.getResult().exists()) {
                                 DataSnapshot snaps = task.getResult();
-                                overallProvision.setText(String.valueOf(snaps.child("provision_count").getValue()));
+
+                                String totalCount = String.valueOf(snaps.child("provision_count").getValue()); //3/23/2023
+                                //overallProvision.setText(String.valueOf(snaps.child("provision_count").getValue()));
+                                overallProvision.setText(totalCount);
                                 overallSupports.setText(String.valueOf(snaps.child("support_count").getValue()));
                                 String commendC = String.valueOf(snaps.child("commends").getValue());
                                 String reportC = String.valueOf(snaps.child("decommends").getValue());
+
+
                                 good.setText(commendC);
                                 bad.setText(reportC);
-                                displayRating(commendC,reportC);
+                                displayRating(commendC,reportC,totalCount);
                             }
                         }
                     }
@@ -105,9 +110,10 @@ public class AidProviderRecords extends AppCompatActivity {
         });
     }
 
-    public void displayRating(String cc, String rc)
+    public void displayRating(String cc, String rc, String tc)
     {
-        int score =  Integer.parseInt(cc) - Integer.parseInt(rc);
+        /*int score =  Integer.parseInt(cc) - Integer.parseInt(rc);
+
         if(score >= 4)
         {
             st1.setVisibility(View.VISIBLE);
@@ -136,7 +142,42 @@ public class AidProviderRecords extends AppCompatActivity {
             {
                 negativeStar.setText("POOR PERFORMANCE!");
             }
+        }*/
+
+        // 3/23/2023
+        double ratings = (Double.parseDouble(cc) / Double.parseDouble(tc)) * 100;
+
+
+
+        if(ratings == 100)
+        {
+            st1.setVisibility(View.VISIBLE);
+            st2.setVisibility(View.VISIBLE);
+            st3.setVisibility(View.VISIBLE);
+            st4.setVisibility(View.VISIBLE);
         }
+        else if(ratings >= 75 && ratings <= 99)
+        {
+            st1.setVisibility(View.VISIBLE);
+            st2.setVisibility(View.VISIBLE);
+            st3.setVisibility(View.VISIBLE);
+        }
+        else if(ratings >= 50 && ratings <= 74)
+        {
+            st1.setVisibility(View.VISIBLE);
+            st2.setVisibility(View.VISIBLE);
+        }
+        else if(ratings >= 25 && ratings <= 49)
+        {
+            st1.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            negativeStar.setText("POOR PERFORMANCE!");
+        }
+
+
+        //----
 
     }
 

@@ -41,6 +41,24 @@
         app:layout_constraintVertical_bias="0.059" />
 
 
+    <TextView
+        android:id="@+id/dlcert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="DOWNLOAD CERTIFICATE"
+
+        android:textColor="#0000FF"
+        android:visibility="invisible"
+
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.532" />
 
     <ImageView
         android:id="@+id/imageView9"
@@ -196,8 +214,8 @@
 
     <ImageView
         android:id="@+id/cert"
-        android:layout_width="385dp"
-        android:layout_height="239dp"
+        android:layout_width="386dp"
+        android:layout_height="206dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
