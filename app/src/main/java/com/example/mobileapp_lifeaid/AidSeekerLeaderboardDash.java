@@ -3,12 +3,15 @@ package com.example.mobileapp_lifeaid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,7 @@ import java.util.List;
 
 public class AidSeekerLeaderboardDash extends AppCompatActivity {
 
+    ImageView menu;
 
     List<String> provCount_uid = new ArrayList<>();
     List<String> UIDinOrder = new ArrayList<>();
@@ -35,6 +39,10 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
 
     TextView leadProvs;
 
+    //3/24/2023
+    public static final int MENU_REQUEST_CODE = 1;
+    //--
+
 
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
 
@@ -42,6 +50,20 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aid_seeker_leaderboard_dash);
+
+        //3/24/2023
+        menu = (ImageView) findViewById(R.id.imageView18);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Intent intent = new Intent(AidSeekerMainDash.this, MenuButtonForSeekers.class);
+                startActivity(intent);*/
+                Intent intent = new Intent(AidSeekerLeaderboardDash.this,MenuButtonForSeekers.class);
+                startActivityForResult(intent,MENU_REQUEST_CODE);
+            }
+        });
+        //---
+
 
         //3/16/2023
 
@@ -55,6 +77,15 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
         //amount();
 
     }
+    //3/24/2023
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MENU_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Handle the result
+            // ...
+        }
+    }
+    //---
     public void gettingCountAndUID()
     {
 

@@ -33,7 +33,7 @@ import java.util.HashMap;
 // i added a new implements 2/22/2023
 public class AidSeekerMainDash extends AppCompatActivity implements LocationListener {
 
-    ImageView alertallbtn;
+    ImageView alertallbtn,menu;
     Button btncrime,btnfire,btnhealth;
     TextView openchat,mapcrisis;
     TextView seekerHist;
@@ -61,6 +61,9 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     boolean foundresponder = false;
     //-------
 
+    //3/24/2023
+    public static final int MENU_REQUEST_CODE = 1;
+    //--
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,19 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         mapcrisis = (TextView) findViewById(R.id.tv_registration17);
         leaderB = (TextView) findViewById(R.id.tv_registration16);
         seekerHist = (TextView) findViewById(R.id.tv_registration14);
+
+        menu = (ImageView) findViewById(R.id.imageView18);
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Intent intent = new Intent(AidSeekerMainDash.this, MenuButtonForSeekers.class);
+                startActivity(intent);*/
+                Intent intent = new Intent(AidSeekerMainDash.this,MenuButtonForSeekers.class);
+                startActivityForResult(intent,MENU_REQUEST_CODE);
+            }
+        });
+
 
         seekerHist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +208,15 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         });
         //-------
     }
+    //3/24/2023
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MENU_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Handle the result
+            // ...
+        }
+    }
+    //---
 
     //checkpoint 2/22/2023
     public void getLoc()
