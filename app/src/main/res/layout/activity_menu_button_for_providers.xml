@@ -138,7 +138,7 @@
         app:layout_constraintVertical_bias="0.291" />
 
     <Button
-        android:id="@+id/loginbutton6"
+        android:id="@+id/editacc"
         android:layout_width="343dp"
         android:layout_height="52dp"
         android:background="@drawable/my_button"
@@ -170,7 +170,7 @@
 
 
     <Button
-        android:id="@+id/loginbutton"
+        android:id="@+id/askaid"
         android:layout_width="343dp"
         android:layout_height="52dp"
         android:background="@drawable/my_button"
@@ -188,7 +188,7 @@
 
 
     <Button
-        android:id="@+id/loginbutton2"
+        android:id="@+id/claimcert"
         android:layout_width="343dp"
         android:layout_height="52dp"
         android:background="@drawable/my_button"
@@ -222,7 +222,7 @@
         app:layout_constraintVertical_bias="0.85" />
 
     <Button
-        android:id="@+id/loginbutton5"
+        android:id="@+id/faqbtn"
         android:layout_width="343dp"
         android:layout_height="52dp"
         android:background="@drawable/my_button"

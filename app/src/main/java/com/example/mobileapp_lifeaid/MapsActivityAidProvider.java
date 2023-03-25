@@ -463,7 +463,14 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                             if(task.getResult().exists())
                             {
                                 DataSnapshot snaps = task.getResult();
+                                String who = String.valueOf(snaps.child("whatRole").getValue());//3/25/2023
                                 providerChecker = String.valueOf(snaps.child("partner_uid").getValue());
+                                //3/25/2023
+                                if(who.equals("AidProvider"))
+                                {
+                                    Toast.makeText(MapsActivityAidProvider.this,"You are helping a fellow Aid - Provider!",Toast.LENGTH_LONG).show();
+                                }
+                                //-----
                                 if(providerChecker.equals("") || providerChecker.isEmpty())
                                 {
                                     removeLatandLong();
