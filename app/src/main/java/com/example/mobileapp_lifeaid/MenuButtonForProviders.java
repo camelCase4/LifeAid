@@ -34,7 +34,7 @@ import java.util.Comparator;
 
 public class MenuButtonForProviders extends AppCompatActivity implements LocationListener {
 
-    Button aidAsking;
+    Button aidAsking,claim;
     public static String latitudePos, longitudePos;
     LocationManager lm;
 
@@ -52,6 +52,17 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
         overridePendingTransition(R.anim.slide_in_from_right,0);
 
         aidAsking = (Button) findViewById(R.id.askaid);
+        claim = (Button) findViewById(R.id.claimcert);
+
+
+        claim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuButtonForProviders.this,AidProviderClaimCert.class);
+                startActivity(intent);
+            }
+        });
+
         aidAsking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
