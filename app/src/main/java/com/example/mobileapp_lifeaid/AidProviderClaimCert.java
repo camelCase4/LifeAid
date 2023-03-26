@@ -29,6 +29,7 @@ public class AidProviderClaimCert extends AppCompatActivity {
 
     int amountOfCommends = 0;
     String status = ""; //1 = pwedi pa mo kuha, 2 = di na pwedi, zero ang initial
+    String certificateURL = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,12 @@ public class AidProviderClaimCert extends AppCompatActivity {
                 }
                 else if(status.equals("1"))
                 {
-                    Toast.makeText(AidProviderClaimCert.this, "You already requested, Please Wait!", Toast.LENGTH_SHORT).show();
+                    if(certificateURL.equals("")) {
+                        Toast.makeText(AidProviderClaimCert.this, "You already requested, Please Wait!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        //claiming occurs
+                    }
 
                 }
                 else
@@ -83,6 +89,9 @@ public class AidProviderClaimCert extends AppCompatActivity {
                             String commendC = String.valueOf(snaps.child("commends").getValue());
                             String provC = String.valueOf(snaps.child("provision_count").getValue());
                             status = String.valueOf(snaps.child("claimCert").getValue());
+                            //3/26/2023
+                            certificateURL = String.valueOf(snaps.child("certURL").getValue());
+                            //----
 
                             amountOfCommends = Integer.parseInt(commendC);
 
