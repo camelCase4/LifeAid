@@ -144,6 +144,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
                 presscounter++;
                 if(presscounter >= 2) {
+                    Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
                     getLoc();
                     presscounter = 0;
                     //3/1/2023 checkpoint
@@ -165,6 +166,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 presscounter++;
                 if(presscounter >= 2)
                 {
+                    Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
                     getLoc();
                     presscounter = 0;
                     whatjob = 1;
@@ -181,6 +183,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 presscounter++;
                 if(presscounter >= 2)
                 {
+                    Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
                     getLoc();
                     presscounter = 0;
                     whatjob = 2;
@@ -197,6 +200,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 presscounter++;
                 if(presscounter >= 2)
                 {
+                    Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
                     getLoc();
                     presscounter = 0;
                     whatjob = 3;
@@ -280,7 +284,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                    Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
                 waitforresponder();//test 3/5/2023
 
             }

@@ -29,6 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 public class MenuButtonForProviders extends AppCompatActivity implements LocationListener {
 
     Button aidAsking;
@@ -38,6 +41,7 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
     public static String generatedUID = "";
 
     MainActivity ma = new MainActivity();
+    DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
 
 
 
@@ -67,6 +71,7 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
                 switch (i){
                     case DialogInterface.BUTTON_POSITIVE:
                         seekAid();
+                        Toast.makeText(MenuButtonForProviders.this, "Please Wait!", Toast.LENGTH_SHORT).show();//3/26/2023
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -116,7 +121,8 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful())
                 {
-                    Toast.makeText(MenuButtonForProviders.this, "Please Wait!", Toast.LENGTH_SHORT).show();
+                    gettingTheGeneratedUID(); // 3/26/2023
+
                 }
                 else
                 {
@@ -126,11 +132,11 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                generatedUID = FirebaseDatabase.getInstance().getReference("Aid-Seeker").push().getKey();
+                //generatedUID = FirebaseDatabase.getInstance().getReference("Aid-Seeker").push().getKey();
 
-                /*Intent intent = new Intent(MenuButtonForProviders.this,SeekAidButNotSeeker.class);
-                startActivity(intent);*/
-                Toast.makeText(MenuButtonForProviders.this, generatedUID, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MenuButtonForProviders.this,SeekAidButNotSeeker.class);
+                startActivity(intent);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -141,6 +147,63 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
         });
 
     }
+
+    //3/26/2023
+    public void gettingTheGeneratedUID()
+    {
+        dr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                for (DataSnapshot ds : datasnapshot.getChildren()) {
+                    String uid = ds.getKey();
+
+                    dr.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if(task.isSuccessful())
+                            {
+                                if(task.getResult().exists())
+                                {
+                                    DataSnapshot snaps = task.getResult();
+                                    if(String.valueOf(snaps.child("id").getValue()).equals(ma.userid))
+                                    {
+                                        generatedUID = uid;
+                                    }
+
+                                }
+                                else
+                                {
+                                    Toast.makeText(MenuButtonForProviders.this, "Failed to read!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(MenuButtonForProviders.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                    if(!generatedUID.equals(""))
+                    {
+                        break;
+                    }
+
+                }
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+
+
+        });
+
+
+    }
+    //---
 
 
 }

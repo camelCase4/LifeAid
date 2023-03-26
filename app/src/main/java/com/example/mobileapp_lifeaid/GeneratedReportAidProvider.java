@@ -26,6 +26,8 @@ public class GeneratedReportAidProvider extends AppCompatActivity {
     AidProviderHistory aph = new AidProviderHistory();
 
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+    DatabaseReference dr2 = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+    DatabaseReference dr3 = FirebaseDatabase.getInstance().getReference("Admin");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +110,8 @@ public class GeneratedReportAidProvider extends AppCompatActivity {
                             }
                             else
                             {
-                                Toast.makeText(GeneratedReportAidProvider.this, "Data does not exist!", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(GeneratedReportAidProvider.this, "Data does not exist!", Toast.LENGTH_SHORT).show();
+                                gettingAidSeekerDataInProviders();
                             }
                         }
                         else
@@ -125,4 +128,91 @@ public class GeneratedReportAidProvider extends AppCompatActivity {
             }
         });
     }
+    //3/26/2023
+    public void gettingAidSeekerDataInProviders()
+    {
+        dr2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dr2.child(seekerID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            if(task.getResult().exists())
+                            {
+                                DataSnapshot snaps = task.getResult();
+                                String number = String.valueOf(snaps.child("phonenum").getValue());
+                                String address = String.valueOf(snaps.child("address").getValue());
+                                String email = String.valueOf(snaps.child("email").getValue());
+
+                                nm.setText(number);
+                                add.setText("Seeker Address: "+address);
+                                em.setText(email);
+
+
+                            }
+                            else
+                            {
+                                //Toast.makeText(GeneratedReportAidProvider.this, "Data does not exist!", Toast.LENGTH_SHORT).show();
+                                gettingAidSeekerDataInAdmins();
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(GeneratedReportAidProvider.this,"Task was not successful!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void gettingAidSeekerDataInAdmins()
+    {
+        dr3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dr3.child(seekerID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            if(task.getResult().exists())
+                            {
+                                DataSnapshot snaps = task.getResult();
+                                String number = String.valueOf(snaps.child("phonenum").getValue());
+                                String address = String.valueOf(snaps.child("address").getValue());
+                                String email = String.valueOf(snaps.child("email").getValue());
+
+                                nm.setText(number);
+                                add.setText("Seeker Address: "+address);
+                                em.setText(email);
+
+
+                            }
+                            else
+                            {
+                                //Toast.makeText(GeneratedReportAidProvider.this, "Data does not exist!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(GeneratedReportAidProvider.this,"Task was not successful!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    //----
 }

@@ -124,6 +124,10 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     String locationOfIncident = "";
     //----
 
+    //3/26/2023
+    boolean ifcancelled = false;
+    //---
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -483,7 +487,18 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
                                 }
                             }
+                            //3/26/2023
+                            else
+                            {
+                                cd.cancel();
+                                ifcancelled = true;
+                                Toast.makeText(MapsActivityAidProvider.this,"Seeker Cancelled!",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                                startActivity(intent);
+                            }
+                            //----
                         }
+
                     }
                 });
             }
@@ -610,6 +625,16 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                     }
                                 }
 
+                            }
+                            else
+                            {
+                                if(!ifcancelled) {
+                                    cd.cancel();
+                                    Toast.makeText(MapsActivityAidProvider.this, "Thank you for your service!", Toast.LENGTH_SHORT).show();
+                                    mMap.clear(); //3/15/2023
+                                    Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
+                                    startActivity(intent);
+                                }
                             }
                         }
                     }

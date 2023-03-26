@@ -45,6 +45,7 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
     Button complete;
 
     boolean providerFound = false;
+    boolean cancelled = false;
     DatabaseReference dbprovs = FirebaseDatabase.getInstance().getReference("Aid-Provider");
 
     CountDownTimer cdt;
@@ -60,6 +61,8 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seek_aid_but_not_seeker);
+
+
         greetings = (TextView) findViewById(R.id.tv_registration3);
         conversation = (TextView) findViewById(R.id.converse);
         send = (TextView) findViewById(R.id.tv_sendbtn);
@@ -115,29 +118,64 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                if (providerFound) {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        switch (i) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                ratingsPrompt();
-                                cleansingData();
-                                break;
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            switch (i) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    ratingsPrompt();
+                                    cleansingData();
+                                    break;
 
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //do nothing
-                                break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //do nothing
+                                    break;
 
+                            }
                         }
-                    }
-                };
-                AlertDialog.Builder builder = new AlertDialog.Builder(SeekAidButNotSeeker.this);
-                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SeekAidButNotSeeker.this);
+                    builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+                }
+                else
+                {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            switch (i) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //cdt.cancel();//3/26/2023;
+                                    cancelled = true;
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //do nothing
+                                    break;
+
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(SeekAidButNotSeeker.this);
+                    builder2.setMessage("Are you sure you don't need help?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+                }
             }
+
 
         });
     }
+    //3/26/2023
+    public void cancelledReq()
+    {
+        DatabaseReference dr2 = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+        dr2.child(mp.generatedUID).setValue(null);//---deleting
+        Intent intent = new Intent(SeekAidButNotSeeker.this,MenuButtonForProviders.class);
+        startActivity(intent);
+    }
+    //----
+
     public void cleansingData()
     {
         HashMap hm = new HashMap();
@@ -162,6 +200,7 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
         });*/
         DatabaseReference dr2 = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
         dr2.child(mp.generatedUID).setValue(null);//---deleting
+
 
     }
     public void ratingsPrompt()
@@ -275,12 +314,29 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
             @Override
             public void onTick(long l) {
                 if((l/1000) % 2 == 0) {
-                    gettingtheproviderID();
-                    if (providerFound) {
+                    //gettingtheproviderID();
+                    /*if (providerFound) {
                         Toast.makeText(SeekAidButNotSeeker.this,"Aid - Provider Is Here!",Toast.LENGTH_SHORT).show();
                         getProviderData();
                         msgLooper();
                         cancel();
+
+                    }*/
+                    if(cancelled)
+                    {
+                        cancel();
+                        cancelledReq();
+                    }
+                    else
+                    {
+                        gettingtheproviderID();
+                        if (providerFound) {
+                            Toast.makeText(SeekAidButNotSeeker.this,"Aid - Provider Is Here!",Toast.LENGTH_SHORT).show();
+                            getProviderData();
+                            msgLooper();
+                            cancel();
+
+                        }
                     }
                 }
             }
@@ -311,12 +367,13 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
                                 if(!responderUID.equals(""))
                                 {
                                     providerFound = true;
+                                    complete.setText("Complete Transac.");
 
                                 }
                             }
                             else
                             {
-                                Toast.makeText(SeekAidButNotSeeker.this, "Data does not exist!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SeekAidButNotSeeker.this, "Waiting for a responder!", Toast.LENGTH_SHORT).show();
                             }
                         }
                         else
