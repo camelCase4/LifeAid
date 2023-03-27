@@ -326,8 +326,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else
                             {
-                                Intent intent = new Intent(MainActivity.this, AdminMainDash.class);
-                                startActivity(intent);
+                                forTheAdmins();
                             }
                         }
 
@@ -340,4 +339,84 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //3/27/2023
+    public void forTheAdmins()
+    {
+        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful())
+                {
+                    userid = task.getResult().getUser().getUid();
+
+                    DatabaseReference ap = ref.child("Admin");
+
+                    ap.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                            if(datasnapshot.child(userid).exists())
+                            {
+                                DatabaseReference ap_details = ref.child(userid);
+                                ap_details.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+
+
+
+                                        //checkpoint 3/1/2023
+                                        DatabaseReference testref = FirebaseDatabase.getInstance().getReference("Admin");
+                                        testref.child(userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                if(task.isSuccessful())
+                                                {
+                                                    if(task.getResult().exists())
+                                                    {
+                                                        String fname,lname;
+                                                        DataSnapshot ds = task.getResult();
+                                                        fname = String.valueOf(ds.child("fname").getValue());
+                                                        lname = String.valueOf(ds.child("lname").getValue());
+                                                        fullname = fname +" "+lname;
+
+                                                        age = String.valueOf(ds.child("age").getValue());
+                                                        gender = String.valueOf(ds.child("gender").getValue());
+                                                        username = String.valueOf(ds.child("username").getValue());
+                                                        address = String.valueOf(ds.child("address").getValue());
+                                                        useremail = String.valueOf(ds.child("email").getValue());
+                                                        userrole = String.valueOf(ds.child("role").getValue());
+                                                        phonenum = String.valueOf(ds.child("phonenum").getValue());
+                                                        addedcontact = String.valueOf(ds.child("prompt_trustedContacts").getValue());//check if first time login or not
+                                                        approved_byadmin = String.valueOf(ds.child("admin_approved").getValue());
+                                                        ap_job = String.valueOf(ds.child("job").getValue());
+
+                                                       Intent intent = new Intent(MainActivity.this,AdminMainDash.class);
+                                                       startActivity(intent);
+
+                                                    }
+                                                }
+                                            }
+                                        });
+                                        //-----
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+        });
+    }
+    //----
 }

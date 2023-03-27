@@ -481,6 +481,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                 }
                                 else
                                 {
+                                    cd.cancel();//3/27/2023
                                     Toast.makeText(MapsActivityAidProvider.this,"Supported! Somebody else is on the move!",Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
                                     startActivity(intent);

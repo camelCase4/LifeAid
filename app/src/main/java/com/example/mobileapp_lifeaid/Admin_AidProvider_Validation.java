@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class Admin_AidProvider_Validation extends AppCompatActivity {
 
@@ -46,6 +47,11 @@ public class Admin_AidProvider_Validation extends AppCompatActivity {
     List<String> ages = new ArrayList<>();
     List<String> ID_proofs = new ArrayList<>();//new ------
     //--------
+
+    //3/37/2023
+    Random rand = new Random();
+    int sleepTime = rand.nextInt(701) + 1000;
+    //--
 
 
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
@@ -117,7 +123,7 @@ public class Admin_AidProvider_Validation extends AppCompatActivity {
             public void onClick(View view) {
 
                 if(checker) {
-                    HashMap hm = new HashMap();
+                    /*HashMap hm = new HashMap();
                     hm.put("admin_approved", true);
 
                     dr.child(temp[index]).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -137,10 +143,7 @@ public class Admin_AidProvider_Validation extends AppCompatActivity {
                                     imageDisplayer();
                                 } else {
                                     Toast.makeText(Admin_AidProvider_Validation.this, "No more Applicants!", Toast.LENGTH_SHORT).show();
-                                    /*
-                                    b.setEnabled(false);
-                                    b2.setBackgroundTintList(null);
-                                    b2.setEnabled(false);*/
+
                                     checker = false;
                                     tv_fullname.setText("------------------------");
                                     tv_email.setText("------------------------");
@@ -157,7 +160,21 @@ public class Admin_AidProvider_Validation extends AppCompatActivity {
                                 Toast.makeText(Admin_AidProvider_Validation.this, "Verification Failed!", Toast.LENGTH_SHORT).show();
                             }
                         }
-                    });
+                    }); */
+                    //3/27/2023
+                    for(;;)
+                    {
+                        try{
+                            Thread.sleep(sleepTime);
+                            checkingIfStillValid();
+                            break;
+
+                        }catch(InterruptedException e)
+                        {
+
+                        }
+                    }
+                    //----
                 }
                 else
                 {
@@ -171,7 +188,16 @@ public class Admin_AidProvider_Validation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(checker) {
-                    dr.child(temp[index]).setValue(null);//---deleting
+                    //dr.child(temp[index]).setValue(null);//---deleting
+                    //3/27/2023
+                    try {
+                        dr.child(temp[index]).setValue(null);//---deleting
+
+                    }catch (Exception e)
+                    {
+                        Toast.makeText(Admin_AidProvider_Validation.this, "Applicant already denied by other admin!", Toast.LENGTH_SHORT).show();
+                    }
+                    //---
                     Toast.makeText(Admin_AidProvider_Validation.this, "Denied!", Toast.LENGTH_SHORT).show();
                     if (index != temp.length - 1) {
                         index++;
@@ -304,4 +330,112 @@ public class Admin_AidProvider_Validation extends AppCompatActivity {
         Picasso.get().load(ID_proofs.get(index)).into(iv);
     }
     //---------
+
+    //3/27/2023
+    public void checkingIfStillValid()
+    {
+        dr.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+
+                dr.child(temp[index]).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().exists()) {
+                                DataSnapshot snaps = task.getResult();
+                                String gettingAdminApproved = String.valueOf(snaps.child("admin_approved").getValue());
+
+                                if(gettingAdminApproved.equals("false"))
+                                {
+                                    HashMap hm = new HashMap();
+                                    hm.put("admin_approved", true);
+
+                                    dr.child(temp[index]).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(Admin_AidProvider_Validation.this, "Verified!", Toast.LENGTH_SHORT).show();
+                                                if (index != temp.length-1) {
+                                                    index++;
+
+                                                    tv_fullname.setText(fullnames.get(index));
+                                                    tv_email.setText(emails.get(index));
+                                                    tv_address.setText(addresses.get(index));
+                                                    tv_contact.setText(contacts.get(index));
+                                                    tv_gender.setText(genders.get(index));
+                                                    tv_age.setText(ages.get(index));
+                                                    imageDisplayer();
+                                                } else {
+                                                    Toast.makeText(Admin_AidProvider_Validation.this, "No more Applicants!", Toast.LENGTH_SHORT).show();
+                                    /*
+                                    b.setEnabled(false);
+                                    b2.setBackgroundTintList(null);
+                                    b2.setEnabled(false);*/
+                                                    checker = false;
+                                                    tv_fullname.setText("------------------------");
+                                                    tv_email.setText("------------------------");
+                                                    tv_address.setText("------------------------");
+                                                    tv_contact.setText("------------------------");
+                                                    tv_gender.setText("------------------------");
+                                                    tv_age.setText("------------------------");
+                                                    tv_queue.setText("-----------");
+                                                    iv.setImageResource(R.drawable.mtfolder);
+                                                }
+
+
+                                            } else {
+                                                Toast.makeText(Admin_AidProvider_Validation.this, "Verification Failed!", Toast.LENGTH_SHORT).show();
+
+
+                                            }
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    Toast.makeText(Admin_AidProvider_Validation.this, "Applicant already approved by another admin!", Toast.LENGTH_SHORT).show();
+
+                                    if (index != temp.length-1) {
+                                        index++;
+
+                                        tv_fullname.setText(fullnames.get(index));
+                                        tv_email.setText(emails.get(index));
+                                        tv_address.setText(addresses.get(index));
+                                        tv_contact.setText(contacts.get(index));
+                                        tv_gender.setText(genders.get(index));
+                                        tv_age.setText(ages.get(index));
+                                        imageDisplayer();
+                                    } else {
+                                        Toast.makeText(Admin_AidProvider_Validation.this, "No more Applicants!", Toast.LENGTH_SHORT).show();
+                                    /*
+                                    b.setEnabled(false);
+                                    b2.setBackgroundTintList(null);
+                                    b2.setEnabled(false);*/
+                                        checker = false;
+                                        tv_fullname.setText("------------------------");
+                                        tv_email.setText("------------------------");
+                                        tv_address.setText("------------------------");
+                                        tv_contact.setText("------------------------");
+                                        tv_gender.setText("------------------------");
+                                        tv_age.setText("------------------------");
+                                        tv_queue.setText("-----------");
+                                        iv.setImageResource(R.drawable.mtfolder);
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    //---
 }

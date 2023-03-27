@@ -45,7 +45,7 @@ public class AidProviderClaimCert extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gettingProviderData();
-                if(status.equals("0")) {
+                /*if(status.equals("0")) {
                     if (amountOfCommends >= 50) {
                         updateProviderData();
                         Toast.makeText(AidProviderClaimCert.this, "Alright! Wait for 2-3 Working Days!", Toast.LENGTH_SHORT).show();
@@ -66,7 +66,7 @@ public class AidProviderClaimCert extends AppCompatActivity {
                 else
                 {
                     Toast.makeText(AidProviderClaimCert.this, "You can only claim once!",Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
@@ -96,6 +96,31 @@ public class AidProviderClaimCert extends AppCompatActivity {
                             amountOfCommends = Integer.parseInt(commendC);
 
                             commendsProvs.setText("Commends: "+commendC+"\n"+"Provisions: "+provC);
+
+                            //3/27/2023
+                            if(status.equals("0")) {
+                                if (amountOfCommends >= 50) {
+                                    updateProviderData();
+                                    Toast.makeText(AidProviderClaimCert.this, "Alright! Wait for 2-3 Working Days!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(AidProviderClaimCert.this, "Still fell short, work harder!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else if(status.equals("1"))
+                            {
+                                if(certificateURL.equals("")) {
+                                    Toast.makeText(AidProviderClaimCert.this, "You already requested, Please Wait!", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    //claiming occurs
+                                }
+
+                            }
+                            else
+                            {
+                                Toast.makeText(AidProviderClaimCert.this, "You can only claim once!",Toast.LENGTH_SHORT).show();
+                            }
+                            //----
 
                         }
                     }

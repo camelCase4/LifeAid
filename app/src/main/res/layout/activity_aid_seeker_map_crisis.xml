@@ -154,7 +154,7 @@
         android:background="@drawable/my_button"
 
         android:text="Call Now!"
-        android:layout_marginStart="190dp"
+        android:layout_marginStart="220dp"
         android:layout_marginTop = "670dp"
         android:backgroundTint="#ff6666"
         android:textColor="#f0f5f4"

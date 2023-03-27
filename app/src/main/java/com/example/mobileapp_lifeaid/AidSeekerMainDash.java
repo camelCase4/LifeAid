@@ -315,7 +315,14 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                                     ma.trustedcontact1 = String.valueOf(snaps.child("trustedphonenum_1").getValue());
                                     ma.trustedcontact2 = String.valueOf(snaps.child("trustedphonenum_2").getValue());
 
-                                    partnerSMS();
+                                    //partnerSMS();
+
+                                    //3/27/2023
+                                    if(!ma.trustedcontact1.equals(""))
+                                    {
+                                        partnerSMS();
+                                    }
+                                    //----
                                 }
                                 else
                                 {
