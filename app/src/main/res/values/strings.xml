@@ -13,6 +13,12 @@
         <item>Aid - Provider</item>
         <item>Admin</item>
     </string-array>
+    <!-- 3/28/2023 -->
+    <string-array name="LifeAidUsers">
+        <item>Aid-Seeker</item>
+        <item>Aid-Provider</item>
+    </string-array>
+    <!-- 3/28/2023 -->
     <string name="title_activity_maps_aid_provider">MapsActivityAidProvider</string>
     <string name="title_activity_aid_seeker_map_crisis">AidSeekerMapCrisis</string>
 </resources>

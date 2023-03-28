@@ -13,6 +13,8 @@ public class AdminMainDash extends AppCompatActivity {
     TextView tv,fortheprovider;
     ImageView iv,iv2;
 
+    TextView manageRecs;
+
     ImageView menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,17 @@ public class AdminMainDash extends AppCompatActivity {
         iv2 = findViewById(R.id.imageView19);
         fortheprovider = findViewById(R.id.tv_registration15);
         menu = (ImageView) findViewById(R.id.imageView18);
+        manageRecs = (TextView) findViewById(R.id.tv_registration17);
+
+        //3/28/2023
+        manageRecs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMainDash.this,AdminManageRecords.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         //3/28/2023
         menu.setOnClickListener(new View.OnClickListener() {
