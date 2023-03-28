@@ -133,7 +133,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 }
                 else
                 {
-                    Toast.makeText(AidSeekerMainDash.this,"Still Seeking Aid",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AidSeekerMainDash.this,"No Aid - Provider Yet!",Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -174,7 +174,7 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         final EditText edittext = new EditText(AdminManageRecords.this);
         alert.setMessage("Enter a user UID");
-        alert.setTitle("F i n d   U s e r");
+
 
         alert.setView(edittext);
 
