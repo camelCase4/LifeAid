@@ -113,6 +113,7 @@
 
         android:text="Grant Certificate"
 
+
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -197,6 +198,10 @@
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="14dp"
+
+                android:textColorLink="#0000FF"
+                android:scrollbars = "vertical"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.666"

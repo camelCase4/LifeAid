@@ -16,12 +16,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
 public class AidProviderClaimCert extends AppCompatActivity {
 
-    TextView commendsProvs;
+    TextView commendsProvs,downloadCert;
     ImageView certificate;
 
     MainActivity ma = new MainActivity();
@@ -31,6 +32,8 @@ public class AidProviderClaimCert extends AppCompatActivity {
     String status = ""; //1 = pwedi pa mo kuha, 2 = di na pwedi, zero ang initial
     String certificateURL = "";
 
+    boolean flag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,7 @@ public class AidProviderClaimCert extends AppCompatActivity {
 
         commendsProvs = (TextView) findViewById(R.id.commendsandprovisions);
         certificate = (ImageView) findViewById(R.id.cert);
+        downloadCert = (TextView) findViewById(R.id.dlcert);
 
         gettingProviderData();
 
@@ -45,6 +49,7 @@ public class AidProviderClaimCert extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gettingProviderData();
+                flag = true;
                 /*if(status.equals("0")) {
                     if (amountOfCommends >= 50) {
                         updateProviderData();
@@ -70,6 +75,13 @@ public class AidProviderClaimCert extends AppCompatActivity {
             }
         });
 
+        downloadCert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateProviderCannotClaim();
+                certificate.setImageResource(R.drawable.envelope);
+            }
+        });
 
 
     }
@@ -97,30 +109,35 @@ public class AidProviderClaimCert extends AppCompatActivity {
 
                             commendsProvs.setText("Commends: "+commendC+"\n"+"Provisions: "+provC);
 
-                            //3/27/2023
-                            if(status.equals("0")) {
-                                if (amountOfCommends >= 50) {
-                                    updateProviderData();
-                                    Toast.makeText(AidProviderClaimCert.this, "Alright! Wait for 2-3 Working Days!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(AidProviderClaimCert.this, "Still fell short, work harder!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            else if(status.equals("1"))
-                            {
-                                if(certificateURL.equals("")) {
-                                    Toast.makeText(AidProviderClaimCert.this, "You already requested, Please Wait!", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
-                                    //claiming occurs
-                                }
+                            if(flag) {
+                                //3/27/2023
+                                if (status.equals("0")) {
 
+                                    if (amountOfCommends >= 50) {
+                                        updateProviderData();
+                                        Toast.makeText(AidProviderClaimCert.this, "Alright! Wait for 2-3 Working Days!", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(AidProviderClaimCert.this, "Still fell short, work harder!", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                } else if (status.equals("1")) {
+                                        Toast.makeText(AidProviderClaimCert.this, "You already requested, Please Wait!", Toast.LENGTH_SHORT).show();
+
+
+                                } else if(status.equals("2")){
+                                    //3/28/2023
+                                    Toast.makeText(AidProviderClaimCert.this, "Congratulations! We are Proud of you!", Toast.LENGTH_LONG).show();
+                                    Picasso.get().load(certificateURL).into(certificate);
+                                    downloadCert.setVisibility(View.VISIBLE);
+                                    //--
+
+                                }
+                                else
+                                {
+                                    Toast.makeText(AidProviderClaimCert.this, "You can only claim a certificate once!", Toast.LENGTH_SHORT).show();
+                                }
+                                //----
                             }
-                            else
-                            {
-                                Toast.makeText(AidProviderClaimCert.this, "You can only claim once!",Toast.LENGTH_SHORT).show();
-                            }
-                            //----
 
                         }
                     }
@@ -152,6 +169,23 @@ public class AidProviderClaimCert extends AppCompatActivity {
             }
         });
     }
+    public void updateProviderCannotClaim()
+    {
+        HashMap hm = new HashMap();
+        hm.put("claimCert","3");
+
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+    }
+
+
 
 
 

@@ -52,7 +52,7 @@
         android:textColor="#0000FF"
         android:visibility="invisible"
 
-        android:textSize="10dp"
+        android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.948"
