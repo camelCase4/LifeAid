@@ -42,6 +42,22 @@
         app:layout_constraintVertical_bias="0.059" />
 
 
+    <TextView
+        android:id="@+id/srch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="S E A R C H    U I D"
+        android:textColor="#0000FF"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.976"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.120" />
+
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="62dp"
@@ -141,7 +157,7 @@
                 android:background="@android:color/darker_gray"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.330"
+                app:layout_constraintHorizontal_bias="0.310"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
@@ -166,7 +182,7 @@
                 android:text=""
                 android:textColor="@color/black"
                 android:textColorLink="#0000FF"
-                android:textSize="14dp"
+                android:textSize="13dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.571"

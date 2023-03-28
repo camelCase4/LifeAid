@@ -173,7 +173,7 @@
                 android:background="@android:color/darker_gray"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.330"
+                app:layout_constraintHorizontal_bias="0.305"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
@@ -197,7 +197,7 @@
                 android:layout_height="180dp"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="14dp"
+                android:textSize="13dp"
 
                 android:textColorLink="#0000FF"
                 android:scrollbars = "vertical"
