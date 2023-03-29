@@ -159,6 +159,9 @@
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="14dp"
+
+                android:textColorLink="#0000FF"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.571"

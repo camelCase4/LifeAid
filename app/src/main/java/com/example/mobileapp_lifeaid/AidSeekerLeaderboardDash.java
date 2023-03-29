@@ -5,11 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -229,6 +235,9 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
         String spaceForPoliceman = "            ";
         String spaceForDoctor = "               ";
         String space = "";
+
+
+
         for (int i = 0; i < provCount_uid.size(); i++) {
 
             if (Position.get(i).toLowerCase().equals("policeman")) {
@@ -241,8 +250,47 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
                 space = spaceForNurse;
             }
 
+            String test = provCount_uid.get(i).split(" ")[0];//3/29/2023
+
+            //String initialNums = String.format("%8s %19s %19s %23s \n\n",Integer.toString(i + 1),Position.get(i),provCount_uid.get(i).split(" ")[0],fnames.get(i));
             String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i) + "\n\n";
+            //3/29/2023
+
+            //SpannableString ss = new SpannableString(initialNums); 3/29/2023
             SpannableString spannableString = new SpannableString(initialNums);
+            ClickableSpan clickableSpan = new ClickableSpan() {
+
+                @Override
+                public void onClick(View textView) {
+
+                    /*Intent intent = new Intent(AidProviderHistory.this,GeneratedReportAidProvider.class);
+                    intent.putExtra("time_date", dt);
+                    intent.putExtra("action", rp);
+                    intent.putExtra("seeker_name", sn);
+                    intent.putExtra("location_place", placeOfIncident);
+                    intent.putExtra("feedback", feedback);
+                    intent.putExtra("seeker_uid", seekerID);
+                    startActivity(intent);*/
+                    Toast.makeText(AidSeekerLeaderboardDash.this,test,Toast.LENGTH_SHORT).show();
+
+                }
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setUnderlineText(false);
+                }
+            };
+            spannableString.setSpan(clickableSpan, 57, initialNums.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+            //leadProvs.append(spannableString);
+            leadProvs.setMovementMethod(LinkMovementMethod.getInstance());
+            leadProvs.setHighlightColor(Color.TRANSPARENT);
+
+
+            //--
+
+            //SpannableString spannableString = new SpannableString(initialNums); for a while lamangst
             if (i == 0) {
                 ForegroundColorSpan goldspan = new ForegroundColorSpan(Color.rgb(255, 215, 0));
                 spannableString.setSpan(goldspan, 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -258,8 +306,10 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
             }
             else
             {
-                leadProvs.append(initialNums);
+                leadProvs.append(spannableString);
             }
+
+
 
         }
     }
