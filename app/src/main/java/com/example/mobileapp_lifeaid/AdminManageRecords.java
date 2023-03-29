@@ -13,6 +13,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
+import android.text.method.ScrollingMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.AdapterView;
@@ -49,7 +50,7 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
         search = (TextView) findViewById(R.id.srch);
 
 
-
+        conts.setMovementMethod(new ScrollingMovementMethod());//3/29/2023
 
 
         Spinner sp = findViewById(R.id.sp_drop);
@@ -112,7 +113,7 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
                                     DataSnapshot snaps = task.getResult();
                                     String tempproviderUID = uid;
                                     String con_num = String.valueOf(snaps.child("phonenum").getValue());
-                                    String fullName = String.valueOf(snaps.child("fname").getValue()) +" "+String.valueOf(snaps.child("lname").getValue());
+
 
 
                                     String temp = con_num +"             "+tempproviderUID+"\n\n";
@@ -121,8 +122,13 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
 
                                         @Override
                                         public void onClick(View textView) {
+                                            //3/29/2023
 
+                                            Intent intent = new Intent(AdminManageRecords.this,AdminManageRecordsSecondPage.class);
+                                            intent.putExtra("UserUid", tempproviderUID);
+                                            startActivity(intent);
 
+                                            //---
                                         }
                                         @Override
                                         public void updateDrawState(TextPaint ds) {
@@ -181,7 +187,9 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
         alert.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 specifiedID = edittext.getText().toString();
-                Toast.makeText(AdminManageRecords.this, specifiedID, Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(AdminManageRecords.this,AdminManageRecordsSecondPage.class);
+                //startActivity(intent);
+                gettingSpecificProvider(specifiedID);
             }
         });
 
@@ -192,6 +200,80 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
         });
 
         alert.show();
+    }
+    //--
+
+    //3/29/2023
+    public void gettingSpecificProvider(String userid)
+    {
+        DatabaseReference drprov = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        drprov.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                if(datasnapshot.child(userid).exists()) {
+                    drprov.child(userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    DataSnapshot snaps = task.getResult();
+                                    chosenRole = "Aid-Provider";
+                                    Intent intent = new Intent(AdminManageRecords.this, AdminManageRecordsSecondPage.class);
+                                    intent.putExtra("UserUid", userid);
+                                    startActivity(intent);
+                                }
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    gettingSpecifiedSeeker(userid);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void gettingSpecifiedSeeker(String userid)
+    {
+        DatabaseReference drseek = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+        drseek.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                if(datasnapshot.child(userid).exists()) {
+                    drseek.child(userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    DataSnapshot snaps = task.getResult();
+                                    chosenRole = "Aid-Seeker";
+                                    Intent intent = new Intent(AdminManageRecords.this, AdminManageRecordsSecondPage.class);
+                                    intent.putExtra("UserUid", userid);
+                                    startActivity(intent);
+
+                                }
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    Toast.makeText(AdminManageRecords.this, "UID input does not exist!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
     //--
 }
