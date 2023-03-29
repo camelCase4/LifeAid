@@ -3,6 +3,8 @@ package com.example.mobileapp_lifeaid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -36,6 +38,7 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
 
 
     String CurrentUID = "";
+    String toDelete= "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +75,44 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
         gettingUserData(amr.chosenRole);
 
 
+        delbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                deletingData();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //do nothing
+                                break;
+
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(AdminManageRecordsSecondPage.this);
+                builder.setMessage("Are you really sure?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, misclicked",dialogClickListener).show();
+
+            }
+        });
 
 
     }
+    //3/29/2023
+    public void deletingData()
+    {
+        DatabaseReference drdel = FirebaseDatabase.getInstance().getReference(toDelete);
+        drdel.child(CurrentUID).setValue(null);//---deleting
+
+        Intent intent = new Intent(AdminManageRecordsSecondPage.this,AdminManageRecords.class);
+        startActivity(intent);
+    }
+    //---
 
     public void gettingUserData(String whatRole)
     {
@@ -104,6 +142,7 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
 
                                     if(whatRole.equals("Aid-Provider")) {
                                         formulaStars(commendcounT, provcounT);
+                                        toDelete = "Aid-Provider";
                                     }
                                     else
                                     {
@@ -111,6 +150,7 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
                                         commendcount.setText("---");
                                         provcount.setText("---");
                                         job.setText("---");
+                                        toDelete = "Aid-Seeker";
                                     }
 
                                     String historyType = (whatRole.equals("Aid-Seeker")?"AidSeekerHistory":"AidProviderHistory");
