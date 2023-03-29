@@ -86,6 +86,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
     String dateAndTime = ""; //checkpoint 3/3/2023
 
+    boolean gotLoc = false; //3/30/2023
+
     //checkpoint 3/4/2023
     String providerChecker = "";
     boolean isItFinal = false;
@@ -276,6 +278,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
                     //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
 
+
                         seekerloc();
                         yourlocstr.setText(showAddress(Double.toString(location.getLatitude()),Double.toString(location.getLongitude())));
                         gettingPath();
@@ -381,10 +384,13 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
     public void seekerloc()
     {
-        //3/15/2023 Latlng
-        seekerPosition = new LatLng(Double.parseDouble(apm.latiOfSeeker),Double.parseDouble(apm.longiOfSeeker));
-        mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location!")).showInfoWindow();
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition));
+
+            //3/15/2023 Latlng
+            seekerPosition = new LatLng(Double.parseDouble(apm.latiOfSeeker), Double.parseDouble(apm.longiOfSeeker));
+            mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location!")).showInfoWindow();
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition));
+
+
 
     }
 
