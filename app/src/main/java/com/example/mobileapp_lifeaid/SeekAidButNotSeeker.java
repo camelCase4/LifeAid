@@ -127,6 +127,7 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
                                 case DialogInterface.BUTTON_POSITIVE:
                                     ratingsPrompt();
                                     cleansingData();
+                                    mp.gotLoc = false; // 3/30/2023
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:

@@ -44,6 +44,9 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
 
 
+    //3/30/2023
+    public static boolean gotLoc = false;
+    //---
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +120,14 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        latitudePos = Double.toString(location.getLatitude());
-        longitudePos = Double.toString(location.getLongitude());
+        if(!gotLoc) { //added if clause 3/30/2023
+            gotLoc = true;
 
-        addingToSeekerList();
+            latitudePos = Double.toString(location.getLatitude());
+            longitudePos = Double.toString(location.getLongitude());
+
+            addingToSeekerList();
+        }
 
     }
 

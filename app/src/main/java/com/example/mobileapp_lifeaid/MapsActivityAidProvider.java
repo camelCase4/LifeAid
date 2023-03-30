@@ -31,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mobileapp_lifeaid.databinding.ActivityMapsAidProviderBinding;
 import com.google.android.gms.maps.model.Polyline;
@@ -129,6 +130,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     //3/26/2023
     boolean ifcancelled = false;
     //---
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,7 +275,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 try {
-                        latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                    mMap.clear(); // 3/30/2023
+                    latLng = new LatLng(location.getLatitude(),location.getLongitude());
                         //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                     mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
