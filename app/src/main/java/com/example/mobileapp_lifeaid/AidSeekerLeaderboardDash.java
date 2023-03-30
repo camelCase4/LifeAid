@@ -253,8 +253,12 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
             String test = provCount_uid.get(i).split(" ")[0];//3/29/2023
 
             //String initialNums = String.format("%8s %19s %19s %23s \n\n",Integer.toString(i + 1),Position.get(i),provCount_uid.get(i).split(" ")[0],fnames.get(i));
-            String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i) + "\n\n";
+       //original     //String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i) + "\n\n";
             //3/29/2023
+
+            String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i);
+
+
 
             //SpannableString ss = new SpannableString(initialNums); 3/29/2023
             SpannableString spannableString = new SpannableString(initialNums);
@@ -285,7 +289,7 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
 
             //leadProvs.append(spannableString);
             leadProvs.setMovementMethod(LinkMovementMethod.getInstance());
-            leadProvs.setHighlightColor(Color.TRANSPARENT);
+            leadProvs.setHighlightColor(Color.BLUE);
 
 
             //--
@@ -295,18 +299,25 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
                 ForegroundColorSpan goldspan = new ForegroundColorSpan(Color.rgb(255, 215, 0));
                 spannableString.setSpan(goldspan, 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 leadProvs.append(spannableString);
+                leadProvs.append("\n\n");//3/30/2023
+
             } else if (i == 1) {
                 ForegroundColorSpan silverspan = new ForegroundColorSpan(Color.rgb(192, 192, 192));
                 spannableString.setSpan(silverspan, 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 leadProvs.append(spannableString);
+                leadProvs.append("\n\n");//3/30/2023
+
             } else if(i == 2){
                 ForegroundColorSpan bronzespan = new ForegroundColorSpan(Color.rgb(205, 127, 50));
                 spannableString.setSpan(bronzespan, 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 leadProvs.append(spannableString);
+                leadProvs.append("\n\n");//3/30/2023
+
             }
             else
             {
                 leadProvs.append(spannableString);
+                leadProvs.append("\n\n");//3/30/2023
             }
 
 

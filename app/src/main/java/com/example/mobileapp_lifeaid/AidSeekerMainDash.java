@@ -65,6 +65,10 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     public static final int MENU_REQUEST_CODE = 1;
     //--
 
+    //3/30/2023
+    public static boolean foundIt = false;
+    //----
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -240,12 +244,25 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     //checkpoint 2/22/2023
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        theLatInStr = Double.toString(location.getLatitude());
+        /*theLatInStr = Double.toString(location.getLatitude());
         theLongInStr = Double.toString(location.getLongitude());
 
 
         storing();
-        smsSending();
+        smsSending();*/
+
+        //3/30/2023
+        if(!foundIt)
+        {
+            foundIt = true;
+            theLatInStr = Double.toString(location.getLatitude());
+            theLongInStr = Double.toString(location.getLongitude());
+
+
+            storing();
+            smsSending();
+        }
+        //---
 
 
 

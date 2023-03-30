@@ -132,6 +132,13 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     int compareInstance = 2;
     //----
 
+    //3/30/2023
+    boolean gotLoc = false;
+    boolean gotLocInFire = false;
+    boolean gotLocInHealth = false;
+    boolean gotLocInCrime = false;
+    //----
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -321,12 +328,25 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 try {
-                    latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                    /*latLng = new LatLng(location.getLatitude(),location.getLongitude());
                     //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                     mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
-                    showAddress();//3/16/2023
+                    showAddress();//3/16/2023*/ //original commented on 30
+
+                    //3/30/2023
+                    if(!gotLoc)
+                    {
+                        gotLoc = true;
+                        latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                        //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
+                        mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
+                        showAddress();//3/16/2023
+                    }
+                    //----
 
 
 
@@ -795,6 +815,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 try {
+                    mMap.clear(); // 3/30/2023
                     latLng = new LatLng(location.getLatitude(),location.getLongitude());
                     //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                     mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
@@ -829,6 +850,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 try {
+                    mMap.clear(); // 3/30/2023
                     latLng = new LatLng(location.getLatitude(),location.getLongitude());
                     //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                     mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
@@ -862,6 +884,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 try {
+                    mMap.clear(); // 3/30/2023
                     latLng = new LatLng(location.getLatitude(),location.getLongitude());
                     //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                     mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
