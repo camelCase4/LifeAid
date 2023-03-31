@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,9 +43,15 @@ public class AidProviderMainDash extends AppCompatActivity {
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
 
-    boolean findSeekerClicked = false, seekerfound = false;
+    boolean findSeekerClicked = true, seekerfound = false;
+    //3/31/2023 ge ilisan nako ang findsekersclicked from false to true;
 
     public static String latiOfSeeker = "",longiOfSeeker = "";
+
+    //3/31/2023
+    CountDownTimer cdFind;
+    boolean ifreadytoclicktower = false;
+    //---
 
 
 
@@ -69,7 +78,17 @@ public class AidProviderMainDash extends AppCompatActivity {
 
         latiOfSeeker = "";
         longiOfSeeker = "";
-        checkForSeekers();
+        //checkForSeekers(); commented on 3/31/2023
+
+        startingTheSearch();
+
+
+
+
+
+
+
+
 
         //checkpoint 3/5/2023
         //tap.setText("T A P   T O   F I N D   S E E K E R S");
@@ -106,8 +125,19 @@ public class AidProviderMainDash extends AppCompatActivity {
         alarmimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkForSeekers();
-                findSeekerClicked = true;
+                //checkForSeekers(); //commented on 3/31/2023
+
+                //3/31/2023
+                if(ifreadytoclicktower) {
+                    startingTheSearch();
+                    findSeekerClicked = true;
+                }
+                else
+                {
+                    Toast.makeText(AidProviderMainDash.this,"Still Searching...",Toast.LENGTH_SHORT).show();
+                }
+                //---
+                //findSeekerClicked = true;//commented on 3/31/2023
             }
         });
 
@@ -215,6 +245,9 @@ public class AidProviderMainDash extends AppCompatActivity {
                         als.setText("ALERT FOUND!");
                         alarm2.setImageResource(R.drawable.redsiren);
                         seekerfound = true;
+                        //3/31/2023
+                        cdFind.cancel();
+                        //---
                         break;
                     }
 
@@ -224,8 +257,10 @@ public class AidProviderMainDash extends AppCompatActivity {
                 if(latiOfSeeker.equals("") && findSeekerClicked)
                 {
                     findSeekerClicked = false;
-                    Toast.makeText(AidProviderMainDash.this, "No seekers for now!", Toast.LENGTH_SHORT).show();
-
+                    //Toast.makeText(AidProviderMainDash.this, "No seekers for now!", Toast.LENGTH_SHORT).show(); commented on 31,2023
+                    //3/31/2023
+                    tap.setText("S E A R C H I N G . . .");
+                    //---
                 }
                 //-----
 
@@ -237,5 +272,51 @@ public class AidProviderMainDash extends AppCompatActivity {
             }
         });
     }
+
+    //3/31/2023
+    public void askingForExtension()
+    {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        startingTheSearch();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        Toast.makeText(AidProviderMainDash.this,"Just tap tower when you are ready again!",Toast.LENGTH_SHORT).show();
+                        ifreadytoclicktower = true;
+                        cdFind.cancel();
+                        tap.setText("T A P   T O   F I N D   S E E K E R S");
+                        break;
+
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(AidProviderMainDash.this);
+        builder.setMessage("There are no Aid-Seekers for now, continue searching?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+    }
+
+    public void startingTheSearch()
+    {
+        //3/31/2023
+        cdFind = new CountDownTimer(300000,1000) {
+            @Override
+            public void onTick(long l) {
+                checkForSeekers();
+
+            }
+
+            @Override
+            public void onFinish() {
+                askingForExtension();
+            }
+        }.start();
+        //---
+    }
+
+    //----
 
 }
