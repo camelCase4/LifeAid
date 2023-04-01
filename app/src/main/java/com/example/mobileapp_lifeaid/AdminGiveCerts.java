@@ -144,6 +144,7 @@ public class AdminGiveCerts extends AppCompatActivity {
                                                 clickedUID = true;
                                                 //Toast.makeText(AdminGiveCerts.this,providerUID,Toast.LENGTH_SHORT).show();
 
+                                                
                                             }
                                             @Override
                                             public void updateDrawState(TextPaint ds) {
