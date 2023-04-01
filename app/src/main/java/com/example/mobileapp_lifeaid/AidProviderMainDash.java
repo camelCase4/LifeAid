@@ -248,6 +248,10 @@ public class AidProviderMainDash extends AppCompatActivity {
                         //3/31/2023
                         cdFind.cancel();
                         //---
+
+                        //4/1/2023
+                        findSeekerClicked = true;
+                        //---
                         break;
                     }
 

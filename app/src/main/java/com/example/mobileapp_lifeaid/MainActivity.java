@@ -198,12 +198,14 @@ public class MainActivity extends AppCompatActivity {
                                                         else
                                                         {
                                                             Toast.makeText(MainActivity.this,"Failed to read!",Toast.LENGTH_SHORT).show();
+                                                            progressBarlog.setVisibility(View.INVISIBLE); //4/1/2023
 
                                                         }
                                                     }
                                                     else
                                                     {
                                                         Toast.makeText(MainActivity.this,"Failed!",Toast.LENGTH_SHORT).show();
+                                                        progressBarlog.setVisibility(View.INVISIBLE);//4/1/2023
 
                                                     }
                                                 }
@@ -237,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 else
                 {
                     Toast.makeText(MainActivity.this, "Failed To login!",Toast.LENGTH_LONG).show();
+                    progressBarlog.setVisibility(View.INVISIBLE);//4/1/2023
 
                 }
             }
