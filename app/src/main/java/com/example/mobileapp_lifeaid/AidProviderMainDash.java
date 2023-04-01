@@ -53,7 +53,9 @@ public class AidProviderMainDash extends AppCompatActivity {
     boolean ifreadytoclicktower = false;
     //---
 
-
+    //4/2/2023
+    int countertime = 0;
+    //---
 
 
     @Override
@@ -263,7 +265,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                     findSeekerClicked = false;
                     //Toast.makeText(AidProviderMainDash.this, "No seekers for now!", Toast.LENGTH_SHORT).show(); commented on 31,2023
                     //3/31/2023
-                    tap.setText("S E A R C H I N G . . .");
+                    tap.setText("S E A R C H I N G   S E E K E R S ");
                     //---
                 }
                 //-----
@@ -305,11 +307,33 @@ public class AidProviderMainDash extends AppCompatActivity {
 
     public void startingTheSearch()
     {
+
         //3/31/2023
         cdFind = new CountDownTimer(300000,1000) {
             @Override
             public void onTick(long l) {
                 checkForSeekers();
+                //4/2/2023
+                countertime++;
+                if(countertime == 1)
+                {
+                    tap.setText("S E A R C H I N G   S E E K E R S ");
+                }
+                else if(countertime == 2)
+                {
+                    tap.setText("S E A R C H I N G   S E E K E R S . ");
+                }
+                else if(countertime == 3)
+                {
+                    tap.setText("S E A R C H I N G   S E E K E R S . . ");
+
+                }
+                else
+                {
+                    tap.setText("S E A R C H I N G   S E E K E R S . . . ");
+                    countertime = 0;
+                }
+                //---
 
             }
 
