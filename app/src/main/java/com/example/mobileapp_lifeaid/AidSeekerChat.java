@@ -100,7 +100,7 @@ public class AidSeekerChat extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             switch (i) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    asm.foundIt = false; //3/30/2023
+                                    //asm.foundIt = false; //3/30/2023 commented on 4/2/2023
                                     savingToHistory();
                                     ratingsPrompt();
                                     cleansingData();

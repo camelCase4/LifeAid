@@ -66,8 +66,12 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     //--
 
     //3/30/2023
-    public static boolean foundIt = false;
+    //public static boolean foundIt = false;
     //----
+
+    //4/2/2023
+    boolean ifusertap = false;
+    //---
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +153,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 presscounter++;
                 if(presscounter >= 2) {
                     Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                    ifusertap = true; //4/2/2023
                     getLoc();
                     presscounter = 0;
                     //3/1/2023 checkpoint
@@ -171,6 +176,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 if(presscounter >= 2)
                 {
                     Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                    ifusertap = true; //4/2/2023
                     getLoc();
                     presscounter = 0;
                     whatjob = 1;
@@ -188,6 +194,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 if(presscounter >= 2)
                 {
                     Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                    ifusertap = true; //4/2/2023
                     getLoc();
                     presscounter = 0;
                     whatjob = 2;
@@ -205,6 +212,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 if(presscounter >= 2)
                 {
                     Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                    ifusertap = true; //4/2/2023
                     getLoc();
                     presscounter = 0;
                     whatjob = 3;
@@ -252,7 +260,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         smsSending();*/
 
         //3/30/2023
-        if(!foundIt)
+        /*if(!foundIt)
         {
             foundIt = true;
             theLatInStr = Double.toString(location.getLatitude());
@@ -261,8 +269,20 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
             storing();
             smsSending();
-        }
+        }*/
         //---
+
+        //4/2/2023
+        if(ifusertap)
+        {
+            ifusertap = false;
+            theLatInStr = Double.toString(location.getLatitude());
+            theLongInStr = Double.toString(location.getLongitude());
+
+            storing();
+            smsSending();
+        }
+        //----
 
 
 

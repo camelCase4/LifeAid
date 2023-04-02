@@ -139,6 +139,9 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     boolean gotLocInCrime = false;
     //----
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -333,7 +336,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                     mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
-                    showAddress();//3/16/2023*/ //original commented on 30
+                    showAddress();//3/16/2023*/ //original
 
                     //3/30/2023
                     if(!gotLoc)
@@ -345,8 +348,13 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
                         showAddress();//3/16/2023
+
+
                     }
                     //----
+
+
+
 
 
 
@@ -368,6 +376,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
         {
 
         }
+
         //---
 
         //3/15/2023
@@ -632,28 +641,44 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             }
         });
 
-        LatLng fireStationPosition;
-        occur++;
-        for(int i = 0; i < stationnames.size(); i++)
-        {
-            fireStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)),Double.parseDouble(stationlongs.get(i)));
-            mMap.addMarker(new MarkerOptions().position(fireStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-            //3/15/2023
-            if(occur > compareInstance) {
-                distanceBetween.add(distance(latLng.latitude, latLng.longitude, Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i))));
+        try {
+
+
+            LatLng fireStationPosition;
+            occur++;
+            for (int i = 0; i < stationnames.size(); i++) {
+                fireStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i)));
+                //mMap.addMarker(new MarkerOptions().position(fireStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+                //4/2/2023
+                if(emergency.getText().toString().contains("Fire"))
+                {
+                    mMap.addMarker(new MarkerOptions().position(fireStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                }
+                //--
+
+
+                //3/15/2023
+                if (occur > compareInstance) {
+                    distanceBetween.add(distance(latLng.latitude, latLng.longitude, Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i))));
+                }
+                //----
             }
-            //----
+
+            //3/15/2023
+            if (occur > compareInstance) {
+                int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
+
+                //Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+                near.setText(stationnames.get(nearSilingan));//3/16/2023
+                occur = 0;
+                compareInstance = 1;
+                distanceBetween.clear();
+            }
         }
-
-        //3/15/2023
-        if(occur > compareInstance) {
-            int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
-
-            //Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
-            near.setText(stationnames.get(nearSilingan));//3/16/2023
-            occur = 0;
-            compareInstance = 1;
-            distanceBetween.clear();
+        catch (Exception e)
+        {
+            markerDisplayerFire();
         }
         //----
 
@@ -712,27 +737,42 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             }
         });
 
-        occur++;
-        LatLng policeStationPosition;
-        for(int i = 0; i < stationnames.size(); i++)
-        {
-            policeStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)),Double.parseDouble(stationlongs.get(i)));
-            mMap.addMarker(new MarkerOptions().position(policeStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-            //3/15/2023
-            if(occur > compareInstance) {
-                distanceBetween.add(distance(latLng.latitude, latLng.longitude, Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i))));
-            }
-            //----
-        }
-        //3/15/2023
-        if(occur > compareInstance) {
-            int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
+        try { //added try catch 4/2/2023
 
-            //Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
-            near.setText(stationnames.get(nearSilingan));//3/16/2023
-            occur = 0;
-            compareInstance = 1;
-            distanceBetween.clear();
+            occur++;
+            LatLng policeStationPosition;
+            for (int i = 0; i < stationnames.size(); i++) {
+                policeStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i)));
+                //mMap.addMarker(new MarkerOptions().position(policeStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
+                //4/2/2023
+                if(emergency.getText().toString().contains("Crime"))
+                {
+                    mMap.addMarker(new MarkerOptions().position(policeStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                }
+                //--
+
+
+                //3/15/2023
+                if (occur > compareInstance) {
+                    distanceBetween.add(distance(latLng.latitude, latLng.longitude, Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i))));
+                }
+                //----
+            }
+            //3/15/2023
+            if (occur > compareInstance) {
+                int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
+
+                //Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+                near.setText(stationnames.get(nearSilingan));//3/16/2023
+                occur = 0;
+                compareInstance = 1;
+                distanceBetween.clear();
+            }
+        }
+        catch (Exception e)
+        {
+            markerDisplayCrime();
         }
         //----
     }
@@ -784,27 +824,42 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             }
         });
 
-        occur++;
-        LatLng healthStationPosition;
-        for(int i = 0; i < stationnames.size(); i++)
-        {
-            healthStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)),Double.parseDouble(stationlongs.get(i)));
-            mMap.addMarker(new MarkerOptions().position(healthStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-            //3/15/2023
-            if(occur > compareInstance) {
-                distanceBetween.add(distance(latLng.latitude, latLng.longitude, Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i))));
-            }
-            //----
-        }
-        //3/15/2023
-        if(occur > compareInstance) {
-            int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
+        try {//added try catch 4/2/2023
 
-            //Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
-            near.setText(stationnames.get(nearSilingan));//3/16/2023
-            occur = 0;
-            compareInstance = 1;
-            distanceBetween.clear();
+            occur++;
+            LatLng healthStationPosition;
+            for (int i = 0; i < stationnames.size(); i++) {
+                healthStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i)));
+                //mMap.addMarker(new MarkerOptions().position(healthStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+                //4/2/2023
+                if(emergency.getText().toString().contains("Health"))
+                {
+                    mMap.addMarker(new MarkerOptions().position(healthStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                }
+                //--
+
+
+                //3/15/2023
+                if (occur > compareInstance) {
+                    distanceBetween.add(distance(latLng.latitude, latLng.longitude, Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i))));
+                }
+                //----
+            }
+            //3/15/2023
+            if (occur > compareInstance) {
+                int nearSilingan = distanceBetween.indexOf(Collections.min(distanceBetween));
+
+                //Toast.makeText(AidSeekerMapCrisis.this, stationnames.get(nearSilingan), Toast.LENGTH_SHORT).show();
+                near.setText(stationnames.get(nearSilingan));//3/16/2023
+                occur = 0;
+                compareInstance = 1;
+                distanceBetween.clear();
+            }
+        }
+        catch (Exception e)
+        {
+            markerDisplayHealth();
         }
         //----
 
@@ -815,14 +870,22 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 try {
-                    mMap.clear(); // 3/30/2023
-                    latLng = new LatLng(location.getLatitude(),location.getLongitude());
-                    //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
-                    mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
-                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
+                    //mMap.clear(); // 3/30/2023
 
-                    displayPlaceFirestation();
+                    //4/2/2023
+                    if(emergency.getText().toString().contains("Fire")) {
+                        mMap.clear();
+
+                        //---
+
+                        latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
+                        mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+
+                        displayPlaceFirestation();
+                    }
 
 
 
@@ -850,14 +913,22 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 try {
-                    mMap.clear(); // 3/30/2023
-                    latLng = new LatLng(location.getLatitude(),location.getLongitude());
-                    //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
-                    mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
-                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
+                    //mMap.clear(); // 3/30/2023
+                    //4/2/2023
+                    if(emergency.getText().toString().contains("Crime")) {
+                        mMap.clear();
 
-                    displayPlacePoliceStation();
+                        //---
+
+                        latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
+                        mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+
+                        displayPlacePoliceStation();
+                    }
+
 
 
 
@@ -884,14 +955,23 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 try {
-                    mMap.clear(); // 3/30/2023
-                    latLng = new LatLng(location.getLatitude(),location.getLongitude());
-                    //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
-                    mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
-                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
+                    //mMap.clear(); // 3/30/2023
 
-                    displayPlaceHealthStation();
+                    //4/2/2023
+                    if(emergency.getText().toString().contains("Health")) {
+                        mMap.clear();
+
+                        //---
+
+                        latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
+                        mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+
+                        displayPlaceHealthStation();
+                    }
+
 
 
 
