@@ -213,24 +213,36 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                 space = spaceForNurse;
             }
 
-            String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i) + "\n\n";
+            //String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i) + "\n\n";
+            //4/2/2023
+            String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i);
+
+            //---
+
             SpannableString spannableString = new SpannableString(initialNums);
             if (i == 0) {
                 ForegroundColorSpan goldspan = new ForegroundColorSpan(Color.rgb(255, 215, 0));
                 spannableString.setSpan(goldspan, 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 leadProvs.append(spannableString);
+                leadProvs.append("\n\n"); //4/2/2023
             } else if (i == 1) {
                 ForegroundColorSpan silverspan = new ForegroundColorSpan(Color.rgb(192, 192, 192));
                 spannableString.setSpan(silverspan, 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 leadProvs.append(spannableString);
+                leadProvs.append("\n\n"); //4/2/2023
+
             } else if(i == 2){
                 ForegroundColorSpan bronzespan = new ForegroundColorSpan(Color.rgb(205, 127, 50));
                 spannableString.setSpan(bronzespan, 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 leadProvs.append(spannableString);
+                leadProvs.append("\n\n"); //4/2/2023
+
             }
             else
             {
                 leadProvs.append(initialNums);
+                leadProvs.append("\n\n"); //4/2/2023
+
             }
 
         }

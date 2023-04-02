@@ -133,7 +133,10 @@ public class AdminGiveCerts extends AppCompatActivity {
                                        String fullName = String.valueOf(snaps.child("fname").getValue()) +" "+String.valueOf(snaps.child("lname").getValue());
 
 
-                                       String temp = con_num +"             "+tempproviderUID+"\n\n";
+                                       //String temp = con_num +"             "+tempproviderUID+"\n\n"; original
+                                       //4/2/2023
+                                        String temp = con_num +"             "+tempproviderUID;
+                                        //---
                                         SpannableString ss = new SpannableString(temp);
                                         ClickableSpan clickableSpan = new ClickableSpan() {
 
@@ -157,6 +160,7 @@ public class AdminGiveCerts extends AppCompatActivity {
 
 
                                         cont.append(ss);
+                                        cont.append("\n\n"); //4/2/2023
                                         cont.setMovementMethod(LinkMovementMethod.getInstance());
                                         cont.setHighlightColor(Color.TRANSPARENT);
 

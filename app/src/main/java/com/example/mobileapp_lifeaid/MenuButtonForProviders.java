@@ -48,6 +48,10 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
     public static boolean gotLoc = false;
     //---
 
+    //4/2/2023
+    boolean seekClicked = false;
+    //---
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +88,7 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (i){
                     case DialogInterface.BUTTON_POSITIVE:
+                        seekClicked = true; // 4/2/2023
                         seekAid();
                         Toast.makeText(MenuButtonForProviders.this, "Please Wait!", Toast.LENGTH_SHORT).show();//3/26/2023
                         break;
@@ -120,14 +125,24 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        if(!gotLoc) { //added if clause 3/30/2023
+       /* if(!gotLoc) { //added if clause 3/30/2023
             gotLoc = true;
 
             latitudePos = Double.toString(location.getLatitude());
             longitudePos = Double.toString(location.getLongitude());
 
             addingToSeekerList();
+        }*/
+
+        //4/2/2023
+        if(seekClicked) {
+            seekClicked = false;
+            latitudePos = Double.toString(location.getLatitude());
+            longitudePos = Double.toString(location.getLongitude());
+
+            addingToSeekerList();
         }
+        //----
 
     }
 

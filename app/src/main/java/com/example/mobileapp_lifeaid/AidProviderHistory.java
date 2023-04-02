@@ -93,7 +93,10 @@ public class AidProviderHistory extends AppCompatActivity {
                                         }
                                         //historyContents.append("   "+dt + "             "+rp+space+sn+"\n\n");
                                         //3/22/2023
-                                        String temp = "   "+dt+"             "+rp+space+sn+"\n\n";
+                                        //String temp = "   "+dt+"             "+rp+space+sn+"\n\n"; orig
+                                        //4/2/2023
+                                        String temp = "   "+dt+"             "+rp+space+sn;
+                                        //---
                                         SpannableString ss = new SpannableString(temp);
                                         ClickableSpan clickableSpan = new ClickableSpan() {
 
@@ -128,6 +131,7 @@ public class AidProviderHistory extends AppCompatActivity {
                                         textView.setHighlightColor(Color.TRANSPARENT);*/
 
                                         historyContents.append(ss);
+                                        historyContents.append("\n\n");
                                         historyContents.setMovementMethod(LinkMovementMethod.getInstance());
                                         historyContents.setHighlightColor(Color.TRANSPARENT);
 

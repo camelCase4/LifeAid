@@ -289,7 +289,7 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
 
             //leadProvs.append(spannableString);
             leadProvs.setMovementMethod(LinkMovementMethod.getInstance());
-            leadProvs.setHighlightColor(Color.BLUE);
+            leadProvs.setHighlightColor(Color.TRANSPARENT);
 
 
             //--

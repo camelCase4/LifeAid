@@ -116,7 +116,10 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
 
 
 
-                                    String temp = con_num +"             "+tempproviderUID+"\n\n";
+                                    //String temp = con_num +"             "+tempproviderUID+"\n\n"; original
+                                    //4/2/2023
+                                    String temp = con_num +"             "+tempproviderUID;
+                                    //---
                                     SpannableString ss = new SpannableString(temp);
                                     ClickableSpan clickableSpan = new ClickableSpan() {
 
@@ -140,6 +143,7 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
 
 
                                     conts.append(ss);
+                                    conts.append("\n\n");
                                     conts.setMovementMethod(LinkMovementMethod.getInstance());
                                     conts.setHighlightColor(Color.TRANSPARENT);
 
