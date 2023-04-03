@@ -58,6 +58,10 @@ public class AidProviderMainDash extends AppCompatActivity {
     //---
 
 
+    //4/4/2023
+    public static final int MENU_REQUEST_CODE = 1;
+    //--
+
 
 
     @Override
@@ -105,7 +109,8 @@ public class AidProviderMainDash extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AidProviderMainDash.this,MenuButtonForProviders.class);
-                startActivity(intent);
+                //startActivity(intent);
+                startActivityForResult(intent,MENU_REQUEST_CODE);//4/4/2023
             }
         });
         //----
@@ -281,6 +286,15 @@ public class AidProviderMainDash extends AppCompatActivity {
             }
         });
     }
+    //4/4/2023
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MENU_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Handle the result
+            // ...
+        }
+    }
+    //---
 
     //3/31/2023
     public void askingForExtension()

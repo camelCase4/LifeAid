@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,24 +19,61 @@ import com.google.firebase.database.ValueEventListener;
 
 public class AidSeekerHistory extends AppCompatActivity {
 
-    TextView historyContents;
+    TextView historyContents,sequenceOftype;
 
 
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("AidSeekerHistory");
     MainActivity ma = new MainActivity();
 
+    int sequence = 0, determiner = 0; //4/3/2023
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aid_seeker_history);
 
         historyContents = (TextView) findViewById(R.id.contents);
+        sequenceOftype = (TextView) findViewById(R.id.seq);
 
 
 
         historyContents.setMovementMethod(new ScrollingMovementMethod());
 
         gettingData();
+
+        //4/3/2023
+        sequenceOftype.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sequence++;
+                if(sequence == 0)
+                {
+                    sequenceOftype.setText("C R I M E   > > >");
+                }
+                else if(sequence == 1)
+                {
+                    sequenceOftype.setText("F I R E   > > >");
+                }
+                else if(sequence == 2)
+                {
+                    sequenceOftype.setText("H E A L T H   > > >");
+                }
+                else
+                {
+                    sequenceOftype.setText("A L L   > > >");
+                }
+                try {
+                    gettingData();
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(AidSeekerHistory.this,"Woah, Slow down!",Toast.LENGTH_SHORT).show();
+                    gettingData();
+                }
+            }
+        });
+        //---
+
+
     }
     public void gettingData()
     {
@@ -55,14 +93,77 @@ public class AidSeekerHistory extends AppCompatActivity {
                                 if(task.getResult().exists())
                                 {
                                     DataSnapshot snaps = task.getResult();
-                                    if(String.valueOf(snaps.child("seekeruid").getValue()).equals(ma.userid)) {
+                                    /*if(String.valueOf(snaps.child("seekeruid").getValue()).equals(ma.userid)) {
                                         String dt = String.valueOf(snaps.child("timedate").getValue()).substring(4,16);
                                         String et = String.valueOf(snaps.child("emergencytype").getValue());
                                         String pn = String.valueOf(snaps.child("providername").getValue());
 
                                         historyContents.append("   "+dt + "                  "+et+"                  "+pn+"\n\n");
 
+                                    }*/ // original
+
+                                    //4/3/2023
+                                    determiner++;
+                                    String emtype = String.valueOf(snaps.child("emergencytype").getValue());
+                                    if(sequence == 0)
+                                    {
+                                        if(emtype.equals("All"))
+                                        {
+                                            if(String.valueOf(snaps.child("seekeruid").getValue()).equals(ma.userid)) {
+                                                String dt = String.valueOf(snaps.child("timedate").getValue()).substring(4,16);
+                                                String et = String.valueOf(snaps.child("emergencytype").getValue());
+                                                String pn = String.valueOf(snaps.child("providername").getValue());
+
+                                                historyContents.append("   "+dt + "                  "+et+"                       "+pn+"\n\n");
+
+                                            }
+                                        }
                                     }
+                                    else if(sequence == 1)
+                                    {
+                                        if(emtype.equals("Crime"))
+                                        {
+                                            if(String.valueOf(snaps.child("seekeruid").getValue()).equals(ma.userid)) {
+                                                String dt = String.valueOf(snaps.child("timedate").getValue()).substring(4,16);
+                                                String et = String.valueOf(snaps.child("emergencytype").getValue());
+                                                String pn = String.valueOf(snaps.child("providername").getValue());
+
+                                                historyContents.append("   "+dt + "               "+et+"                  "+pn+"\n\n");
+
+                                            }
+                                        }
+                                    }
+                                    else if(sequence == 2)
+                                    {
+                                        if(emtype.equals("Fire"))
+                                        {
+                                            if(String.valueOf(snaps.child("seekeruid").getValue()).equals(ma.userid)) {
+                                                String dt = String.valueOf(snaps.child("timedate").getValue()).substring(4,16);
+                                                String et = String.valueOf(snaps.child("emergencytype").getValue());
+                                                String pn = String.valueOf(snaps.child("providername").getValue());
+
+                                                historyContents.append("   "+dt + "                  "+et+"                  "+pn+"\n\n");
+
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        sequence = -1;
+                                        if(emtype.equals("Health"))
+                                        {
+                                            if(String.valueOf(snaps.child("seekeruid").getValue()).equals(ma.userid)) {
+                                                String dt = String.valueOf(snaps.child("timedate").getValue()).substring(4,16);
+                                                String et = String.valueOf(snaps.child("emergencytype").getValue());
+                                                String pn = String.valueOf(snaps.child("providername").getValue());
+
+                                                historyContents.append("   "+dt + "               "+et+"                  "+pn+"\n\n");
+
+                                            }
+                                        }
+
+                                    }
+                                    //---
 
                                 }
                                 else

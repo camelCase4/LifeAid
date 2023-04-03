@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,7 +35,8 @@ import java.util.Comparator;
 
 public class MenuButtonForProviders extends AppCompatActivity implements LocationListener {
 
-    Button aidAsking,claim;
+    Button aidAsking,claim,editAcc,faqs,lgout;
+    ImageView bk;
     public static String latitudePos, longitudePos;
     LocationManager lm;
 
@@ -60,6 +62,46 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
 
         aidAsking = (Button) findViewById(R.id.askaid);
         claim = (Button) findViewById(R.id.claimcert);
+        //4/3/2023
+        editAcc = (Button) findViewById(R.id.editacc);
+        faqs = (Button) findViewById(R.id.faqbtn);
+        lgout = (Button) findViewById(R.id.loginbutton3);
+        bk = (ImageView) findViewById(R.id.back);
+
+
+        bk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
+        lgout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuButtonForProviders.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        faqs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuButtonForProviders.this,FAQPage.class);
+                startActivity(intent);
+            }
+        });
+
+        editAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuButtonForProviders.this,UserEditingPage.class);
+                startActivity(intent);
+            }
+        });
+        //--
 
 
         claim.setOnClickListener(new View.OnClickListener() {
