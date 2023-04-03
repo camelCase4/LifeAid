@@ -58,6 +58,8 @@ public class AidProviderMainDash extends AppCompatActivity {
     //---
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +113,7 @@ public class AidProviderMainDash extends AppCompatActivity {
         providerRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(AidProviderMainDash.this,AidProviderRecords.class);
                 startActivity(intent);
             }

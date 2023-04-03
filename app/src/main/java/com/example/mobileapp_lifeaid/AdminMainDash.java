@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class AdminMainDash extends AppCompatActivity {
 
-    TextView tv,fortheprovider;
+    TextView tv,fortheprovider,lbs;
     ImageView iv,iv2;
 
     TextView manageRecs;
@@ -27,6 +27,17 @@ public class AdminMainDash extends AppCompatActivity {
         fortheprovider = findViewById(R.id.tv_registration15);
         menu = (ImageView) findViewById(R.id.imageView18);
         manageRecs = (TextView) findViewById(R.id.tv_registration17);
+        //4/3/2023
+        lbs = (TextView) findViewById(R.id.tv_registration20);
+
+        lbs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMainDash.this, AdminLeaderboardDash.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         //3/28/2023
         manageRecs.setOnClickListener(new View.OnClickListener() {

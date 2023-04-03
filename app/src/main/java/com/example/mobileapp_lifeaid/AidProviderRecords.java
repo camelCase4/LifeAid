@@ -26,8 +26,11 @@ public class AidProviderRecords extends AppCompatActivity {
 
     MainActivity ma = new MainActivity();
 
+
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
     //----
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +73,50 @@ public class AidProviderRecords extends AppCompatActivity {
             }
         });
         //---
+
+        //4/3/2023
+        /*if(apm.recordsClicked)
+        {
+            gettingProviderData();
+
+            ivExit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(AidProviderRecords.this,AidProviderMainDash.class);
+                    startActivity(intent);
+                }
+            });
+            exitTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(AidProviderRecords.this,AidProviderMainDash.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        else
+        {
+            UIDFromOtherClass = getIntent().getStringExtra("otherUID");
+            UIDfromOther(UIDFromOtherClass);
+
+            ivExit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            });
+            exitTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            });
+        }*/
+        //----
     }
 
     public void gettingProviderData() {
@@ -180,6 +227,46 @@ public class AidProviderRecords extends AppCompatActivity {
         //----
 
     }
+
+    //4/3/2023
+    /*public void UIDfromOther(String userID){
+
+        dr.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+
+                dr.child(userID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().exists()) {
+                                DataSnapshot snaps = task.getResult();
+
+                                String totalCount = String.valueOf(snaps.child("provision_count").getValue()); //3/23/2023
+                                //overallProvision.setText(String.valueOf(snaps.child("provision_count").getValue()));
+                                overallProvision.setText(totalCount);
+                                overallSupports.setText(String.valueOf(snaps.child("support_count").getValue()));
+                                String commendC = String.valueOf(snaps.child("commends").getValue());
+                                String reportC = String.valueOf(snaps.child("decommends").getValue());
+
+
+                                good.setText(commendC);
+                                bad.setText(reportC);
+                                displayRating(commendC,reportC,totalCount);
+                            }
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }*/
+    //---
 
 
 }

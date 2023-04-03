@@ -198,9 +198,21 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
             public void onClick(View view) {
                 if(!contactnum.getText().toString().contains("-"))
                 {
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    /*Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setData(Uri.parse("tel:"+contactnum.getText().toString()));
-                    startActivity(intent);
+                    startActivity(intent);*/ // commented on 4/3
+
+                    //4/3/2023
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:"+contactnum.getText().toString()));
+                        startActivity(intent);
+                    }
+                    catch (Exception e)
+                    {
+                        Toast.makeText(AidSeekerMapCrisis.this,"Number Calling Failed!",Toast.LENGTH_SHORT).show();
+                    }
+                    //---
                 }
                 else
                 {

@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -31,14 +32,19 @@ import com.google.firebase.database.ValueEventListener;
 public class AdminManageRecordsSecondPage extends AppCompatActivity {
 
     TextView fullname,email,job,address,commendcount,provcount,ifnoStar,conts;
-    ImageView star1,star2,star3,star4;
+    ImageView star1,star2,star3,star4,bk;
     Button delbtn;
 
     AdminManageRecords amr = new AdminManageRecords();
+    AidSeekerLeaderboardDash ald = new AidSeekerLeaderboardDash(); //4/3/2023
+    AidProviderLeaderboardDash apld = new AidProviderLeaderboardDash();//4/3/2023
+    AdminLeaderboardDash adld = new AdminLeaderboardDash();//4/3/2023
 
 
     String CurrentUID = "";
     String toDelete= "";
+
+    String phoneCall = "";//4/3/2023
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,7 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
         star2 = (ImageView)  findViewById(R.id.star2);
         star3 = (ImageView) findViewById(R.id.star3);
         star4 = (ImageView) findViewById(R.id.star4);
+        bk = (ImageView) findViewById(R.id.back);//4/3/2023
 
         star1.setVisibility(View.INVISIBLE);
         star2.setVisibility(View.INVISIBLE);
@@ -72,7 +79,7 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
         conts.setMovementMethod(new ScrollingMovementMethod());
 
         CurrentUID = getIntent().getStringExtra("UserUid");
-        gettingUserData(amr.chosenRole);
+        /*gettingUserData(amr.chosenRole);
 
 
         delbtn.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +106,78 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
                 builder.setMessage("Are you really sure?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, misclicked",dialogClickListener).show();
 
             }
-        });
+        });*/ //original
+
+        //4/3/2023
+        if(ald.isInfoclicked || apld.isInfoclicked || adld.isInfoclicked)
+        {
+            gettingUserData("Aid-Provider");
+            delbtn.setText("Contact this provider?");
+
+            delbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //4/3/2023
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:"+phoneCall));
+                        startActivity(intent);
+                    }
+                    catch (Exception e)
+                    {
+                        Toast.makeText(AdminManageRecordsSecondPage.this,"Number Calling Failed!",Toast.LENGTH_SHORT).show();
+                    }
+                    //---
+                }
+            });
+
+            bk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            });
+        }
+        else {
+            gettingUserData(amr.chosenRole);
+
+            delbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            switch (i){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    deletingData();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //do nothing
+                                    break;
+
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AdminManageRecordsSecondPage.this);
+                    builder.setMessage("Are you really sure?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, misclicked",dialogClickListener).show();
+
+                }
+            });
+
+            bk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(AdminManageRecordsSecondPage.this,AdminManageRecords.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        //---
 
 
     }
@@ -132,6 +210,7 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
                                     String addresS = String.valueOf(snaps.child("address").getValue());
                                     String commendcounT= String.valueOf(snaps.child("commends").getValue());
                                     String provcounT = String.valueOf(snaps.child("provision_count").getValue());
+                                    phoneCall = String.valueOf(snaps.child("phonenum").getValue());//4/3/2023
 
                                     fullname.setText("Name : "+fullN);
                                     email.setText("Email : "+emaiL);
@@ -140,7 +219,7 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
                                     commendcount.setText("Commends : "+commendcounT);
                                     provcount.setText("Provisions : "+provcounT);
 
-                                    if(whatRole.equals("Aid-Provider")) {
+                                    /*if(whatRole.equals("Aid-Provider")) {
                                         formulaStars(commendcounT, provcounT);
                                         toDelete = "Aid-Provider";
                                     }
@@ -151,7 +230,21 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
                                         provcount.setText("---");
                                         job.setText("---");
                                         toDelete = "Aid-Seeker";
+                                    }*/
+                                    //4/2/2023
+                                    if(whatRole.equals("Aid-Seeker")) {
+                                        ifnoStar.setText("Aid-Seeker!");
+                                        commendcount.setText("---");
+                                        provcount.setText("---");
+                                        job.setText("---");
+                                        toDelete = "Aid-Seeker";
                                     }
+                                    else
+                                    {
+                                        formulaStars(commendcounT, provcounT);
+                                        toDelete = "Aid-Provider";
+                                    }
+                                    //--
 
                                     String historyType = (whatRole.equals("Aid-Seeker")?"AidSeekerHistory":"AidProviderHistory");
 

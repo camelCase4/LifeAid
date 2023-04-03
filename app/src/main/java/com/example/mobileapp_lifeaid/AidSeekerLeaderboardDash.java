@@ -43,11 +43,18 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
     List<String> Position = new ArrayList<>();
     List<String> fnames = new ArrayList<>();
 
-    TextView leadProvs;
+    TextView leadProvs,switching;
 
     //3/24/2023
     public static final int MENU_REQUEST_CODE = 1;
     //--
+
+    //4/3/2023
+    public static boolean isInfoclicked = false;
+    //---
+
+    int roleCounter = 0, roleSize = 0; // 4/3/2023
+
 
 
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
@@ -79,8 +86,39 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
 
         //---
 
+        //4/3/2023
+        switching = (TextView) findViewById(R.id.switchrole);
+        //--
+
         gettingCountAndUID();
         //amount();
+
+        //4/3/2023
+        switching.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                roleCounter++;// 0 = nurses, 1 = policemen, 2 = firemen, 3 = doctors;
+                if(roleCounter == 0)
+                {
+                    switching.setText("P O L I C E M E N   > > >");
+                }
+                else if(roleCounter == 1)
+                {
+                    switching.setText("F I R E M E N   > > >");
+                }
+                else if(roleCounter == 2)
+                {
+                    switching.setText("D O C T O R S   > > >");
+                }
+                else
+                {
+                    switching.setText("N U R S E S   > > >");
+
+                }
+                gettingCountAndUID();
+            }
+        });
+        //--
 
     }
     //3/24/2023
@@ -116,25 +154,12 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
                             {
                                 if(task.getResult().exists())
                                 {
+                                    roleSize++; //4/3/2023
                                     DataSnapshot snaps = task.getResult();
 
-                                    provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
+                                    /*provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
                                     if (provCount_uid.size() == datasnapshot.getChildrenCount()) {
                                         //Collections.sort(provCount_uid);
-                                        //3/20/2023
-                                        /*Collections.sort(provCount_uid, new Comparator<String>() {
-                                            @Override
-                                            public int compare(String s1, String s2) {
-                                                String[] parts1 = s1.split("\\D+", 2); // split by non-digits
-                                                String[] parts2 = s2.split("\\D+", 2);
-
-                                                int num1 = Integer.parseInt(parts1[0]);
-                                                int num2 = Integer.parseInt(parts2[0]);
-
-                                                return Integer.compare(num1, num2);
-                                            }
-                                        });*/
-
                                         Collections.sort(provCount_uid, new Comparator<String>() {
                                             @Override
                                             public int compare(String s1, String s2) {
@@ -155,10 +180,146 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
                                                 return Integer.parseInt(sb.toString());
                                             }
                                         });
-                                        //---
                                         Collections.reverse(provCount_uid);
                                         populatingUID();
+                                    }*/ // commented on 4/3
+
+                                    //4/3/2023
+                                    String occupationJob = String.valueOf(snaps.child("job").getValue());
+
+                                    if(roleCounter == 0) {
+                                        if (occupationJob.toLowerCase().contains("nurse")) {
+                                            provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            populatingUID();
+                                        }
                                     }
+                                    else if(roleCounter == 1)
+                                    {
+                                        if (occupationJob.toLowerCase().contains("police")) {
+                                            provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
+
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            populatingUID();
+                                        }
+                                    }
+                                    else if(roleCounter == 2)
+                                    {
+                                        if (occupationJob.toLowerCase().contains("fire")) {
+                                            provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
+
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            populatingUID();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (occupationJob.toLowerCase().contains("doctor")) {
+                                            provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
+
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+                                            roleCounter = -1;
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            populatingUID();
+                                        }
+                                    }
+                                    //----
 
 
 
@@ -250,7 +411,10 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
                 space = spaceForNurse;
             }
 
-            String test = provCount_uid.get(i).split(" ")[0];//3/29/2023
+            //String test = provCount_uid.get(i).split(" ")[0];//3/29/2023
+            //4/3/2023
+            String uidToUse = UIDinOrder.get(i);
+            //---
 
             //String initialNums = String.format("%8s %19s %19s %23s \n\n",Integer.toString(i + 1),Position.get(i),provCount_uid.get(i).split(" ")[0],fnames.get(i));
        //original     //String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i) + "\n\n";
@@ -267,15 +431,11 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
                 @Override
                 public void onClick(View textView) {
 
-                    /*Intent intent = new Intent(AidProviderHistory.this,GeneratedReportAidProvider.class);
-                    intent.putExtra("time_date", dt);
-                    intent.putExtra("action", rp);
-                    intent.putExtra("seeker_name", sn);
-                    intent.putExtra("location_place", placeOfIncident);
-                    intent.putExtra("feedback", feedback);
-                    intent.putExtra("seeker_uid", seekerID);
-                    startActivity(intent);*/
-                    Toast.makeText(AidSeekerLeaderboardDash.this,test,Toast.LENGTH_SHORT).show();
+                    isInfoclicked = true;//4/3/2023
+                    Intent intent = new Intent(AidSeekerLeaderboardDash.this,AdminManageRecordsSecondPage.class);
+                    intent.putExtra("UserUid", uidToUse);
+                    startActivity(intent);
+                    //Toast.makeText(AidSeekerLeaderboardDash.this,uidToUse,Toast.LENGTH_SHORT).show();
 
                 }
                 @Override
