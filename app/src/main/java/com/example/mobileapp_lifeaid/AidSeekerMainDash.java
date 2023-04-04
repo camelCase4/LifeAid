@@ -73,6 +73,9 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     boolean ifusertap = false;
     //---
 
+    private static final int PERMISSION_REQUEST_CODE = 100;//4/4/2023
+    private static final int PERMISSION_REQUEST_CODE_SMS = 101;//4/4/2023
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,7 +155,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
                 presscounter++;
                 if(presscounter >= 2) {
-                    Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
                     ifusertap = true; //4/2/2023
                     getLoc();
                     presscounter = 0;
@@ -175,7 +178,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 presscounter++;
                 if(presscounter >= 2)
                 {
-                    Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
                     ifusertap = true; //4/2/2023
                     getLoc();
                     presscounter = 0;
@@ -193,7 +196,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 presscounter++;
                 if(presscounter >= 2)
                 {
-                    Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
                     ifusertap = true; //4/2/2023
                     getLoc();
                     presscounter = 0;
@@ -211,7 +214,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 presscounter++;
                 if(presscounter >= 2)
                 {
-                    Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
                     ifusertap = true; //4/2/2023
                     getLoc();
                     presscounter = 0;
@@ -234,17 +237,56 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     }
     //---
 
+    //4/4/2023
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                getLoc();
+            } else {
+
+                Toast.makeText(this, "Permission denied, Cannot Proceed With Aid-Request!", Toast.LENGTH_SHORT).show();
+                btncrime.setEnabled(true);
+                btnfire.setEnabled(true);
+                btnhealth.setEnabled(true);
+                alertallbtn.setEnabled(true);
+            }
+        }
+        else if(requestCode == PERMISSION_REQUEST_CODE_SMS)
+        {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                partnerSMS();
+            } else {
+                Toast.makeText(this, "Permission denied, Cannot Proceed With SMS Request!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    //---
+
     //checkpoint 2/22/2023
     public void getLoc()
     {
-        if(ContextCompat.checkSelfPermission(AidSeekerMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        /*if(ContextCompat.checkSelfPermission(AidSeekerMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(AidSeekerMainDash.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION},100);
+        }*/ // commented on 4/4/2023
+
+        /*lm = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,AidSeekerMainDash.this);*/// commented on 4/4/2023
+
+        //4/4/2023
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, so request it
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_REQUEST_CODE);
+        } else {
+            // Permission is already granted, so get the location updates
+            lm = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+            Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
         }
-
-        lm = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,AidSeekerMainDash.this);
-
+        //---
 
 
     }
@@ -388,7 +430,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
     public void partnerSMS()
     {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, PackageManager.PERMISSION_GRANTED);
+        /*ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, PackageManager.PERMISSION_GRANTED);
 
         String messagetobesent = ma.fullname + " is at, Latitude: " + theLatInStr + ", " + "Longitude: " + theLongInStr + ", and in need of aid!";
         SmsManager smsManager = SmsManager.getDefault();
@@ -401,7 +443,28 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
             }
         }
 
-        Toast.makeText(AidSeekerMainDash.this, "Trusted contacts informed!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(AidSeekerMainDash.this, "Trusted contacts informed!", Toast.LENGTH_SHORT).show();*/
+
+        //4/4/2023
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, so request it
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.SEND_SMS }, PERMISSION_REQUEST_CODE_SMS);
+        } else {
+            // Permission is already granted, so send the SMS messages
+            String messagetobesent = ma.fullname + " is at, Latitude: " + theLatInStr + ", " + "Longitude: " + theLongInStr + ", and in need of aid!";
+            SmsManager smsManager = SmsManager.getDefault();
+
+            for (int i = 0; i < 2; i++) {
+                if (i == 0) {
+                    smsManager.sendTextMessage(ma.trustedcontact1, null, messagetobesent, null, null);
+                } else {
+                    smsManager.sendTextMessage(ma.trustedcontact2, null, messagetobesent, null, null);
+                }
+            }
+
+            Toast.makeText(AidSeekerMainDash.this, "Trusted contacts informed!", Toast.LENGTH_SHORT).show();
+        }
+        //----
     }
 
     //checkpoint 3/5/2023
