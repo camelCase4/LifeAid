@@ -6,6 +6,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -357,6 +359,8 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         hm.put("lati",theLatInStr);
         hm.put("longi",theLongInStr);
         hm.put("job",jobDesc);//checkopint 3/1/2023
+        hm.put("commends","0");//4/5/2023
+        hm.put("partner_uid","");//4/5/2023
 
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
         dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -509,7 +513,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
             @Override
             public void onFinish() {
-
+                askingForAssurance();
             }
         }.start();
         //-------
@@ -555,4 +559,52 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         });
     }
     //--------
+
+    //4/5/2023
+    public void askingForAssurance()
+    {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        waitforresponder();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        cancelCleaner();
+                        btncrime.setEnabled(true);
+                        btnfire.setEnabled(true);
+                        btnhealth.setEnabled(true);
+                        alertallbtn.setEnabled(true);
+                        Intent intent = new Intent(AidSeekerMainDash.this,AidSeekerMainDash.class);
+                        startActivity(intent);
+                        break;
+
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Sorry, there are no Aid-Providers right now, continue requesting?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, nevermind!",dialogClickListener).show();
+    }
+
+    public void cancelCleaner()
+    {
+        HashMap hm = new HashMap();
+        hm.put("lati","");
+        hm.put("longi","");
+        hm.put("commends","1"); // ge reuse nako ang commends as a flag nga mo determine if ge cancel ba sa seeker
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                Toast.makeText(AidSeekerMainDash.this, "Take Care!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+    //---
 }

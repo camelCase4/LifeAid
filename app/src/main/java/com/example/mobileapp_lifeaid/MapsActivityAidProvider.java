@@ -615,6 +615,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                             {
                                 DataSnapshot snaps = task.getResult();
                                 String chat = String.valueOf(snaps.child("message").getValue());
+                                String ifCancelledReq = String.valueOf(snaps.child("commends").getValue()); // 4/5/2023
                                 //3/11/2023
                                 String checkIfStillOngGoing = String.valueOf(snaps.child("partner_uid").getValue());
                                 if(checkIfStillOngGoing.equals(""))
@@ -626,6 +627,18 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                     startActivity(intent);
                                 }
                                 //------
+
+                                //4/5/2023
+                                if(ifCancelledReq.equals("1"))
+                                {
+                                    cd.cancel();
+                                    gettingRidOfPartnerUID();
+                                    Toast.makeText(MapsActivityAidProvider.this,"Seeker Cancelled! Thank you for your service!",Toast.LENGTH_SHORT).show();
+                                    mMap.clear(); //3/15/2023
+                                    Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                                    startActivity(intent);
+                                }
+                                //----
                                 if(!chat.equals(""))
                                 {
                                     if(!chat.equals(comparer))
@@ -823,5 +836,27 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     }
     //----
     //--------
+
+    //4/5/2023
+    public void gettingRidOfPartnerUID()
+    {
+
+        HashMap hm = new HashMap();
+        hm.put("message","");
+        hm.put("partner_uid","");
+        hm.put("provision_count",Integer.toString((Integer.parseInt(provisionCount)+1)-1));
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+
+
+    }
+    //---
 
 }
