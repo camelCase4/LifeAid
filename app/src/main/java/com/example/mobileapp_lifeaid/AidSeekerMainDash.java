@@ -77,6 +77,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
     private static final int PERMISSION_REQUEST_CODE = 100;//4/4/2023
     private static final int PERMISSION_REQUEST_CODE_SMS = 101;//4/4/2023
+    private static final int PERMISSION_REQUEST_CODE_MAPS = 102;//4/5/2023
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,8 +128,19 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         mapcrisis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AidSeekerMainDash.this,AidSeekerMapCrisis.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(AidSeekerMainDash.this,AidSeekerMapCrisis.class);
+                startActivity(intent);*/
+
+                //4/5/2023
+                if (ContextCompat.checkSelfPermission(AidSeekerMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // Permission is not granted, so request it
+                    ActivityCompat.requestPermissions(AidSeekerMainDash.this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_REQUEST_CODE_MAPS);
+                } else {
+
+                    Intent intent = new Intent(AidSeekerMainDash.this,AidSeekerMapCrisis.class);
+                    startActivity(intent);
+                }
+                //---
             }
         });
         //---------
@@ -264,6 +276,18 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 Toast.makeText(this, "Permission denied, Cannot Proceed With SMS Request!", Toast.LENGTH_SHORT).show();
             }
         }
+        //4/5/2023
+        else if(requestCode == PERMISSION_REQUEST_CODE_MAPS)
+        {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(AidSeekerMainDash.this,AidSeekerMapCrisis.class);
+                startActivity(intent);
+
+            } else {
+                Toast.makeText(this, "Permission denied, Cannot Proceed With MapCrisis!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        //---
     }
     //---
 

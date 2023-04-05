@@ -130,7 +130,7 @@ public class AidSeekerHistory extends AppCompatActivity {
 
                                                 historyContents.append("   "+dt + "               "+et+"                  "+pn+"\n\n");
 
-                                                
+
                                             }
                                         }
                                     }

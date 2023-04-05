@@ -54,6 +54,8 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
     boolean seekClicked = false;
     //---
 
+    private static final int PERMISSION_REQUEST_CODE_LOC = 104;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +134,7 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
                     case DialogInterface.BUTTON_POSITIVE:
                         seekClicked = true; // 4/2/2023
                         seekAid();
-                        Toast.makeText(MenuButtonForProviders.this, "Please Wait!", Toast.LENGTH_SHORT).show();//3/26/2023
+                        //Toast.makeText(MenuButtonForProviders.this, "Please Wait!", Toast.LENGTH_SHORT).show();//3/26/2023
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -153,14 +155,25 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
     }
     public void getLoc()
     {
-        if(ContextCompat.checkSelfPermission(MenuButtonForProviders.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        /*if(ContextCompat.checkSelfPermission(MenuButtonForProviders.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(MenuButtonForProviders.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION},100);
         }
 
         lm = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,MenuButtonForProviders.this);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,MenuButtonForProviders.this);*/
 
+        //4/6/2023
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, so request it
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_REQUEST_CODE_LOC);
+        } else {
+            // Permission is already granted, so get the location updates
+            lm = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+            Toast.makeText(MenuButtonForProviders.this, "Please Wait!", Toast.LENGTH_SHORT).show();//4/6/2023
+        }
+        //---
 
 
     }
@@ -276,6 +289,23 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
 
         });
 
+
+    }
+    //---
+    //4/6/2023
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE_LOC) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                getLoc();
+            } else {
+
+                Toast.makeText(this, "Permission denied, Cannot Proceed With Aid-Request!", Toast.LENGTH_SHORT).show();
+
+            }
+        }
 
     }
     //---

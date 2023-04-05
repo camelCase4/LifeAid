@@ -2,11 +2,15 @@ package com.example.mobileapp_lifeaid;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -61,6 +65,8 @@ public class AidProviderMainDash extends AppCompatActivity {
     //4/4/2023
     public static final int MENU_REQUEST_CODE = 1;
     //--
+
+    private static final int PERMISSION_REQUEST_CODE_MAPS2 = 102;//4/5/2023
 
 
 
@@ -170,8 +176,21 @@ public class AidProviderMainDash extends AppCompatActivity {
                 if(seekerfound) {
                     seekerfound = false;
 
-                    Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
-                    startActivity(intent);
+                    /*Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
+                    startActivity(intent);*/
+
+
+                    //4/5/2023
+                    if (ContextCompat.checkSelfPermission(AidProviderMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // Permission is not granted, so request it
+                        ActivityCompat.requestPermissions(AidProviderMainDash.this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_REQUEST_CODE_MAPS2);
+                    } else {
+
+                        Intent intent = new Intent(AidProviderMainDash.this,MapsActivityAidProvider.class);
+                        startActivity(intent);
+                    }
+                    //---
+
 
 
                 }
@@ -363,5 +382,24 @@ public class AidProviderMainDash extends AppCompatActivity {
     }
 
     //----
+    //4/5/2023
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE_MAPS2) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(AidProviderMainDash.this,MapsActivityAidProvider.class);
+                startActivity(intent);
+
+            } else {
+
+                Toast.makeText(this, "Permission denied, Cannot Proceed!", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+
+    }
+    //---
 
 }
