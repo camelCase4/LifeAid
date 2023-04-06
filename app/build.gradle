@@ -57,5 +57,9 @@ dependencies {
 
     //---
 
+    //4/6/2023
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    //---
+
 
 }
