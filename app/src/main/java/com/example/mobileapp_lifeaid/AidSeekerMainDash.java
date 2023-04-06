@@ -150,13 +150,32 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 startActivity(intent);*/
 
                 //4/5/2023
-                if (ContextCompat.checkSelfPermission(AidSeekerMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+               /* if (ContextCompat.checkSelfPermission(AidSeekerMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // Permission is not granted, so request it
                     ActivityCompat.requestPermissions(AidSeekerMainDash.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE_MAPS);
                 } else {
 
                     Intent intent = new Intent(AidSeekerMainDash.this, AidSeekerMapCrisis.class);
                     startActivity(intent);
+                }*/
+                //---
+
+                //4/6/2023
+                if(isLocationEnabled)
+                {
+                    if (ContextCompat.checkSelfPermission(AidSeekerMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // Permission is not granted, so request it
+                        ActivityCompat.requestPermissions(AidSeekerMainDash.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE_MAPS);
+                    } else {
+
+                        Intent intent = new Intent(AidSeekerMainDash.this, AidSeekerMapCrisis.class);
+                        startActivity(intent);
+                    }
+                }
+                else
+                {
+                    Toast.makeText(AidSeekerMainDash.this, "Enable the location in your device, and try again.", Toast.LENGTH_LONG).show();
+                    checkIfLocationIsOn();
                 }
                 //---
             }

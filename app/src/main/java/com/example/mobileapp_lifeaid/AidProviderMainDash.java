@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.media.Image;
 import android.os.Bundle;
@@ -19,6 +20,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -68,6 +77,10 @@ public class AidProviderMainDash extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE_MAPS2 = 102;//4/5/2023
 
+    //4/6/2023
+    private static final int REQUEST_CHECK_SETTINGS = 1001;//4/6/2023
+    boolean isLocationEnabled = false;
+    //--
 
 
     @Override
@@ -95,6 +108,8 @@ public class AidProviderMainDash extends AppCompatActivity {
         //checkForSeekers(); commented on 3/31/2023
 
         startingTheSearch();
+
+        checkIfLocationIsOn(); //4/6/2023
 
 
 
@@ -173,11 +188,11 @@ public class AidProviderMainDash extends AppCompatActivity {
         seekerAlerts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(seekerfound) {
+                /*if(seekerfound) {
                     seekerfound = false;
 
-                    /*Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
-                    startActivity(intent);*/
+                    //Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
+                    //startActivity(intent);
 
 
                     //4/5/2023
@@ -197,7 +212,43 @@ public class AidProviderMainDash extends AppCompatActivity {
                 else
                 {
                     Toast.makeText(AidProviderMainDash.this, "Find Seekers First!", Toast.LENGTH_SHORT).show();
+                }*/
+
+                //4/6/2023
+                if(isLocationEnabled)
+                {
+                    if(seekerfound) {
+                        seekerfound = false;
+
+                    /*Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
+                    startActivity(intent);*/
+
+
+                        //4/5/2023
+                        if (ContextCompat.checkSelfPermission(AidProviderMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            // Permission is not granted, so request it
+                            ActivityCompat.requestPermissions(AidProviderMainDash.this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_REQUEST_CODE_MAPS2);
+                        } else {
+
+                            Intent intent = new Intent(AidProviderMainDash.this,MapsActivityAidProvider.class);
+                            startActivity(intent);
+                        }
+                        //---
+
+
+
+                    }
+                    else
+                    {
+                        Toast.makeText(AidProviderMainDash.this, "Find Seekers First!", Toast.LENGTH_SHORT).show();
+                    }
                 }
+                else
+                {
+                    Toast.makeText(AidProviderMainDash.this, "Enable the location in your device, and try again.", Toast.LENGTH_LONG).show();
+                    checkIfLocationIsOn();
+                }
+                //---
             }
         });
 
@@ -305,6 +356,38 @@ public class AidProviderMainDash extends AppCompatActivity {
             }
         });
     }
+    //4/6/2023
+    public void checkIfLocationIsOn() {
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY));
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+        // Add an OnCompleteListener to handle the result of location settings check
+        task.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
+                try {
+                    LocationSettingsResponse response = task.getResult(ApiException.class);
+                    // Location settings are satisfied, proceed to get location updates
+                    //getLoc();
+                    isLocationEnabled = true; //4/6/2023
+                } catch (ApiException e) {
+                    // Location settings are not satisfied, show a dialog to prompt the user to enable it
+                    if (e.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                        try {
+                            ResolvableApiException resolvable = (ResolvableApiException) e;
+                            resolvable.startResolutionForResult(AidProviderMainDash.this, REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException sendEx) {
+                            // Handle the exception
+                        }
+                    }
+                }
+            }
+        });
+    }
+    //---
     //4/4/2023
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -312,6 +395,20 @@ public class AidProviderMainDash extends AppCompatActivity {
             // Handle the result
             // ...
         }
+        //4/6/2023
+        else if(requestCode == REQUEST_CHECK_SETTINGS)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                isLocationEnabled = true;
+            }
+            else
+            {
+                Toast.makeText(AidProviderMainDash.this,"Please turn the location on!",Toast.LENGTH_SHORT).show();
+
+            }
+        }
+        //---
     }
     //---
 
