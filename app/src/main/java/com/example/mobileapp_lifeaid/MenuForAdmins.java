@@ -265,7 +265,7 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
             public void onSuccess(Void unused) {
                 //generatedUID = FirebaseDatabase.getInstance().getReference("Aid-Seeker").push().getKey();
 
-                Intent intent = new Intent(MenuForAdmins.this,SeekAidButNotSeeker.class);
+                Intent intent = new Intent(MenuForAdmins.this,SeekAidButNotSeekerAdmin.class);
                 startActivity(intent);
 
             }
