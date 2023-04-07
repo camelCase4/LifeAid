@@ -485,6 +485,12 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                 {
                                     Toast.makeText(MapsActivityAidProvider.this,"You are helping a fellow Aid - Provider!",Toast.LENGTH_LONG).show();
                                 }
+                                //4/7/2023
+                                else if(who.equals("Admin"))
+                                {
+                                    Toast.makeText(MapsActivityAidProvider.this,"You are helping an Admin!",Toast.LENGTH_LONG).show();
+                                }
+                                //---
                                 //-----
                                 if(providerChecker.equals("") || providerChecker.isEmpty())
                                 {
