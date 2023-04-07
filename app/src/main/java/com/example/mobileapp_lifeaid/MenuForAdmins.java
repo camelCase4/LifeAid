@@ -47,7 +47,7 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
     //4/7/2023
     private static int PERMISSION_REQUEST_CODE_LOC = 99;
     private static final int REQUEST_CHECK_SETTINGS = 1001;
-    String generatedUID = "";
+    public static String generatedUID = "";
     boolean seekClicked = false;
     LocationManager lm;
     public static String latitudePos, longitudePos;
