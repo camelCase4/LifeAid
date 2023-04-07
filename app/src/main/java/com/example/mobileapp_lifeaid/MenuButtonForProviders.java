@@ -9,6 +9,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,6 +21,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,6 +64,10 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
     //---
 
     private static final int PERMISSION_REQUEST_CODE_LOC = 104;
+    //4/7/2023
+    private static final int REQUEST_CHECK_SETTINGS = 1001;
+    AidProviderMainDash apm = new AidProviderMainDash();
+    //---
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,12 +130,75 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
         aidAsking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                askingForAssurance();
+
+                //askingForAssurance(); original
+                //4/7/2023
+                checkIfLocationIsOn();
+                /*if(apm.isLocationEnabled)
+                {
+                    askingForAssurance();
+                }
+                else
+                {
+                    checkIfLocationIsOn();
+                }*/
+                //---
             }
         });
 
 
     }
+    //4/7/2023
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CHECK_SETTINGS)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                apm.isLocationEnabled = true;
+                askingForAssurance();
+            }
+            else
+            {
+                Toast.makeText(MenuButtonForProviders.this,"Please turn the location on!",Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+    }
+    public void checkIfLocationIsOn() {
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY));
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+        // Add an OnCompleteListener to handle the result of location settings check
+        task.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
+                try {
+                    LocationSettingsResponse response = task.getResult(ApiException.class);
+                    // Location settings are satisfied, proceed to get location updates
+                    //getLoc();
+                    apm.isLocationEnabled = true; //4/6/2023
+                    askingForAssurance();
+                } catch (ApiException e) {
+                    // Location settings are not satisfied, show a dialog to prompt the user to enable it
+                    if (e.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                        try {
+                            ResolvableApiException resolvable = (ResolvableApiException) e;
+                            resolvable.startResolutionForResult(MenuButtonForProviders.this, REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException sendEx) {
+                            // Handle the exception
+                        }
+                    }
+                }
+            }
+        });
+    }
+    //---
 
     public void askingForAssurance()
     {

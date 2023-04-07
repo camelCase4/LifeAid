@@ -479,6 +479,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                 DataSnapshot snaps = task.getResult();
                                 String who = String.valueOf(snaps.child("whatRole").getValue());//3/25/2023
                                 providerChecker = String.valueOf(snaps.child("partner_uid").getValue());
+                                String la = String.valueOf(snaps.child("lati").getValue()); //4/7/2023
                                 //3/25/2023
                                 if(who.equals("AidProvider"))
                                 {
@@ -487,7 +488,22 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                 //-----
                                 if(providerChecker.equals("") || providerChecker.isEmpty())
                                 {
-                                    removeLatandLong();
+                                    //removeLatandLong(); original
+                                    //4/7/2023
+                                    if(!la.equals(""))
+                                    {
+                                        removeLatandLong();
+                                    }
+                                    else
+                                    {
+                                        cd.cancel();
+                                        gettingRidOfPartnerUID();
+                                        Toast.makeText(MapsActivityAidProvider.this,"Seeker is in good hands, Thank you for your service!",Toast.LENGTH_SHORT).show();
+                                        mMap.clear(); //3/15/2023
+                                        Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                                        startActivity(intent);
+                                    }
+                                    //---
                                 }
                                 else
                                 {
@@ -621,11 +637,25 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                 if(checkIfStillOngGoing.equals(""))
                                 {
                                     cd.cancel();
-                                    Toast.makeText(MapsActivityAidProvider.this,"Thank you for your service!",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MapsActivityAidProvider.this,"Seeker Satisfied, Thank you for your service!",Toast.LENGTH_SHORT).show();
                                     mMap.clear(); //3/15/2023
                                     Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
                                     startActivity(intent);
                                 }
+                                //4/7/2023
+                                else
+                                {
+                                    if(!checkIfStillOngGoing.equals(ma.userid))
+                                    {
+                                        cd.cancel();
+                                        gettingRidOfPartnerUID();
+                                        Toast.makeText(MapsActivityAidProvider.this,"Someone else responded first, Thank you for your service!",Toast.LENGTH_SHORT).show();
+                                        mMap.clear(); //3/15/2023
+                                        Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                                //---
                                 //------
 
                                 //4/5/2023

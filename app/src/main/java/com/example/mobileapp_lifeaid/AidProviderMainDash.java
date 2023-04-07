@@ -79,7 +79,7 @@ public class AidProviderMainDash extends AppCompatActivity {
 
     //4/6/2023
     private static final int REQUEST_CHECK_SETTINGS = 1001;//4/6/2023
-    boolean isLocationEnabled = false;
+    public static boolean isLocationEnabled = false;
     //--
 
 
