@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.569"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.125"
+        app:layout_constraintVertical_bias="0.115"
         app:srcCompat="@drawable/fnamelname" />
 
     <ImageView
@@ -28,7 +28,7 @@
         app:layout_constraintHorizontal_bias="0.569"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.203"
+        app:layout_constraintVertical_bias="0.192"
         app:srcCompat="@drawable/smartphone" />
 
     <ImageView
@@ -37,10 +37,10 @@
         android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.569"
+        app:layout_constraintHorizontal_bias="0.564"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.286"
+        app:layout_constraintVertical_bias="0.25"
         app:srcCompat="@drawable/home" />
 
     <ImageView
@@ -99,10 +99,10 @@
         android:textSize="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.750"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintVertical_bias="0.132" />
 
     <TextView
         android:id="@+id/tv_registration33"
@@ -110,15 +110,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="Full Name"
+        android:text="Full Name :"
         android:textColor="@color/black"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.719"
+        app:layout_constraintHorizontal_bias="0.767"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintVertical_bias="0.106" />
 
     <TextView
         android:id="@+id/tv_registration34"
@@ -126,15 +126,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="Contact"
+        android:text="Contact :"
         android:textColor="@color/black"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.693"
+        app:layout_constraintHorizontal_bias="0.736"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.200" />
+        app:layout_constraintVertical_bias="0.172" />
 
     <TextView
         android:id="@+id/tv_registration35"
@@ -142,15 +142,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="Address"
+        android:text="Address :"
         android:textColor="@color/black"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.701"
+        app:layout_constraintHorizontal_bias="0.739"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.283" />
+        app:layout_constraintVertical_bias="0.239" />
 
     <TextView
         android:id="@+id/tvnumber"
@@ -163,10 +163,10 @@
         android:textSize="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.750"
+        app:layout_constraintHorizontal_bias="0.788"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.24" />
+        app:layout_constraintVertical_bias="0.199" />
 
     <TextView
         android:id="@+id/tvplace"
@@ -179,10 +179,52 @@
         android:textSize="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.750"
+        app:layout_constraintHorizontal_bias="0.748"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.325" />
+        app:layout_constraintVertical_bias="0.265" />
+    <ImageView
+        android:id="@+id/imageView81"
+        android:layout_width="37dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.572"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.323"
+        app:srcCompat="@drawable/arrived" />
+    <TextView
+        android:id="@+id/tv_registration36"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="Approx. Arrival :"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.837"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.312" />
+    <TextView
+        android:id="@+id/tvdur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="Waiting ..."
+        android:textColor="@color/black"
+        android:textSize="13dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.338" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"

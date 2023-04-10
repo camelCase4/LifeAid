@@ -51,6 +51,7 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.EncodedPolyline;
+import com.google.maps.model.TravelMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -380,6 +381,10 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             //mMap.addPolyline(opts);
             polyline = this.mMap.addPolyline(opts);
         }
+
+        //4/10/2023
+        getTripDuration(context,originstart.latitude,originstart.longitude,destinationend.latitude,destinationend.longitude);
+        //--
 
 
 
@@ -890,6 +895,51 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
             }
         });
+
+
+    }
+    //---
+
+    //4/10/2023
+    public void getTripDuration(GeoApiContext context,double startla, double startlo, double endla, double endlo)
+    {
+       DirectionsApiRequest request = DirectionsApi.newRequest(context).origin(new com.google.maps.model.LatLng(startla,startlo))
+               .destination(new com.google.maps.model.LatLng(endla,endlo))
+               .mode(TravelMode.WALKING);
+
+
+       try {
+           DirectionsResult result = request.await();
+           if (result.routes != null && result.routes.length > 0) {
+               long durationInSeconds = result.routes[0].legs[0].duration.inSeconds;
+
+               long durationInMinutes = durationInSeconds / 60;
+
+               storingDuration(Long.toString(durationInMinutes) + " minutes");
+
+           }
+       }
+       catch (Exception e)
+       {
+
+       }
+    }
+    public void storingDuration(String tobeput)
+    {
+
+        HashMap hm = new HashMap();
+        hm.put("trustedname_1",tobeput); //trustedname_1 akoang ge himo nga temporary holder sa duration time
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+
+
 
 
     }

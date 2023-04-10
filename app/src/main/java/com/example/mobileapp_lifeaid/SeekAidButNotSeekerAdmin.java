@@ -36,7 +36,7 @@ public class SeekAidButNotSeekerAdmin extends AppCompatActivity {
 
     MainActivity ma = new MainActivity();
     TextView greetings,conversation,send;
-    TextView fullnametv,numbertv,addresstv;
+    TextView fullnametv,numbertv,addresstv,duration;
     EditText msgHolder;
 
     String responderUID = "";
@@ -69,6 +69,7 @@ public class SeekAidButNotSeekerAdmin extends AppCompatActivity {
         fullnametv = (TextView) findViewById(R.id.tvfullname);
         numbertv = (TextView) findViewById(R.id.tvnumber);
         addresstv = (TextView) findViewById(R.id.tvplace);
+        duration = (TextView) findViewById(R.id.tvdur);
 
         msgHolder = (EditText) findViewById(R.id.editTextmsgholder);
 
@@ -171,6 +172,9 @@ public class SeekAidButNotSeekerAdmin extends AppCompatActivity {
         HashMap hm = new HashMap();
         hm.put("message","");
         hm.put("partner_uid","");
+        //4/10/2023
+        hm.put("trustedname_1","");
+        //--
 
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
         dr.child(responderUID).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -428,6 +432,16 @@ public class SeekAidButNotSeekerAdmin extends AppCompatActivity {
                             {
                                 DataSnapshot snaps = task.getResult();
                                 String msg = String.valueOf(snaps.child("message").getValue());
+                                //4/10/2023
+                                String timeHolder = String.valueOf(snaps.child("trustedname_1").getValue());
+                                if(timeHolder.equals("0 minutes"))
+                                {
+                                    duration.setText("Aid-Provider Arrived!");
+                                }
+                                else {
+                                    duration.setText(String.valueOf(snaps.child("trustedname_1").getValue()));
+                                }
+                                //---
                                 if(!msg.equals(""))
                                 {
                                     if(!msg.equals(repeaterChecker))

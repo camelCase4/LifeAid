@@ -36,7 +36,7 @@ import java.util.Locale;
 public class AidSeekerChat extends AppCompatActivity {
 
     // checkpoint 3/9/2023
-    TextView fullnametv,numbertv,addresstv,sendbtn,conversation;
+    TextView fullnametv,numbertv,addresstv,sendbtn,conversation,duration;
     EditText msgHolder;
     Button complete;
     AidSeekerMainDash asm = new AidSeekerMainDash();
@@ -62,6 +62,7 @@ public class AidSeekerChat extends AppCompatActivity {
         msgHolder = (EditText) findViewById(R.id.editTextmsgholder);
         conversation = (TextView) findViewById(R.id.converse);
         complete = (Button) findViewById(R.id.completeTransac);
+        duration = (TextView) findViewById(R.id.tvdur);
 
 
 
@@ -173,6 +174,16 @@ public class AidSeekerChat extends AppCompatActivity {
                             {
                                 DataSnapshot snaps = task.getResult();
                                 String msg = String.valueOf(snaps.child("message").getValue());
+                                //4/10/2023
+                                String timeHolder = String.valueOf(snaps.child("trustedname_1").getValue());
+                                if(timeHolder.equals("0 minutes"))
+                                {
+                                    duration.setText("Aid-Provider Arrived!");
+                                }
+                                else {
+                                    duration.setText(String.valueOf(snaps.child("trustedname_1").getValue()));
+                                }
+                                //---
                                 if(!msg.equals(""))
                                 {
                                     if(!msg.equals(repeaterChecker))
@@ -353,6 +364,10 @@ public class AidSeekerChat extends AppCompatActivity {
 
             }
         });
+
+        //4/10/2023
+        gettingRidOfDuration();
+        //---
     }
 
     public void updatingCommendCount()
@@ -439,4 +454,21 @@ public class AidSeekerChat extends AppCompatActivity {
         });
     }
     //------
+
+    //4/10/2023
+    public void gettingRidOfDuration()
+    {
+        HashMap hm = new HashMap();
+        hm.put("trustedname_1","");
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(asm.responderUID).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+    }
+    //--
 }
