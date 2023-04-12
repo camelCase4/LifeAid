@@ -134,6 +134,12 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                                                 Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
                                                                 progressBar.setVisibility(View.GONE);
 
+                                                                //4/12/2023
+                                                                rd.email_holder = "";
+                                                                rd.password_holder = "";
+                                                                rd.username_holder = "";
+                                                                //---
+
                                                                 Intent intent = new Intent(RegistratinDashboardFinal.this,MainActivity.class);
                                                                 startActivity(intent);
                                                             } else {
@@ -155,6 +161,12 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                                                 Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
                                                                 progressBar.setVisibility(View.GONE);
 
+                                                                //4/12/2023
+                                                                rd.email_holder = "";
+                                                                rd.password_holder = "";
+                                                                rd.username_holder = "";
+                                                                //---
+
                                                                 Intent intent = new Intent(RegistratinDashboardFinal.this,MainActivity.class);
                                                                 startActivity(intent);
                                                             } else {
@@ -174,6 +186,12 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                                             if (task.isSuccessful()) {
                                                                 Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
                                                                 progressBar.setVisibility(View.GONE);
+
+                                                                //4/12/2023
+                                                                rd.email_holder = "";
+                                                                rd.password_holder = "";
+                                                                rd.username_holder = "";
+                                                                //---
 
                                                                 Intent intent = new Intent(RegistratinDashboardFinal.this,MainActivity.class);
                                                                 startActivity(intent);

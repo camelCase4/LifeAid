@@ -88,6 +88,7 @@ public class AidProviderClaimCert extends AppCompatActivity {
                 {
                     Toast.makeText(AidProviderClaimCert.this, "You can only claim once!",Toast.LENGTH_SHORT).show();
                 }*/
+
             }
         });
 

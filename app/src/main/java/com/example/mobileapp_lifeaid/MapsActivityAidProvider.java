@@ -188,6 +188,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                     savingToHistory();
                 }*/
                 resp_btn.setEnabled(false);
+                supp_btn.setEnabled(false); //4/12/2023
             }
         });
 
