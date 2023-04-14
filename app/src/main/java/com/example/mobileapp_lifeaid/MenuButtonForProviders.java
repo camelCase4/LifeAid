@@ -45,6 +45,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -98,6 +99,7 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
         profilePic = (ImageView) findViewById(R.id.imageView49);
 
         //4/14/2023
+        displayImage();
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,6 +191,36 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
 
     }
     //4/14/2023
+    public void displayImage()
+    {
+        DatabaseReference dbprovs = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dbprovs.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dbprovs.child(ma.userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                        if (task.isSuccessful()) {
+                            if (task.getResult().exists()) {
+                                DataSnapshot snaps = task.getResult();
+                                String imageurl = String.valueOf(snaps.child("trustedname_2").getValue());
+                                if(!imageurl.equals("")) {
+                                    Picasso.get().load(imageurl).into(profilePic);
+                                }
+                            }
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     public void addingProfilePic()
     {
         Intent galleryIntent = new Intent();

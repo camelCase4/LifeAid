@@ -14,6 +14,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -49,6 +51,8 @@ public class AidSeekerChat extends AppCompatActivity {
 
     //-----------
     String locationOfIncident = "";
+
+    ImageView profileP;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +68,7 @@ public class AidSeekerChat extends AppCompatActivity {
         complete = (Button) findViewById(R.id.completeTransac);
         duration = (TextView) findViewById(R.id.tvdur);
 
+        profileP = (ImageView) findViewById(R.id.imageView44);//4/14/2023
 
 
         getProviderData();
@@ -124,6 +129,12 @@ public class AidSeekerChat extends AppCompatActivity {
         //------
 
     }
+    //4/14/2023
+    public void imageDisplayer(String urlpic)
+    {
+        Picasso.get().load(urlpic).into(profileP);
+    }
+    //---
 
     public void getProviderData()
     {
@@ -146,6 +157,13 @@ public class AidSeekerChat extends AppCompatActivity {
                                     commendCount = String.valueOf(snaps.child("commends").getValue());
                                     unsatisfiedCount = String.valueOf(snaps.child("decommends").getValue());
                                     //--------
+
+                                    //4/14/2023
+                                    String imagepic = String.valueOf(snaps.child("trustedname_2").getValue());
+                                    if(!imagepic.equals("")) {
+                                        imageDisplayer(imagepic);
+                                    }
+                                    //---
                                 }
                             }
 
