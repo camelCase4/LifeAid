@@ -113,14 +113,27 @@
 
     <ImageView
         android:id="@+id/imageView49"
-        android:layout_width="187dp"
-        android:layout_height="174dp"
+        android:layout_width="138dp"
+        android:layout_height="140dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.626"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.028"
-        app:srcCompat="@drawable/mtprofile" />
+        app:layout_constraintVertical_bias="0.163"
+        app:srcCompat="@drawable/finding" />
+
+    <ImageView
+        android:id="@+id/imageView59"
+        android:layout_width="77dp"
+        android:layout_height="81dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.235"
+        app:srcCompat="@drawable/searchmap" />
 
     <ImageView
         android:id="@+id/imageView58"

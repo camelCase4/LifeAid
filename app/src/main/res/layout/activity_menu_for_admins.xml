@@ -125,16 +125,15 @@
 
     <ImageView
         android:id="@+id/imageView49"
-        android:layout_width="187dp"
-        android:layout_height="174dp"
+        android:layout_width="205dp"
+        android:layout_height="186dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.558"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.028"
-        app:srcCompat="@drawable/mtprofile" />
-
-
+        app:layout_constraintVertical_bias="0.11"
+        app:srcCompat="@drawable/adminpic" />
 
     <Button
         android:id="@+id/askaid"
