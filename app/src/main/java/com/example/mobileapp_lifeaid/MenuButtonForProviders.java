@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -14,9 +15,11 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -38,14 +41,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class MenuButtonForProviders extends AppCompatActivity implements LocationListener {
 
     Button aidAsking,claim,editAcc,faqs,lgout;
-    ImageView bk;
+    ImageView bk,profilePic;
     public static String latitudePos, longitudePos;
     LocationManager lm;
 
@@ -69,6 +77,11 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
     AidProviderMainDash apm = new AidProviderMainDash();
     //---
 
+    //4/14/2023
+    public static Uri imageUri;
+    public static StorageReference sr = FirebaseStorage.getInstance().getReference();
+    //---
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +95,33 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
         faqs = (Button) findViewById(R.id.faqbtn);
         lgout = (Button) findViewById(R.id.loginbutton3);
         bk = (ImageView) findViewById(R.id.back);
+        profilePic = (ImageView) findViewById(R.id.imageView49);
+
+        //4/14/2023
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                addingProfilePic();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //do nothing
+                                break;
+
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(MenuButtonForProviders.this);
+                builder.setMessage("Do you want to change your profile picture?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, misclicked",dialogClickListener).show();
+            }
+        });
+        //---
 
 
         bk.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +188,34 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
 
 
     }
+    //4/14/2023
+    public void addingProfilePic()
+    {
+        Intent galleryIntent = new Intent();
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent,2);
+    }
+    private String fileExt(Uri im_uri)
+    {
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap m = MimeTypeMap.getSingleton();
+        return m.getExtensionFromMimeType(cr.getType(im_uri));
+    }
+    public void savingProfilePic(String urlImage)
+    {
+        HashMap hm = new HashMap();
+        hm.put("trustedname_2",urlImage); // ge gamit nako ang trustedname_2 since di man needed sa provider
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(MenuButtonForProviders.this,"Profile Picture Updated!",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    //---
     //4/7/2023
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -165,6 +233,42 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
 
             }
         }
+        //4/14/2023
+        else if(requestCode == 2 && resultCode == RESULT_OK && data != null)
+        {
+            imageUri = data.getData();
+            profilePic.setImageURI(imageUri);
+
+            if(imageUri != null)
+            {
+                StorageReference storRef = sr.child(System.currentTimeMillis()+"."+fileExt(imageUri));
+                storRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        storRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                               savingProfilePic(uri.toString());
+                            }
+                        });
+
+
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MenuButtonForProviders.this, "Image Accumulation failed!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+        }
+        //--
 
     }
     public void checkIfLocationIsOn() {

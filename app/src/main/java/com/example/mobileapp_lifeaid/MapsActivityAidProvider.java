@@ -22,6 +22,7 @@ import android.view.View;
 
 import android.widget.Button;
 import android.widget.EditText;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,6 +80,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
     String whatdidyoudo = "";
     TextView seekerlocstr,yourlocstr;
+
 
 
     AidProviderMainDash apm = new AidProviderMainDash();
