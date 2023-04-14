@@ -197,6 +197,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         supp_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                apm.ignoredID.add(apm.seeker_id);//4/14/2023
                 whatdidyoudo = "Support";
                 updatingSuppCount();//3/17/2023
                 Date currentDateTime = Calendar.getInstance().getTime();

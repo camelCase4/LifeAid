@@ -43,6 +43,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class AidProviderMainDash extends AppCompatActivity {
@@ -94,7 +96,10 @@ public class AidProviderMainDash extends AppCompatActivity {
     private static final int NOTIFICATION_ID = 1;
     public static int toOccurOnce = 0;
     private static final int VIBRATION_DURATION = 1000;
+
+    public static List<String> ignoredID = new ArrayList<>();
     //--
+
 
 
     @Override
@@ -368,7 +373,7 @@ public class AidProviderMainDash extends AppCompatActivity {
 
 
 
-                                    if(jobchoice.toLowerCase().equals(ma.ap_job.toLowerCase()) || jobchoice.equals("all"))
+                                    /*if(jobchoice.toLowerCase().equals(ma.ap_job.toLowerCase()) || jobchoice.equals("all"))
                                     {
                                         if(!temp_lat.equals("") && providerID.equals(""))
                                         {
@@ -389,7 +394,35 @@ public class AidProviderMainDash extends AppCompatActivity {
                                             seekerfName = String.valueOf(snaps.child("fname").getValue()); //3/22/2023
 
                                         }
+                                    }*/ //commented on 14 original
+
+                                    //4/14/2023
+                                    if(!ignoredID.contains(key))
+                                    {
+                                        if(jobchoice.toLowerCase().equals(ma.ap_job.toLowerCase()) || jobchoice.equals("all"))
+                                        {
+                                            if(!temp_lat.equals("") && providerID.equals(""))
+                                            {
+                                                latiOfSeeker = temp_lat;
+                                                longiOfSeeker = temp_longi;
+                                                seeker_id = key;//checkpoint 3/17/2023
+                                                seekerfName = String.valueOf(snaps.child("fname").getValue()); //3/22/2023
+
+                                            }
+                                        }//else if below 3/5/2023
+                                        else if((jobchoice.equals("health") && ma.ap_job.toLowerCase().equals("nurse")) || (jobchoice.equals("health") && ma.ap_job.toLowerCase().equals("doctor")))
+                                        {
+                                            if(!temp_lat.equals("") && providerID.equals(""))
+                                            {
+                                                latiOfSeeker = temp_lat;
+                                                longiOfSeeker = temp_longi;
+                                                seeker_id = key;//checkpoint 3/17/2023
+                                                seekerfName = String.valueOf(snaps.child("fname").getValue()); //3/22/2023
+
+                                            }
+                                        }
                                     }
+                                    //---
 
                                 }
                                 else

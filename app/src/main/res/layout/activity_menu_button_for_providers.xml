@@ -130,10 +130,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.028"
+        app:layout_constraintVertical_bias="0.068"
         app:srcCompat="@drawable/mtprofile" />
-
-
 
     <Button
         android:id="@+id/askaid"

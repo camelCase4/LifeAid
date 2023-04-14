@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".AidSeekerIntro1"
     android:background="#D0F0C0">
+
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="62dp"
@@ -16,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023"
-        app:srcCompat="@drawable/stranger" />
+        app:srcCompat="@drawable/amputee" />
     <TextView
         android:id="@+id/tv_registration2"
         android:layout_width="wrap_content"

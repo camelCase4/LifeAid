@@ -43,6 +43,7 @@
         app:layout_constraintVertical_bias="0.25"
         app:srcCompat="@drawable/home" />
 
+
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="62dp"
@@ -53,8 +54,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023"
-        app:srcCompat="@drawable/stranger" />
-
+        app:srcCompat="@drawable/volunteer" />
 
     <TextView
         android:id="@+id/tv_registration2"

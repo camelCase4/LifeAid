@@ -238,6 +238,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                     presscounter++;
                     if (presscounter >= 2) {
                         //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                        toOccurOnce = 0;//4/14/2023
                         ifusertap = true; //4/2/2023
                         getLoc();
                         presscounter = 0;
@@ -285,6 +286,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                     presscounter++;
                     if (presscounter >= 2) {
                         //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                        toOccurOnce = 0;//4/14/2023
                         ifusertap = true; //4/2/2023
                         getLoc();
                         presscounter = 0;
@@ -329,6 +331,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                     presscounter++;
                     if (presscounter >= 2) {
                         //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                        toOccurOnce = 0;//4/14/2023
                         ifusertap = true; //4/2/2023
                         getLoc();
                         presscounter = 0;
@@ -372,6 +375,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                     presscounter++;
                     if (presscounter >= 2) {
                         //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                        toOccurOnce = 0;//4/14/2023
                         ifusertap = true; //4/2/2023
                         getLoc();
                         presscounter = 0;

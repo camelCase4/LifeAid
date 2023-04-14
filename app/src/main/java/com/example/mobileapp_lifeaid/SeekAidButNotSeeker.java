@@ -2,18 +2,29 @@ package com.example.mobileapp_lifeaid;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +35,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -38,6 +50,7 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
     TextView greetings,conversation,send;
     TextView fullnametv,numbertv,addresstv,duration;
     EditText msgHolder;
+    ImageView profileP;
 
     String responderUID = "";
     String repeaterChecker = "";
@@ -57,6 +70,14 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
     DatabaseReference dr = fd.getReference().child("Aid-Seeker");
 
     MenuButtonForProviders mp = new MenuButtonForProviders();
+
+    //4/14/2023
+    private static final String CHANNEL_ID = "my_channel";
+    private static final int NOTIFICATION_ID = 1;
+    public static int toOccurOnce = 0;
+    private static final int VIBRATION_DURATION = 1000;
+    //--
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +97,8 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
 
         complete = (Button) findViewById(R.id.completeTransac);
 
+        profileP = (ImageView) findViewById(R.id.imageView44);
+
         if(ma.userrole.equals("AidProvider"))
         {
             greetings.setText("LOGGED IN AS AN AID - PROVIDER");
@@ -87,6 +110,7 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
 
         waitforresponder();
         gettingLocationName();
+        createNotificationChannel();//4/14/2023
 
         conversation.setMovementMethod(new ScrollingMovementMethod());
         msgHolder.setOnClickListener(new View.OnClickListener() {
@@ -375,6 +399,7 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
                                 {
                                     providerFound = true;
                                     complete.setText("Complete Transac.");
+                                    showNotification();//4/14/2023
 
                                 }
                             }
@@ -418,6 +443,13 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
                                 commendCount = String.valueOf(snaps.child("commends").getValue());
                                 unsatisfiedCount = String.valueOf(snaps.child("decommends").getValue());
                                 //--------
+
+                                //4/14/2023
+                                String imagepic = String.valueOf(snaps.child("trustedname_2").getValue());
+                                if(!imagepic.equals("")) {
+                                    imageDisplayer(imagepic);
+                                }
+                                //---
                             }
                         }
 
@@ -548,5 +580,96 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show();
     }
+
+    //4/14/2023
+    public void imageDisplayer(String urlpic)
+    {
+        Picasso.get().load(urlpic).into(profileP);
+    }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "My Channel";
+            String description = "My Channel Description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void showNotification() {
+        if(toOccurOnce == 0) {
+            phoneVibration();
+            toOccurOnce++;
+            if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+                Toast.makeText(this, "Please enable notifications for LifeAid next time!", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.alarm)
+                        .setContentTitle("LifeAid Alert!")
+                        .setContentText("Aid - Provider Found! Go to Provider Info!")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                notificationManager.notify(NOTIFICATION_ID, builder.build());
+            }
+        }
+    }
+    public void phoneVibration()
+    {
+        if (hasVibrationPermission()) {
+
+            vibrateDevice();
+        } else {
+
+            requestVibrationPermission();
+        }
+    }
+    private boolean hasVibrationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ActivityCompat.checkSelfPermission(SeekAidButNotSeeker.this, Manifest.permission.VIBRATE)
+                    == PackageManager.PERMISSION_GRANTED;
+        }
+        return true;
+    }
+
+    // Request vibration permission
+    private void requestVibrationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                ActivityCompat.requestPermissions(SeekAidButNotSeeker.this, new String[]{Manifest.permission.VIBRATE}, 69);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+    }
+    private void vibrateDevice() {
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator != null && vibrator.hasVibrator()) {
+            vibrator.vibrate(VIBRATION_DURATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //4/14/2023
+        if(requestCode == 69)
+        {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                Toast.makeText(this, "Vibration permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+        //---
+    }
+
+    //---
 
 }

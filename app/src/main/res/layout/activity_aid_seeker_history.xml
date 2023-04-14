@@ -50,7 +50,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023"
-        app:srcCompat="@drawable/stranger" />
+        app:srcCompat="@drawable/amputee" />
 
     <ImageView
         android:id="@+id/imageView18"
