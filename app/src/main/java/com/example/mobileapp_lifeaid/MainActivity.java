@@ -1,10 +1,14 @@
 package com.example.mobileapp_lifeaid;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PatternMatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static String userid;
 
+    TextView forgotPass; //4/14/2023
+
 
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
@@ -61,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         et_signin = (EditText) findViewById(R.id.editTextUsername);
         et_passin = (EditText) findViewById(R.id.edittextpass);
         progressBarlog = (ProgressBar) findViewById(R.id.progressBarlogin);
+
+        forgotPass = (TextView) findViewById(R.id.txt_fgpass);//4/14/2023
 
         mAuth = FirebaseAuth.getInstance();
         //from login dash to reg dash
@@ -83,9 +91,70 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        forgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changePass();
+            }
+        });
+
 
 
     }
+    //4/14/2023
+    public void changePass()
+    {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText edittext = new EditText(MainActivity.this);
+        alert.setMessage("Enter Your Email");
+
+
+        alert.setView(edittext);
+
+        alert.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                if(edittext.getText().toString().equals("") || edittext.getText().toString().isEmpty())
+                {
+                    Toast.makeText(MainActivity.this,"Email is Empty!",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    if(!Patterns.EMAIL_ADDRESS.matcher(edittext.getText().toString()).matches())
+                    {
+                        Toast.makeText(MainActivity.this,"Email provided is invalid!",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        progressBarlog.setVisibility(View.VISIBLE);
+                        mAuth.sendPasswordResetEmail(edittext.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful())
+                                {
+                                    progressBarlog.setVisibility(View.GONE);
+                                    Toast.makeText(MainActivity.this,"Please check your email notifications and change your password!",Toast.LENGTH_LONG).show();
+                                }
+                                else
+                                {
+                                    Toast.makeText(MainActivity.this,"Something went wrong, try again!",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+
+        alert.show();
+
+    }
+    //---
     private void checker()
     {
         et_signin = (EditText) findViewById(R.id.editTextUsername);

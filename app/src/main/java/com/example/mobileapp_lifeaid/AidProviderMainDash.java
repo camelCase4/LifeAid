@@ -3,18 +3,25 @@ package com.example.mobileapp_lifeaid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -82,6 +89,13 @@ public class AidProviderMainDash extends AppCompatActivity {
     public static boolean isLocationEnabled = false;
     //--
 
+    //4/14/2023
+    private static final String CHANNEL_ID = "my_channel";
+    private static final int NOTIFICATION_ID = 1;
+    public static int toOccurOnce = 0;
+    private static final int VIBRATION_DURATION = 1000;
+    //--
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +126,7 @@ public class AidProviderMainDash extends AppCompatActivity {
         checkIfLocationIsOn(); //4/6/2023
 
 
+        createNotificationChannel();//4/14/2023
 
 
 
@@ -254,6 +269,77 @@ public class AidProviderMainDash extends AppCompatActivity {
 
 
     }
+    //4/14/2023
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "My Channel";
+            String description = "My Channel Description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void showNotification() {
+        if(toOccurOnce == 0) {
+            phoneVibration();
+            toOccurOnce++;
+            if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+                Toast.makeText(this, "Please enable notifications for LifeAid next time!", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.alarm)
+                        .setContentTitle("LifeAid Alert!")
+                        .setContentText("We found an Aid - Seeker!")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                notificationManager.notify(NOTIFICATION_ID, builder.build());
+            }
+        }
+    }
+    public void phoneVibration()
+    {
+        if (hasVibrationPermission()) {
+
+            vibrateDevice();
+        } else {
+
+            requestVibrationPermission();
+        }
+    }
+    private boolean hasVibrationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ActivityCompat.checkSelfPermission(this, Manifest.permission.VIBRATE)
+                    == PackageManager.PERMISSION_GRANTED;
+        }
+        return true;
+    }
+
+    // Request vibration permission
+    private void requestVibrationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.VIBRATE}, 69);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+    }
+    private void vibrateDevice() {
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator != null && vibrator.hasVibrator()) {
+            vibrator.vibrate(VIBRATION_DURATION);
+        }
+    }
+
+    //---
 
 
     protected void checkForSeekers()
@@ -320,6 +406,7 @@ public class AidProviderMainDash extends AppCompatActivity {
 
                     if(!latiOfSeeker.equals(""))
                     {
+                        showNotification(); // 4/14/2023
                         //Toast.makeText(AidProviderMainDash.this, "Please Respond!", Toast.LENGTH_SHORT).show();
                         tap.setText("S E E K E R   F O U N D !");
                         als.setText("ALERT FOUND!");
@@ -441,6 +528,7 @@ public class AidProviderMainDash extends AppCompatActivity {
     public void startingTheSearch()
     {
 
+        toOccurOnce = 0; // 4/14/2023
         //3/31/2023
         cdFind = new CountDownTimer(300000,1000) {
             @Override
@@ -494,6 +582,16 @@ public class AidProviderMainDash extends AppCompatActivity {
 
             }
         }
+        //4/14/2023
+        else if(requestCode == 69)
+        {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                Toast.makeText(this, "Vibration permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+        //---
 
 
     }
