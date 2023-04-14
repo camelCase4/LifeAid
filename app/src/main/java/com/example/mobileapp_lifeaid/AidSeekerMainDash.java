@@ -78,7 +78,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     //--------
 
     //3/10/2023
-    boolean foundresponder = false;
+    public static boolean foundresponder = false;
     //-------
 
     //3/24/2023
