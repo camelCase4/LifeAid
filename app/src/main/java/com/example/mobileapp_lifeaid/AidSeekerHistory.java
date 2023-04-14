@@ -114,7 +114,17 @@ public class AidSeekerHistory extends AppCompatActivity {
                                                 String et = String.valueOf(snaps.child("emergencytype").getValue());
                                                 String pn = String.valueOf(snaps.child("providername").getValue());
 
-                                                historyContents.append("   "+dt + "                  "+et+"                       "+pn+"\n\n");
+                                                //historyContents.append("   "+dt + "                  "+et+"                       "+pn+"\n\n"); original on 14
+
+                                                //4/14/2023
+                                                String nameTemp = pn;
+                                                if(nameTemp.length() > 7)
+                                                {
+                                                    nameTemp = pn.substring(0,7);
+                                                }
+                                                historyContents.append("   "+dt + "                  "+et+"                       "+nameTemp+"\n\n");
+
+                                                //---
 
                                             }
                                         }
@@ -128,8 +138,17 @@ public class AidSeekerHistory extends AppCompatActivity {
                                                 String et = String.valueOf(snaps.child("emergencytype").getValue());
                                                 String pn = String.valueOf(snaps.child("providername").getValue());
 
-                                                historyContents.append("   "+dt + "               "+et+"                  "+pn+"\n\n");
+                                                //historyContents.append("   "+dt + "               "+et+"                  "+pn+"\n\n"); original on 14
 
+                                                //4/14/2023
+                                                String nameTemp = pn;
+                                                if(nameTemp.length() > 7)
+                                                {
+                                                    nameTemp = pn.substring(0,7);
+                                                }
+                                                historyContents.append("   "+dt + "                  "+et+"                       "+nameTemp+"\n\n");
+
+                                                //---
 
                                             }
                                         }
@@ -143,8 +162,17 @@ public class AidSeekerHistory extends AppCompatActivity {
                                                 String et = String.valueOf(snaps.child("emergencytype").getValue());
                                                 String pn = String.valueOf(snaps.child("providername").getValue());
 
-                                                historyContents.append("   "+dt + "                  "+et+"                  "+pn+"\n\n");
+                                                //historyContents.append("   "+dt + "                  "+et+"                  "+pn+"\n\n"); original on 14
 
+                                                //4/14/2023
+                                                String nameTemp = pn;
+                                                if(nameTemp.length() > 7)
+                                                {
+                                                    nameTemp = pn.substring(0,7);
+                                                }
+                                                historyContents.append("   "+dt + "                  "+et+"                       "+nameTemp+"\n\n");
+
+                                                //---
                                             }
                                         }
                                     }
@@ -158,8 +186,17 @@ public class AidSeekerHistory extends AppCompatActivity {
                                                 String et = String.valueOf(snaps.child("emergencytype").getValue());
                                                 String pn = String.valueOf(snaps.child("providername").getValue());
 
-                                                historyContents.append("   "+dt + "               "+et+"                  "+pn+"\n\n");
+                                                //historyContents.append("   "+dt + "               "+et+"                  "+pn+"\n\n"); original on 14
 
+                                                //4/14/2023
+                                                String nameTemp = pn;
+                                                if(nameTemp.length() > 7)
+                                                {
+                                                    nameTemp = pn.substring(0,7);
+                                                }
+                                                historyContents.append("   "+dt + "                  "+et+"                       "+nameTemp+"\n\n");
+
+                                                //---
                                             }
                                         }
 

@@ -95,8 +95,16 @@ public class AidProviderHistory extends AppCompatActivity {
                                         //3/22/2023
                                         //String temp = "   "+dt+"             "+rp+space+sn+"\n\n"; orig
                                         //4/2/2023
-                                        String temp = "   "+dt+"             "+rp+space+sn;
+                                        //String temp = "   "+dt+"             "+rp+space+sn; original on 14
                                         //---
+                                        //4/14/2023
+                                        String nameTemp = sn;
+                                        if(nameTemp.length() > 7)
+                                        {
+                                            nameTemp = sn.substring(0,7);
+                                        }
+                                        String temp = "   "+dt+"             "+rp+space+nameTemp;
+                                        //----
                                         SpannableString ss = new SpannableString(temp);
                                         ClickableSpan clickableSpan = new ClickableSpan() {
 

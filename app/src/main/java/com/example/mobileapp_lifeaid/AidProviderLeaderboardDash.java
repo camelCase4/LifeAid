@@ -478,7 +478,15 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
             //original     //String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i) + "\n\n";
             //3/29/2023
 
-            String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i).toLowerCase() + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i);
+            //String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i).toLowerCase() + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i); original on 14
+            //4/14/23
+            String nameTemp = fnames.get(i);
+            if(nameTemp.length() > 7)
+            {
+                nameTemp = fnames.get(i).substring(0,7);
+            }
+            String initialNums = "     " + Integer.toString(i + 1) + space + Position.get(i).toLowerCase() + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + nameTemp;
+            //---
 
 
 
