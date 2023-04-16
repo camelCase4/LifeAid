@@ -139,6 +139,9 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     boolean gotLocInCrime = false;
     //----
 
+    //4/16/2023
+    double latis,longis;
+    //---
 
 
 
@@ -284,6 +287,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                     stationcontact.clear();
                     stationlats.clear();
                     stationlongs.clear();
+                    emergency.setTextColor(Color.parseColor("#ff6666")); // 4/16/2023
 
 
                 }
@@ -296,6 +300,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                     stationcontact.clear();
                     stationlats.clear();
                     stationlongs.clear();
+                    emergency.setTextColor(Color.parseColor("#6666ff")); // 4/16/2023
 
 
                 }
@@ -309,7 +314,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                     stationcontact.clear();
                     stationlats.clear();
                     stationlongs.clear();
-
+                    emergency.setTextColor(Color.parseColor("#00cc00")); // 4/16/2023
 
                 }
             }
@@ -357,8 +362,8 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                         latLng = new LatLng(location.getLatitude(),location.getLongitude());
                         //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                         mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)); commented on 4/16/2023
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
                         showAddress();//3/16/2023
 
 
@@ -399,8 +404,13 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                     polyline.remove();
                 }
                 LatLng pos = marker.getPosition();
-                double latis = pos.latitude;
-                double longis = pos.longitude;
+                //double latis = pos.latitude; commented on 16
+                //double longis = pos.longitude;
+
+                //4/16/2023
+                latis = pos.latitude;
+                longis = pos.longitude;
+                //---
 
 
                gettingPath(latis,longis);
@@ -894,8 +904,15 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                         //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                         mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f)); commendted on 4/16/2023
 
+                        //4/16/2023
+                        if(polyline != null) {
+                            polyline.remove();
+                        }
+                        gettingPath(latis,longis);
+
+                        //----
                         displayPlaceFirestation();
                     }
 
@@ -936,8 +953,15 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                         //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                         mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f)); commendted on 4/16/2023
 
+                        //4/16/2023
+                        if(polyline != null) {
+                            polyline.remove();
+                        }
+                        gettingPath(latis,longis);
+
+                        //----
                         displayPlacePoliceStation();
                     }
 
@@ -979,8 +1003,15 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                         //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                         mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f)); commendted on 4/16/2023
 
+                        //4/16/2023
+                        if(polyline != null) {
+                            polyline.remove();
+                        }
+                        gettingPath(latis,longis);
+
+                        //----
                         displayPlaceHealthStation();
                     }
 

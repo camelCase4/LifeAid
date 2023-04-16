@@ -79,6 +79,7 @@ public class UserEditingPage extends AppCompatActivity {
     }
     public void updatingData(String r, EditText[] vals)
     {
+        boolean editable = false; //4/16/2023
         HashMap hm = new HashMap();
 
 
@@ -88,14 +89,14 @@ public class UserEditingPage extends AppCompatActivity {
             {
                 int x = Arrays.asList(vals).indexOf(i);
                 hm.put(valPartners[x],i.getText().toString());
+                editable = true;
             }
         }
 
 
         try {
 
-
-            DatabaseReference dr = FirebaseDatabase.getInstance().getReference(r);
+            /*DatabaseReference dr = FirebaseDatabase.getInstance().getReference(r);
             dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -112,7 +113,33 @@ public class UserEditingPage extends AppCompatActivity {
                     }
 
                 }
-            });
+            });*/ // commented on 16
+
+            if(editable)
+            {
+                DatabaseReference dr = FirebaseDatabase.getInstance().getReference(r);
+                dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(UserEditingPage.this, "Updated!", Toast.LENGTH_SHORT).show();
+                        if (r.equals("Aid-Provider")) {
+                            Intent intent = new Intent(UserEditingPage.this, MenuButtonForProviders.class);
+                            startActivity(intent);
+                        } else if (r.equals("Aid-Seeker")) {
+                            Intent intent = new Intent(UserEditingPage.this, MenuButtonForSeekers.class);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(UserEditingPage.this, MenuForAdmins.class);
+                            startActivity(intent);
+                        }
+
+                    }
+                });
+            }
+            else
+            {
+                Toast.makeText(UserEditingPage.this, "Nothing to Update!", Toast.LENGTH_SHORT).show();
+            }
         }
         catch (Exception e)
         {

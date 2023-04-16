@@ -7,8 +7,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.PackageManagerCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -64,8 +66,8 @@ public class AidProviderClaimCert extends AppCompatActivity {
         certificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gettingProviderData();
-                flag = true;
+                //gettingProviderData(); commented on 16
+                //flag = true;commented on 16
                 /*if(status.equals("0")) {
                     if (amountOfCommends >= 50) {
                         updateProviderData();
@@ -89,6 +91,28 @@ public class AidProviderClaimCert extends AppCompatActivity {
                     Toast.makeText(AidProviderClaimCert.this, "You can only claim once!",Toast.LENGTH_SHORT).show();
                 }*/
 
+                //4/16/2023
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                gettingProviderData();
+                                flag = true;
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //do nothing
+                                break;
+
+                        }
+                    }
+                };
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(AidProviderClaimCert.this);
+                builder2.setMessage("Are you ready to claim?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+
+                //---
             }
         });
 

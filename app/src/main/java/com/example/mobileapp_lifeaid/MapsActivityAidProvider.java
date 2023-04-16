@@ -134,6 +134,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     boolean ifcancelled = false;
     //---
 
+    boolean mapSpanOnce = true; //4/16/2023
+    boolean mapSpanOnce2 = true; //4/16/2023
 
 
     @Override
@@ -284,13 +286,22 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                     latLng = new LatLng(location.getLatitude(),location.getLongitude());
                         //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                     mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f)); commented on 4/16/2023
                     //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
 
+                    //4/16/2023
+                    if(mapSpanOnce)
+                    {
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
+                        mapSpanOnce = false;
+                    }
+                    //---
 
                         seekerloc();
                         yourlocstr.setText(showAddress(Double.toString(location.getLatitude()),Double.toString(location.getLongitude())));
                         gettingPath();
+
+                        
 
 
                 }catch (Exception e)
@@ -401,7 +412,15 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             //3/15/2023 Latlng
             seekerPosition = new LatLng(Double.parseDouble(apm.latiOfSeeker), Double.parseDouble(apm.longiOfSeeker));
             mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location!")).showInfoWindow();
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition)); commented on 16
+
+            //4/16/2023
+            if(mapSpanOnce2)
+            {
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition));
+                mapSpanOnce2 = false;
+            }
+            //---
 
 
 
