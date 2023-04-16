@@ -3,9 +3,11 @@ package com.example.mobileapp_lifeaid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 public class AidSeekerHistory extends AppCompatActivity {
 
     TextView historyContents,sequenceOftype;
+    ImageView menu;
 
 
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("AidSeekerHistory");
@@ -37,6 +40,17 @@ public class AidSeekerHistory extends AppCompatActivity {
 
 
         historyContents.setMovementMethod(new ScrollingMovementMethod());
+
+        //4/17/2023
+        menu = (ImageView) findViewById(R.id.imageView18);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidSeekerHistory.this,MenuButtonForSeekers.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         gettingData();
 

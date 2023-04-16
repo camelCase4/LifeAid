@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MenuButtonForSeekers extends AppCompatActivity {
 
-    ImageView bk;
+    ImageView bk,homepage;
+    TextView homedash;
 
     Button editAcc,faqs,lgout;
 
@@ -27,6 +29,25 @@ public class MenuButtonForSeekers extends AppCompatActivity {
         faqs = (Button) findViewById(R.id.loginbutton5);
         lgout = (Button) findViewById(R.id.loginbutton);
 
+        //4/17/2023
+        homepage = (ImageView) findViewById(R.id.imageHomeDash);
+        homedash = (TextView) findViewById(R.id.tv_homedash);
+
+        homedash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuButtonForSeekers.this,AidSeekerMainDash.class);
+                startActivity(intent);
+            }
+        });
+        homepage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuButtonForSeekers.this,AidSeekerMainDash.class);
+                startActivity(intent);
+            }
+        });
+        //---
         lgout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

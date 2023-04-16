@@ -55,7 +55,7 @@ import java.util.HashMap;
 // i added a new implements 2/22/2023
 public class AidSeekerMainDash extends AppCompatActivity implements LocationListener {
 
-    ImageView alertallbtn, menu;
+    ImageView alertallbtn, menu,imghist,imgLB,imgInfo,imgCM;
     Button btncrime, btnfire, btnhealth;
     TextView openchat, mapcrisis;
     TextView seekerHist;
@@ -127,6 +127,59 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         seekerHist = (TextView) findViewById(R.id.tv_registration14);
 
         menu = (ImageView) findViewById(R.id.imageView18);
+
+        //4/17/2023
+        imghist = (ImageView) findViewById(R.id.imageView19);
+        imgLB = (ImageView) findViewById(R.id.imageView21);
+        imgInfo = (ImageView) findViewById(R.id.imageView20);
+        imgCM = (ImageView) findViewById(R.id.imageView22);
+
+        imgCM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isLocationEnabled) {
+                    if (ContextCompat.checkSelfPermission(AidSeekerMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // Permission is not granted, so request it
+                        ActivityCompat.requestPermissions(AidSeekerMainDash.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE_MAPS);
+                    } else {
+
+                        Intent intent = new Intent(AidSeekerMainDash.this, AidSeekerMapCrisis.class);
+                        startActivity(intent);
+                    }
+                } else {
+                    Toast.makeText(AidSeekerMainDash.this, "Enable the location in your device, and try again.", Toast.LENGTH_LONG).show();
+                    checkIfLocationIsOn();
+                }
+            }
+        });
+
+        imgInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (foundresponder) {
+                    foundresponder = false;
+                    Intent intent = new Intent(AidSeekerMainDash.this, AidSeekerChat.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(AidSeekerMainDash.this, "No Aid - Provider Yet!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        imgLB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidSeekerMainDash.this, AidSeekerLeaderboardDash.class);
+                startActivity(intent);
+            }
+        });
+        imghist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidSeekerMainDash.this, AidSeekerHistory.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         checkIfLocationIsOn();//4/6/2023
 
