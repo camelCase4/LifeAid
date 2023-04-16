@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 public class AidProviderRecords extends AppCompatActivity {
 
     //3/20/2023
-    ImageView st1, st2, st3, st4, ivExit;
+    ImageView st1, st2, st3, st4, ivExit,menu;
     TextView overallProvision, overallSupports, good,bad, exitTV,negativeStar;
 
     MainActivity ma = new MainActivity();
@@ -49,6 +49,18 @@ public class AidProviderRecords extends AppCompatActivity {
         bad = (TextView) findViewById(R.id.reportcount);
         exitTV = (TextView) findViewById(R.id.tv_ex);
         negativeStar = (TextView) findViewById(R.id.tv_registration22);
+
+        //4/16/2023
+        menu = (ImageView) findViewById(R.id.imageView18);
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderRecords.this,MenuButtonForProviders.class);
+                startActivity(intent);
+            }
+        });
+        //----
 
 
         st1.setVisibility(View.INVISIBLE);

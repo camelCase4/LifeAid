@@ -3,7 +3,9 @@ package com.example.mobileapp_lifeaid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +50,15 @@ public class GeneratedReportAidProvider extends AppCompatActivity {
         downOrUp = (ImageView) findViewById(R.id.thumb);
         exit = (ImageView) findViewById(R.id.back);
 
+        //4/16/2023
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GeneratedReportAidProvider.this,AidProviderHistory.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         /*td.setText(aph.dt);
         act.setText(aph.rp);

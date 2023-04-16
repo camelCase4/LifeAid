@@ -22,6 +22,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
@@ -54,7 +55,8 @@ import java.util.HashMap;
 public class MenuButtonForProviders extends AppCompatActivity implements LocationListener {
 
     Button aidAsking,claim,editAcc,faqs,lgout;
-    ImageView bk,profilePic;
+    ImageView bk,profilePic,homepage;
+    TextView homedash;
     public static String latitudePos, longitudePos;
     LocationManager lm;
 
@@ -97,6 +99,26 @@ public class MenuButtonForProviders extends AppCompatActivity implements Locatio
         lgout = (Button) findViewById(R.id.loginbutton3);
         bk = (ImageView) findViewById(R.id.back);
         profilePic = (ImageView) findViewById(R.id.imageView49);
+
+        //4/16/2023
+        homepage = (ImageView) findViewById(R.id.imageHomeDash);
+        homedash = (TextView) findViewById(R.id.tv_homedash);
+
+        homedash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuButtonForProviders.this,AidProviderMainDash.class);
+                startActivity(intent);
+            }
+        });
+        homepage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuButtonForProviders.this,AidProviderMainDash.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         //4/14/2023
         displayImage();

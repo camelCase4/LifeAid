@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,7 +40,7 @@ import java.util.Objects;
 public class AidProviderClaimCert extends AppCompatActivity {
 
     TextView commendsProvs,downloadCert;
-    ImageView certificate;
+    ImageView certificate,menu;
 
     MainActivity ma = new MainActivity();
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
@@ -60,6 +61,18 @@ public class AidProviderClaimCert extends AppCompatActivity {
         commendsProvs = (TextView) findViewById(R.id.commendsandprovisions);
         certificate = (ImageView) findViewById(R.id.cert);
         downloadCert = (TextView) findViewById(R.id.dlcert);
+
+        //4/17/2023
+        menu = (ImageView) findViewById(R.id.imageView18);
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderClaimCert.this,MenuButtonForProviders.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         gettingProviderData();
 

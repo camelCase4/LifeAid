@@ -58,8 +58,24 @@ public class UserEditingPage extends AppCompatActivity {
         bk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserEditingPage.this,MenuForAdmins.class);
-                startActivity(intent);
+
+                if(ma.userrole.equals("AidProvider"))
+                {
+                    Intent intent = new Intent(UserEditingPage.this,MenuButtonForProviders.class);
+                    startActivity(intent);
+
+                }
+                else if(ma.userrole.equals("AidSeeker"))
+                {
+                    Intent intent = new Intent(UserEditingPage.this,MenuButtonForSeekers.class);
+                    startActivity(intent);
+
+                }
+                else
+                {
+                    Intent intent = new Intent(UserEditingPage.this,MenuForAdmins.class);
+                    startActivity(intent);
+                }
             }
         });
         //---

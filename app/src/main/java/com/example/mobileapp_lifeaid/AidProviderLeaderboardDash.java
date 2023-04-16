@@ -19,6 +19,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ import java.util.List;
 public class AidProviderLeaderboardDash extends AppCompatActivity {
 
     TextView leadProvs,switching;
+    ImageView menu;
 
     List<String> provCount_uid = new ArrayList<>();
     List<String> UIDinOrder = new ArrayList<>();
@@ -75,6 +77,18 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
         //4/3/2023
         switching = (TextView) findViewById(R.id.switchrole);
         //--
+
+        //4/16/2023
+        menu = (ImageView) findViewById(R.id.imageView18);
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderLeaderboardDash.this,MenuButtonForProviders.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         gettingCountAndUID();
         //amount();

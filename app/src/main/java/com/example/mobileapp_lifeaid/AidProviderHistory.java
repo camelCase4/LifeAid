@@ -13,6 +13,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import java.util.Collections;
 
 public class AidProviderHistory extends AppCompatActivity {
     TextView historyContents;
+    ImageView menu;
 
     //3/23/2023
     //public static String dat = "",rap = "",san = "",placeOfIncident="",feedback="",seekerID= "";
@@ -42,6 +44,16 @@ public class AidProviderHistory extends AppCompatActivity {
 
         historyContents = (TextView) findViewById(R.id.contents);
 
+        //4/17/2023
+        menu = (ImageView) findViewById(R.id.imageView18);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderHistory.this,MenuButtonForProviders.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
 
         historyContents.setMovementMethod(new ScrollingMovementMethod());

@@ -53,8 +53,8 @@ public class AidProviderMainDash extends AppCompatActivity {
 
     public static String seeker_id = "",seekerfName = ""; //checkpoint 3/3/2023
 
-    ImageView seekerAlerts,alarmimage,alarm2;
-    TextView tap;
+    ImageView seekerAlerts,alarmimage,alarm2,arrowHistory,imgHist,arrowLB,imgLB,vrarrow,vrimg;
+    TextView tap,txtAlert;
     TextView als;
     TextView leaderboard;
     TextView viewHistory;
@@ -120,6 +120,138 @@ public class AidProviderMainDash extends AppCompatActivity {
 
         menu = (ImageView) findViewById(R.id.imageView18);
 
+        //4/16/2023
+        arrowHistory = (ImageView) findViewById(R.id.imageView24);
+        imgHist = (ImageView) findViewById(R.id.imageView19);
+        arrowLB = (ImageView) findViewById(R.id.imageView22);
+        imgLB = (ImageView) findViewById(R.id.imageView21);
+        vrimg = (ImageView) findViewById(R.id.imageView26);
+        vrarrow = (ImageView) findViewById(R.id.imageView27);
+
+        vrimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(AidProviderMainDash.this,AidProviderRecords.class);
+                startActivity(intent);
+            }
+        });
+
+        vrarrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderMainDash.this,AidProviderRecords.class);
+                startActivity(intent);
+            }
+        });
+        als.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isLocationEnabled)
+                {
+                    if(seekerfound) {
+                        seekerfound = false;
+
+                    /*Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
+                    startActivity(intent);*/
+
+
+                        //4/5/2023
+                        if (ContextCompat.checkSelfPermission(AidProviderMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            // Permission is not granted, so request it
+                            ActivityCompat.requestPermissions(AidProviderMainDash.this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_REQUEST_CODE_MAPS2);
+                        } else {
+
+                            Intent intent = new Intent(AidProviderMainDash.this,MapsActivityAidProvider.class);
+                            startActivity(intent);
+                        }
+                        //---
+
+
+
+                    }
+                    else
+                    {
+                        Toast.makeText(AidProviderMainDash.this, "Find Seekers First!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(AidProviderMainDash.this, "Enable the location in your device, and try again.", Toast.LENGTH_LONG).show();
+                    checkIfLocationIsOn();
+                }
+            }
+        });
+
+        alarm2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isLocationEnabled)
+                {
+                    if(seekerfound) {
+                        seekerfound = false;
+
+                    /*Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
+                    startActivity(intent);*/
+
+
+                        //4/5/2023
+                        if (ContextCompat.checkSelfPermission(AidProviderMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            // Permission is not granted, so request it
+                            ActivityCompat.requestPermissions(AidProviderMainDash.this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_REQUEST_CODE_MAPS2);
+                        } else {
+
+                            Intent intent = new Intent(AidProviderMainDash.this,MapsActivityAidProvider.class);
+                            startActivity(intent);
+                        }
+                        //---
+
+
+
+                    }
+                    else
+                    {
+                        Toast.makeText(AidProviderMainDash.this, "Find Seekers First!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(AidProviderMainDash.this, "Enable the location in your device, and try again.", Toast.LENGTH_LONG).show();
+                    checkIfLocationIsOn();
+                }
+            }
+        });
+
+        arrowLB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderMainDash.this,AidProviderLeaderboardDash.class);
+                startActivity(intent);
+            }
+        });
+        imgLB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderMainDash.this,AidProviderLeaderboardDash.class);
+                startActivity(intent);
+            }
+        });
+
+        imgHist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderMainDash.this,AidProviderHistory.class);
+                startActivity(intent);
+            }
+        });
+        arrowHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AidProviderMainDash.this,AidProviderHistory.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
 
 
