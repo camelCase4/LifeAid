@@ -410,7 +410,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
             //3/15/2023 Latlng
             seekerPosition = new LatLng(Double.parseDouble(apm.latiOfSeeker), Double.parseDouble(apm.longiOfSeeker));
-            mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location!")).showInfoWindow();
+            mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location! Phone # : "+apm.seekerPhoneNum)).showInfoWindow();
             //mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition)); commented on 16
 
             //4/16/2023
@@ -601,6 +601,14 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             addresses = geocoder.getFromLocation(Double.parseDouble(latiloc),Double.parseDouble(longiloc),1);
 
             address = addresses.get(0).getAddressLine(0);
+
+            //4/16/2023
+            if(address.length() > 50)
+            {
+                address = addresses.get(0).getAddressLine(0).substring(0,50);
+            }
+            
+            //---
 
         }catch(IOException e)
         {

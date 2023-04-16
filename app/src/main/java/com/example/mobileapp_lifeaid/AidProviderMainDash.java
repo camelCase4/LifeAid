@@ -100,6 +100,7 @@ public class AidProviderMainDash extends AppCompatActivity {
     public static List<String> ignoredID = new ArrayList<>();
     //--
 
+    public static String seekerPhoneNum = ""; //4/16/2023
 
 
     @Override
@@ -407,6 +408,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                                                 longiOfSeeker = temp_longi;
                                                 seeker_id = key;//checkpoint 3/17/2023
                                                 seekerfName = String.valueOf(snaps.child("fname").getValue()); //3/22/2023
+                                                seekerPhoneNum = String.valueOf(snaps.child("phonenum").getValue()); //4/16/2023
 
                                             }
                                         }//else if below 3/5/2023
@@ -418,6 +420,8 @@ public class AidProviderMainDash extends AppCompatActivity {
                                                 longiOfSeeker = temp_longi;
                                                 seeker_id = key;//checkpoint 3/17/2023
                                                 seekerfName = String.valueOf(snaps.child("fname").getValue()); //3/22/2023
+                                                seekerPhoneNum = String.valueOf(snaps.child("phonenum").getValue()); //4/16/2023
+
 
                                             }
                                         }

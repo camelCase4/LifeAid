@@ -9,6 +9,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -668,6 +671,11 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
 
             LatLng fireStationPosition;
             occur++;
+            //4/16/2023
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(
+                    BitmapFactory.decodeResource(getResources(), R.drawable.firestationmarkernobg),
+                    200, 200, false));
+            //----
             for (int i = 0; i < stationnames.size(); i++) {
                 fireStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i)));
                 //mMap.addMarker(new MarkerOptions().position(fireStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
@@ -675,7 +683,10 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                 //4/2/2023
                 if(emergency.getText().toString().contains("Fire"))
                 {
-                    mMap.addMarker(new MarkerOptions().position(fireStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    //mMap.addMarker(new MarkerOptions().position(fireStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))); original
+                    //4/16/2023
+                    mMap.addMarker(new MarkerOptions().position(fireStationPosition).title(stationnames.get(i)).icon(icon));
+                    //---
                 }
                 //--
 
@@ -763,6 +774,11 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
 
             occur++;
             LatLng policeStationPosition;
+            //4/16/2023
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(
+                    BitmapFactory.decodeResource(getResources(), R.drawable.policestationmarkernobgg),
+                    200, 200, false));
+            //----
             for (int i = 0; i < stationnames.size(); i++) {
                 policeStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i)));
                 //mMap.addMarker(new MarkerOptions().position(policeStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
@@ -770,7 +786,10 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                 //4/2/2023
                 if(emergency.getText().toString().contains("Crime"))
                 {
-                    mMap.addMarker(new MarkerOptions().position(policeStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                    //mMap.addMarker(new MarkerOptions().position(policeStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))); original
+                    //4/16/2023
+                    mMap.addMarker(new MarkerOptions().position(policeStationPosition).title(stationnames.get(i)).icon(icon));
+                    //---
                 }
                 //--
 
@@ -850,6 +869,11 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
 
             occur++;
             LatLng healthStationPosition;
+            //4/16/2023
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(
+                    BitmapFactory.decodeResource(getResources(), R.drawable.healthstationnobg),
+                    200, 200, false));
+            //----
             for (int i = 0; i < stationnames.size(); i++) {
                 healthStationPosition = new LatLng(Double.parseDouble(stationlats.get(i)), Double.parseDouble(stationlongs.get(i)));
                 //mMap.addMarker(new MarkerOptions().position(healthStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
@@ -857,7 +881,10 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                 //4/2/2023
                 if(emergency.getText().toString().contains("Health"))
                 {
-                    mMap.addMarker(new MarkerOptions().position(healthStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    //mMap.addMarker(new MarkerOptions().position(healthStationPosition).title(stationnames.get(i)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))); original
+                    //4/16/2023
+                    mMap.addMarker(new MarkerOptions().position(healthStationPosition).title(stationnames.get(i)).icon(icon));
+                    //---
                 }
                 //--
 
