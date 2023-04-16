@@ -607,7 +607,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             {
                 address = addresses.get(0).getAddressLine(0).substring(0,50);
             }
-            
+
             //---
 
         }catch(IOException e)
