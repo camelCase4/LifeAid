@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class AdminMainDash extends AppCompatActivity {
 
     TextView tv,fortheprovider,lbs;
-    ImageView iv,iv2;
+    ImageView iv,iv2,arrowValidateSeeker,imgValidateSeeker,arrowValidateProvider,imgValidateProvider,imgManageRecs,arrowMrecs,arrowLB,imgLB;
 
     TextView manageRecs;
 
@@ -31,6 +31,77 @@ public class AdminMainDash extends AppCompatActivity {
         fortheprovider = findViewById(R.id.tv_registration15);
         menu = (ImageView) findViewById(R.id.imageView18);
         manageRecs = (TextView) findViewById(R.id.tv_registration17);
+
+        //4/16/2023
+        arrowValidateSeeker = (ImageView) findViewById(R.id.imageView24);
+        imgValidateSeeker = (ImageView) findViewById(R.id.imageView19);
+        arrowValidateProvider = (ImageView) findViewById(R.id.imageView22);
+        imgValidateProvider = (ImageView) findViewById(R.id.imageView21);
+        imgManageRecs = (ImageView) findViewById(R.id.imageView23);
+        arrowMrecs = (ImageView) findViewById(R.id.imageView20);
+        arrowLB = (ImageView) findViewById(R.id.imageView31);
+        imgLB = (ImageView) findViewById(R.id.imageView30);
+
+        arrowLB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMainDash.this, AdminLeaderboardDash.class);
+                startActivity(intent);
+            }
+        });
+        imgLB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMainDash.this, AdminLeaderboardDash.class);
+                startActivity(intent);
+            }
+        });
+        arrowMrecs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMainDash.this,AdminManageRecords.class);
+                startActivity(intent);
+            }
+        });
+        imgManageRecs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMainDash.this,AdminManageRecords.class);
+                startActivity(intent);
+            }
+        });
+        imgValidateProvider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMainDash.this, Admin_AidProvider_Validation.class);
+                startActivity(intent);
+            }
+        });
+        arrowValidateProvider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMainDash.this, Admin_AidProvider_Validation.class);
+                startActivity(intent);
+            }
+        });
+
+        imgValidateSeeker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMainDash.this, Admin_AidSeeker_Validation.class);
+                startActivity(intent);
+            }
+        });
+        arrowValidateSeeker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMainDash.this, Admin_AidSeeker_Validation.class);
+                startActivity(intent);
+            }
+        });
+        //----
+
+
         //4/3/2023
         lbs = (TextView) findViewById(R.id.tv_registration20);
 

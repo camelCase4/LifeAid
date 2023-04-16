@@ -42,7 +42,7 @@ import java.util.Random;
 public class AdminGiveCerts extends AppCompatActivity {
 
     TextView cont;
-    ImageView upload;
+    ImageView upload,menu;
     Button grant;
 
     String providerUID;
@@ -72,6 +72,18 @@ public class AdminGiveCerts extends AppCompatActivity {
 
         cont.setMovementMethod(new ScrollingMovementMethod());
         gettingProviderWithRequests();
+
+        //4/16/2023
+        menu = (ImageView) findViewById(R.id.imageView18);
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminGiveCerts.this,MenuForAdmins.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         Toast.makeText(AdminGiveCerts.this,"Please Click a user UID!",Toast.LENGTH_SHORT).show();
 

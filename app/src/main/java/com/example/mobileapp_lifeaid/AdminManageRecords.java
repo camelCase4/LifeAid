@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,8 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
     public static String chosenRole = "";
     TextView conts,search;
 
+    ImageView menu;
+
     public static String user_id ="";
     public static String specifiedID = "";
 
@@ -51,6 +54,18 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
 
 
         conts.setMovementMethod(new ScrollingMovementMethod());//3/29/2023
+
+        //4/16/2023
+        menu = (ImageView) findViewById(R.id.imageView18);
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminManageRecords.this,MenuForAdmins.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
 
         Spinner sp = findViewById(R.id.sp_drop);

@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -43,7 +44,7 @@ public class Admin_AidProvider_Validation extends AppCompatActivity {
 
     Button b,b2,b3;
     TextView tv_fullname,tv_email,tv_address,tv_contact,tv_gender,tv_age,tv_queue;
-    ImageView iv;
+    ImageView iv,menu;
 
 
 
@@ -90,6 +91,17 @@ public class Admin_AidProvider_Validation extends AppCompatActivity {
         tv_age = (TextView) findViewById(R.id.tv_asAge);
         tv_queue = (TextView) findViewById(R.id.tv_nameDisplay);
 
+        //4/16/2023
+        menu = (ImageView) findViewById(R.id.imageView18);
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Admin_AidProvider_Validation.this,MenuForAdmins.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
 
 

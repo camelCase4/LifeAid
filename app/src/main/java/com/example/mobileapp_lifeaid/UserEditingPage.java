@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +26,7 @@ public class UserEditingPage extends AppCompatActivity {
 
     EditText address,fname,lname,age,gender,job,number,name1,name2,name1pn,name2pn;
     Button update;
+    ImageView bk;
 
     MainActivity ma = new MainActivity();
 
@@ -51,6 +53,16 @@ public class UserEditingPage extends AppCompatActivity {
         EditText[] vals = {fname,lname,address,age,gender,number,job,name1,name2,name1pn,name2pn};
 
         update = (Button) findViewById(R.id.delbutton);
+        //4/16/2023
+        bk = (ImageView) findViewById(R.id.back);
+        bk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserEditingPage.this,MenuForAdmins.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         if(ma.userrole.equals("AidProvider"))
         {

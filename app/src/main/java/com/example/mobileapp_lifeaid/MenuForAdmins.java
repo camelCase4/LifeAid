@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
@@ -41,7 +42,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MenuForAdmins extends AppCompatActivity implements LocationListener {
 
-    ImageView home;
+    ImageView home,homepage;
+    TextView homedash;
     Button giveCert,faqs,lgout,editacc,askAid;
 
     //4/7/2023
@@ -67,6 +69,25 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
         editacc = (Button) findViewById(R.id.editacc);
         askAid = (Button) findViewById(R.id.askaid);
         home = (ImageView) findViewById(R.id.back);
+        //4/16/2023
+        homepage = (ImageView) findViewById(R.id.imageHomeDash);
+        homedash = (TextView) findViewById(R.id.tv_homedash);
+
+        homedash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuForAdmins.this,AdminMainDash.class);
+                startActivity(intent);
+            }
+        });
+        homepage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuForAdmins.this,AdminMainDash.class);
+                startActivity(intent);
+            }
+        });
+        //---
 
         editacc.setOnClickListener(new View.OnClickListener() {
             @Override

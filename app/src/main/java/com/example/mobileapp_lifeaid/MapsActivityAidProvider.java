@@ -428,7 +428,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition));
                 mapSpanOnce2 = false;
-                Toast.makeText(MapsActivityAidProvider.this,"Tap seeker's marker to call!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivityAidProvider.this,"Tap seeker's position to call!",Toast.LENGTH_SHORT).show();
             }
             //---
 
