@@ -2,8 +2,21 @@ package com.example.mobileapp_lifeaid;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,9 +32,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Admin_AidProvider_Validation extends AppCompatActivity {
@@ -52,6 +67,8 @@ public class Admin_AidProvider_Validation extends AppCompatActivity {
     Random rand = new Random();
     int sleepTime = rand.nextInt(701) + 1000;
     //--
+
+    private static final int REQUEST_CODE = 2;//4/16/2023
 
 
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
@@ -232,7 +249,107 @@ public class Admin_AidProvider_Validation extends AppCompatActivity {
 
             }
         });
+
+        //4/16/2023
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checker)
+                {
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            switch (i) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    if(ContextCompat.checkSelfPermission(Admin_AidProvider_Validation.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                                    {
+                                        saveImage();
+                                    }
+                                    else
+                                    {
+                                        ActivityCompat.requestPermissions(Admin_AidProvider_Validation.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_CODE);
+                                    }
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //do nothing
+                                    break;
+
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(Admin_AidProvider_Validation.this);
+                    builder2.setMessage("Download License Image?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+
+                }
+                else
+                {
+                    Toast.makeText(Admin_AidProvider_Validation.this,"No License to download!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        //----
     }
+
+
+    //4/16/2023
+    public void saveImage()
+    {
+        Uri image;
+        ContentResolver contentResolver = getContentResolver();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        {
+            image = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+        }
+        else
+        {
+            image = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        }
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME,System.currentTimeMillis()+".jpg");
+        contentValues.put(MediaStore.Images.Media.MIME_TYPE,"images/*");
+        Uri uri = contentResolver.insert(image,contentValues);
+
+        try{
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) iv.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+
+            OutputStream outputStream = contentResolver.openOutputStream(Objects.requireNonNull(uri));
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
+            Objects.requireNonNull(outputStream);
+
+            Toast.makeText(Admin_AidProvider_Validation.this, "Downloaded! Review Well!",Toast.LENGTH_SHORT).show();
+
+        }catch (Exception e)
+        {
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == REQUEST_CODE)
+        {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                saveImage();
+            }
+            else
+            {
+                Toast.makeText(Admin_AidProvider_Validation.this,"Please Accept The Permission!",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    //---
+
+
     public String[] displayUID()
     {
 
