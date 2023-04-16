@@ -15,6 +15,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.method.ScrollingMovementMethod;
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 
+import com.google.android.gms.maps.model.Marker; //4/16/2023
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mobileapp_lifeaid.databinding.ActivityMapsAidProviderBinding;
 import com.google.android.gms.maps.model.Polyline;
@@ -303,6 +305,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
 
 
+
+
                 }catch (Exception e)
                 {
 
@@ -320,6 +324,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
         }
         //--------
+
+
     }
     //cp 3/15/2023
     public void gettingPath()
@@ -410,16 +416,60 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
             //3/15/2023 Latlng
             seekerPosition = new LatLng(Double.parseDouble(apm.latiOfSeeker), Double.parseDouble(apm.longiOfSeeker));
-            mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location! Phone # : "+apm.seekerPhoneNum)).showInfoWindow();
+            //mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location! Phone # : "+apm.seekerPhoneNum)).showInfoWindow(); original commented on 16
             //mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition)); commented on 16
 
             //4/16/2023
+            Marker seekerMarker = mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location!  |  Name: "+apm.seekerfName));
+            seekerMarker.showInfoWindow();
+
+
             if(mapSpanOnce2)
             {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition));
                 mapSpanOnce2 = false;
+                Toast.makeText(MapsActivityAidProvider.this,"Tap seeker's marker to call!",Toast.LENGTH_SHORT).show();
             }
             //---
+
+        //4/16/2023
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                if(marker.equals(seekerMarker))
+                {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            switch (i){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    try {
+                                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                                        intent.setData(Uri.parse("tel:"+apm.seekerPhoneNum));
+                                        startActivity(intent);
+
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Toast.makeText(MapsActivityAidProvider.this,"Number Calling Failed!",Toast.LENGTH_SHORT).show();
+                                    }
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //do nothing
+                                    break;
+
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivityAidProvider.this);
+                    builder.setMessage("Call Aid - Seeker?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, misclicked",dialogClickListener).show();
+                }
+                return false;
+            }
+        });
+        //---
 
 
 
