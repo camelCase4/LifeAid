@@ -399,7 +399,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                                     //4/14/2023
                                     if(!ignoredID.contains(key))
                                     {
-                                        if(jobchoice.toLowerCase().equals(ma.ap_job.toLowerCase()) || jobchoice.equals("all"))
+                                        if(jobchoice.toLowerCase().equals(ma.ap_job.toLowerCase()) || jobchoice.equals("all") || jobchoice.toLowerCase().contains(ma.ap_job.toLowerCase()))//added a new or on 16
                                         {
                                             if(!temp_lat.equals("") && providerID.equals(""))
                                             {

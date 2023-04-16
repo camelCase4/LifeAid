@@ -300,7 +300,6 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                         seekerloc();
                         yourlocstr.setText(showAddress(Double.toString(location.getLatitude()),Double.toString(location.getLongitude())));
                         gettingPath();
-
                         
 
 
