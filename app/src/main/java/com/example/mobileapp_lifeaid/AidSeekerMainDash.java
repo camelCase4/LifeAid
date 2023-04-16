@@ -26,6 +26,7 @@ import android.os.CountDownTimer;
 
 import android.os.Vibrator;
 import android.telephony.SmsManager;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,6 +50,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+
 
 // i added a new implements 2/22/2023
 public class AidSeekerMainDash extends AppCompatActivity implements LocationListener {
@@ -97,6 +99,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     private static final int PERMISSION_REQUEST_CODE_SMS = 101;//4/4/2023
     private static final int PERMISSION_REQUEST_CODE_MAPS = 102;//4/5/2023
     private static final int REQUEST_CHECK_SETTINGS = 1001;//4/6/2023
+
 
     boolean isLocationEnabled = false;//4/6/2023
 
@@ -177,8 +180,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 //---
 
                 //4/6/2023
-                if(isLocationEnabled)
-                {
+                if (isLocationEnabled) {
                     if (ContextCompat.checkSelfPermission(AidSeekerMainDash.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // Permission is not granted, so request it
                         ActivityCompat.requestPermissions(AidSeekerMainDash.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE_MAPS);
@@ -187,9 +189,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                         Intent intent = new Intent(AidSeekerMainDash.this, AidSeekerMapCrisis.class);
                         startActivity(intent);
                     }
-                }
-                else
-                {
+                } else {
                     Toast.makeText(AidSeekerMainDash.this, "Enable the location in your device, and try again.", Toast.LENGTH_LONG).show();
                     checkIfLocationIsOn();
                 }
@@ -233,8 +233,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 //storing();
 
                 //4/6/2023
-                if(isLocationEnabled)
-                {
+                if (isLocationEnabled) {
                     presscounter++;
                     if (presscounter >= 2) {
                         //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
@@ -250,11 +249,9 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                         whatjob = 0;
                         //---------
                     }
-                }
-                else
-                {
+                } else {
                     presscounter++;
-                    if(presscounter >= 2) {
+                    if (presscounter >= 2) {
                         Toast.makeText(AidSeekerMainDash.this, "Enable the location in your device, and try again.", Toast.LENGTH_LONG).show();
                         presscounter = 0;
                         checkIfLocationIsOn();
@@ -281,8 +278,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                     btnhealth.setEnabled(false);
                 }*/ //commented on 4/6/2023 original
                 //4/6/2023
-                if(isLocationEnabled)
-                {
+                if (isLocationEnabled) {
                     presscounter++;
                     if (presscounter >= 2) {
                         //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
@@ -296,11 +292,9 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                         btnhealth.setEnabled(false);
                         btncrime.setEnabled(false); //4/6/2023
                     }
-                }
-                else
-                {
+                } else {
                     presscounter++;
-                    if(presscounter >= 2) {
+                    if (presscounter >= 2) {
                         Toast.makeText(AidSeekerMainDash.this, "Enable the location in your device, and try again.", Toast.LENGTH_LONG).show();
                         presscounter = 0;
                         checkIfLocationIsOn();
@@ -326,8 +320,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 }*/
 
                 //4/6/2023
-                if(isLocationEnabled)
-                {
+                if (isLocationEnabled) {
                     presscounter++;
                     if (presscounter >= 2) {
                         //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
@@ -341,11 +334,9 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                         btnhealth.setEnabled(false);
                         btnfire.setEnabled(false);
                     }
-                }
-                else
-                {
+                } else {
                     presscounter++;
-                    if(presscounter >= 2) {
+                    if (presscounter >= 2) {
                         Toast.makeText(AidSeekerMainDash.this, "Enable the location in your device, and try again.", Toast.LENGTH_LONG).show();
                         presscounter = 0;
                         checkIfLocationIsOn();
@@ -370,8 +361,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                     btnfire.setEnabled(false);
                 }*/
                 //4/6/2023
-                if(isLocationEnabled)
-                {
+                if (isLocationEnabled) {
                     presscounter++;
                     if (presscounter >= 2) {
                         //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
@@ -385,11 +375,9 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                         btnfire.setEnabled(false);
                         btnhealth.setEnabled(false);
                     }
-                }
-                else
-                {
+                } else {
                     presscounter++;
-                    if(presscounter >= 2) {
+                    if (presscounter >= 2) {
                         Toast.makeText(AidSeekerMainDash.this, "Enable the location in your device, and try again.", Toast.LENGTH_LONG).show();
                         presscounter = 0;
                         checkIfLocationIsOn();
@@ -443,15 +431,11 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
             // ...
         }
         //4/6/2023
-        else if(requestCode == REQUEST_CHECK_SETTINGS)
-        {
-            if(resultCode == RESULT_OK)
-            {
+        else if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == RESULT_OK) {
                 isLocationEnabled = true;
-            }
-            else
-            {
-                Toast.makeText(AidSeekerMainDash.this,"Please turn the location on!",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(AidSeekerMainDash.this, "Please turn the location on!", Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -495,8 +479,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         }
         //---
         //4/14/2023
-        else if(requestCode == 69)
-        {
+        else if (requestCode == 69) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             } else {
@@ -504,6 +487,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
             }
         }
         //---
+
     }
     //---
 
@@ -519,22 +503,21 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
         //4/4/2023
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // Permission is not granted, so request it
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
-            } else {
-                // Permission is already granted, so get the location updates
-                lm = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
-                Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
-            }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, so request it
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+        } else {
+            // Permission is already granted, so get the location updates
+            lm = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+            Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+        }
 
         //---
 
 
-
-
     }
+
     //-------
     //checkpoint 2/22/2023
     @Override
@@ -560,8 +543,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         //---
 
         //4/2/2023
-        if(ifusertap)
-        {
+        if (ifusertap) {
             ifusertap = false;
             theLatInStr = Double.toString(location.getLatitude());
             theLongInStr = Double.toString(location.getLongitude());
@@ -572,45 +554,36 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         //----
 
 
-
     }
     //-------
 
     //checkpoint 2/22/2023
-    public void storing()
-    {
+    public void storing() {
         //3/1/2023 checkpoint
         String jobDesc = "";
-        if(whatjob == 1)
-        {
+        if (whatjob == 1) {
             jobDesc = "policeman";
-        }
-        else if(whatjob == 2)
-        {
+        } else if (whatjob == 2) {
             jobDesc = "fireman";
-        }
-        else if(whatjob == 3)
-        {
+        } else if (whatjob == 3) {
             jobDesc = "health";
-        }
-        else
-        {
+        } else {
             jobDesc = "all";
         }
         //-----
         HashMap hm = new HashMap();
-        hm.put("lati",theLatInStr);
-        hm.put("longi",theLongInStr);
-        hm.put("job",jobDesc);//checkopint 3/1/2023
-        hm.put("commends","0");//4/5/2023
-        hm.put("partner_uid","");//4/5/2023
+        hm.put("lati", theLatInStr);
+        hm.put("longi", theLongInStr);
+        hm.put("job", jobDesc);//checkopint 3/1/2023
+        hm.put("commends", "0");//4/5/2023
+        hm.put("partner_uid", "");//4/5/2023
 
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
         dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                    //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AidSeekerMainDash.this, "Wait for an Aid-Provider! Hang in there!", Toast.LENGTH_SHORT).show();
                 waitforresponder();//test 3/5/2023
 
             }
@@ -621,21 +594,17 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     //----
 
     //checkpoint 2/26/2023
-    public void smsSending()
-    {
+    public void smsSending() {
 
-        if(ma.trustedcontact1.isEmpty() || ma.trustedcontact1.equals(""))
-        {
+        if (ma.trustedcontact1.isEmpty() || ma.trustedcontact1.equals("")) {
             dr.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot datasnapshot) {
                     dr.child(ma.userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if(task.isSuccessful())
-                            {
-                                if(task.getResult().exists())
-                                {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
                                     DataSnapshot snaps = task.getResult();
 
                                     ma.trustedcontact1 = String.valueOf(snaps.child("trustedphonenum_1").getValue());
@@ -644,20 +613,15 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                                     //partnerSMS();
 
                                     //3/27/2023
-                                    if(!ma.trustedcontact1.equals(""))
-                                    {
+                                    if (!ma.trustedcontact1.equals("")) {
                                         partnerSMS();
                                     }
                                     //----
-                                }
-                                else
-                                {
+                                } else {
                                     Toast.makeText(AidSeekerMainDash.this, "Data does not exist!", Toast.LENGTH_SHORT).show();
                                 }
-                            }
-                            else
-                            {
-                                Toast.makeText(AidSeekerMainDash.this,"Task was not successful!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(AidSeekerMainDash.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -668,15 +632,13 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
                 }
             });
-        }
-        else {
+        } else {
             partnerSMS();
         }
     }
     //
 
-    public void partnerSMS()
-    {
+    public void partnerSMS() {
         /*ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, PackageManager.PERMISSION_GRANTED);
 
         String messagetobesent = ma.fullname + " is at, Latitude: " + theLatInStr + ", " + "Longitude: " + theLongInStr + ", and in need of aid!";
@@ -695,25 +657,35 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         //4/4/2023
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted, so request it
-            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.SEND_SMS }, PERMISSION_REQUEST_CODE_SMS);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, PERMISSION_REQUEST_CODE_SMS);
         } else {
             // Permission is already granted, so send the SMS messages
-            String messagetobesent = "[This is an auto generated message by LifeAid] "+ ma.fullname + " is at, Latitude: " + theLatInStr + ", " + "Longitude: " + theLongInStr + ", and in need of aid!";
+            String messagetobesent = "[This is an auto generated message by LifeAid] " + ma.fullname + " is at, Latitude: " + theLatInStr + ", " + "Longitude: " + theLongInStr + ", and in need of aid!";
             SmsManager smsManager = SmsManager.getDefault();
 
 
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 3; i++) {
                 if (i == 0) {
                     smsManager.sendTextMessage(ma.trustedcontact1, null, messagetobesent, null, null);
-                } else {
+                } else if (i == 1) {
                     smsManager.sendTextMessage(ma.trustedcontact2, null, messagetobesent, null, null);
                 }
+                //4/16/2023
+                else {
+                    // test rani nga LGU number we cant use the real 1
+                    smsManager.sendTextMessage("09655502568", null, messagetobesent, null, null);
+                }
+                ///---
             }
 
-            Toast.makeText(AidSeekerMainDash.this, "Trusted contacts informed!", Toast.LENGTH_SHORT).show();
+
+
+            Toast.makeText(AidSeekerMainDash.this, "Trusted contacts and LGU informed!", Toast.LENGTH_SHORT).show();
         }
         //----
     }
+
+
 
     //checkpoint 3/5/2023
     public void waitforresponder()
