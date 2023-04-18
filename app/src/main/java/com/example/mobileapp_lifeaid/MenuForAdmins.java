@@ -210,6 +210,7 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you really in need of assistance?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, misclicked",dialogClickListener).show();
+
     }
 
     public void seekAid()

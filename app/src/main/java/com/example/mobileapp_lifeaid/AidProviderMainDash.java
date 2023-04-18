@@ -102,6 +102,9 @@ public class AidProviderMainDash extends AppCompatActivity {
 
     public static String seekerPhoneNum = ""; //4/16/2023
 
+    //4/18/2023
+    public static boolean criticalEmergency = false;
+    //---
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +134,6 @@ public class AidProviderMainDash extends AppCompatActivity {
         vrimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(AidProviderMainDash.this,AidProviderRecords.class);
                 startActivity(intent);
             }
@@ -541,6 +543,17 @@ public class AidProviderMainDash extends AppCompatActivity {
                                                 seeker_id = key;//checkpoint 3/17/2023
                                                 seekerfName = String.valueOf(snaps.child("fname").getValue()); //3/22/2023
                                                 seekerPhoneNum = String.valueOf(snaps.child("phonenum").getValue()); //4/16/2023
+
+                                                //4/18/2023
+                                                if(jobchoice.equals("all"))
+                                                {
+                                                    criticalEmergency = true;
+                                                }
+                                                else
+                                                {
+                                                    criticalEmergency = false;
+                                                }
+                                                //----
 
                                             }
                                         }//else if below 3/5/2023

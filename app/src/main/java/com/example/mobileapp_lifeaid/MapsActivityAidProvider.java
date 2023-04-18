@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Gravity;
 import android.view.View;
 
 import android.widget.Button;
@@ -139,6 +140,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     boolean mapSpanOnce = true; //4/16/2023
     boolean mapSpanOnce2 = true; //4/16/2023
 
+    boolean ifAllAndNotPrio = false; //4/18/2023
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +189,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 checkWhoIsFirst();
                 updatingProvsCount();//3/17/2023
                 respondClicked = true;
-                msgGetter();
+                //msgGetter(); commented on 4/18/2023
                 /*if(isItFinal) {
                     whatdidyoudo = "Respond";
                     Date currentDTime = Calendar.getInstance().getTime();
@@ -206,7 +209,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 updatingSuppCount();//3/17/2023
                 Date currentDateTime = Calendar.getInstance().getTime();
                 dateAndTime = currentDateTime.toString();
-                savingToHistory();
+                savingToHistory("");
                 //3/19/2023
                 mMap.clear();
                 Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
@@ -476,11 +479,11 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     }
 
     //checkpoint 3/3/2023
-    public void savingToHistory()
+    public void savingToHistory(String ffb) //added ffb parameter on 4/18/2023
     {
 
         //checkpoint 3/4/2023
-        ProviderHistory ph = new ProviderHistory(dateAndTime,apm.seekerfName,whatdidyoudo,apm.seeker_id,ma.userid,"",locationOfIncident);
+        ProviderHistory ph = new ProviderHistory(dateAndTime,apm.seekerfName,whatdidyoudo,apm.seeker_id,ma.userid,ffb,locationOfIncident);
         //-----
         FirebaseDatabase.getInstance().getReference("AidProviderHistory").push().setValue(ph).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -576,6 +579,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                     if(!la.equals(""))
                                     {
                                         removeLatandLong();
+                                        msgGetter(); // 4/18/2023
                                     }
                                     else
                                     {
@@ -590,10 +594,25 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                 }
                                 else
                                 {
-                                    cd.cancel();//3/27/2023
+                                    /*cd.cancel();//3/27/2023
                                     Toast.makeText(MapsActivityAidProvider.this,"Supported! Somebody else is on the move!",Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
-                                    startActivity(intent);
+                                    startActivity(intent);*/ //commented on 18 original
+                                    //4/18/2023
+                                    if(!apm.criticalEmergency)
+                                    {
+                                        cd.cancel();//3/27/2023
+                                        Toast.makeText(MapsActivityAidProvider.this,"Supported! Somebody else is on the move!",Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                                        startActivity(intent);
+                                    }
+                                    else
+                                    {
+                                        savingSeekerID();
+                                        ifAllAndNotPrio = true;
+                                        msgGetter();
+                                    }
+                                    //---
 
                                 }
                             }
@@ -710,87 +729,79 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     public void gettingSeekerMSG()
     {
 
-        dbseek.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-                dbseek.child(apm.seeker_id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if(task.isSuccessful())
-                        {
-                            if(task.getResult().exists())
-                            {
-                                DataSnapshot snaps = task.getResult();
-                                String chat = String.valueOf(snaps.child("message").getValue());
-                                String ifCancelledReq = String.valueOf(snaps.child("commends").getValue()); // 4/5/2023
-                                //3/11/2023
-                                String checkIfStillOngGoing = String.valueOf(snaps.child("partner_uid").getValue());
-                                if(checkIfStillOngGoing.equals(""))
-                                {
-                                    cd.cancel();
-                                    Toast.makeText(MapsActivityAidProvider.this,"Seeker Satisfied, Thank you for your service!",Toast.LENGTH_SHORT).show();
-                                    mMap.clear(); //3/15/2023
-                                    Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
-                                    startActivity(intent);
-                                }
-                                //4/7/2023
-                                else
-                                {
-                                    if(!checkIfStillOngGoing.equals(ma.userid))
-                                    {
+            dbseek.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                    dbseek.child(apm.seeker_id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    DataSnapshot snaps = task.getResult();
+                                    String chat = String.valueOf(snaps.child("message").getValue());
+                                    String ifCancelledReq = String.valueOf(snaps.child("commends").getValue()); // 4/5/2023
+                                    //3/11/2023
+                                    String checkIfStillOngGoing = String.valueOf(snaps.child("partner_uid").getValue());
+                                    if (checkIfStillOngGoing.equals("")) {
+                                        cd.cancel();
+                                        Toast.makeText(MapsActivityAidProvider.this, "Seeker Satisfied, Thank you for your service!", Toast.LENGTH_SHORT).show();
+                                        mMap.clear(); //3/15/2023
+                                        Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
+                                        startActivity(intent);
+                                    }
+                                    //4/7/2023
+                                    else {
+                                        if (!checkIfStillOngGoing.equals(ma.userid)) {
+                                            cd.cancel();
+                                            gettingRidOfPartnerUID();
+                                            Toast.makeText(MapsActivityAidProvider.this, "Someone else responded first, Thank you for your service!", Toast.LENGTH_SHORT).show();
+                                            mMap.clear(); //3/15/2023
+                                            Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
+                                            startActivity(intent);
+                                        }
+
+                                    }
+                                    //---
+                                    //------
+
+                                    //4/5/2023
+                                    if (ifCancelledReq.equals("1")) {
                                         cd.cancel();
                                         gettingRidOfPartnerUID();
-                                        Toast.makeText(MapsActivityAidProvider.this,"Someone else responded first, Thank you for your service!",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MapsActivityAidProvider.this, "Seeker Cancelled! Thank you for your service!", Toast.LENGTH_SHORT).show();
                                         mMap.clear(); //3/15/2023
-                                        Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                                        Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
+                                        startActivity(intent);
+                                    }
+                                    //----
+                                    if (!chat.equals("")) {
+                                        if (!chat.equals(comparer)) {
+                                            //conversation.append("\n                                             "+chat);
+                                            addMessage("                                                                       " + chat + "\n\n");
+                                            comparer = chat;
+                                        }
+                                    }
+
+                                } else {
+                                    if (!ifcancelled) {
+                                        cd.cancel();
+                                        Toast.makeText(MapsActivityAidProvider.this, "Thank you for your service!", Toast.LENGTH_SHORT).show();
+                                        mMap.clear(); //3/15/2023
+                                        Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
                                         startActivity(intent);
                                     }
                                 }
-                                //---
-                                //------
-
-                                //4/5/2023
-                                if(ifCancelledReq.equals("1"))
-                                {
-                                    cd.cancel();
-                                    gettingRidOfPartnerUID();
-                                    Toast.makeText(MapsActivityAidProvider.this,"Seeker Cancelled! Thank you for your service!",Toast.LENGTH_SHORT).show();
-                                    mMap.clear(); //3/15/2023
-                                    Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
-                                    startActivity(intent);
-                                }
-                                //----
-                                if(!chat.equals(""))
-                                {
-                                    if(!chat.equals(comparer))
-                                    {
-                                        //conversation.append("\n                                             "+chat);
-                                        addMessage("                                                                       "+chat+"\n\n");
-                                        comparer = chat;
-                                    }
-                                }
-
-                            }
-                            else
-                            {
-                                if(!ifcancelled) {
-                                    cd.cancel();
-                                    Toast.makeText(MapsActivityAidProvider.this, "Thank you for your service!", Toast.LENGTH_SHORT).show();
-                                    mMap.clear(); //3/15/2023
-                                    Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
-                                    startActivity(intent);
-                                }
                             }
                         }
-                    }
-                });
-            }
+                    });
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+
     }
 
     public void msgGetter()
@@ -848,7 +859,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             cd.cancel();
             timerdecider = false;
         }*/
-        cd = new CountDownTimer(300000,1000)
+        /*cd = new CountDownTimer(300000,1000)
         {
 
             @Override
@@ -863,8 +874,92 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 askProviderForUpdate();
 
             }
+        }.start();*/ //commented on 4/18/2023
+
+        //4/18/2023
+        if(!ifAllAndNotPrio)
+        {
+            cd = new CountDownTimer(300000,1000)
+            {
+
+                @Override
+                public void onTick(long l) {
+                    if((l/1000) % 2 == 0) {
+                        gettingSeekerMSG();
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    askProviderForUpdate();
+
+                }
+            }.start();
+
+
+        }
+        else
+        {
+            respondClicked = false;
+            sending.setEnabled(false);
+            conversation.setText("Due to critical emergency, communication is disabled.\nPlease show integrity in your profession and help if you clicked respond!\nRest-assured you get an auto-commend feedback in this situations.");
+            conversation.setGravity(Gravity.CENTER);
+            suwatan.setEnabled(false);
+            startTimerForCriticalEm();
+        }
+        //---
+    }
+    //4/18/2023
+    public void startTimerForCriticalEm()
+    {
+        cd = new CountDownTimer(60000,1000)
+        {
+
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                askProviderForUpdateCriticalEm();
+
+            }
         }.start();
     }
+    public void askProviderForUpdateCriticalEm()
+    {
+
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        Date currentDateTime = Calendar.getInstance().getTime();
+                        dateAndTime = currentDateTime.toString();
+                        savingToHistory("1");
+                        mMap.clear();
+                        Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                        startActivity(intent);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        startTimerForCriticalEm();
+                        Toast.makeText(MapsActivityAidProvider.this,"Okay! Please continue serving!",Toast.LENGTH_SHORT).show();
+
+                        break;
+
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show(); //commented on 18 original
+        builder.setMessage("Is the request complete?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).setCancelable(false).show();
+
+
+    }
+    //----
 
     public void askProviderForUpdate()
     {
@@ -890,7 +985,9 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show();
+        //builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show(); //commented on 18 original
+        builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).setCancelable(false).show();
+
 
     }
 
