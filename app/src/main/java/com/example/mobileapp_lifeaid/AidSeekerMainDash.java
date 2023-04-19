@@ -856,7 +856,9 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Sorry, there are no Aid-Providers right now, continue requesting?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, nevermind!",dialogClickListener).show();
+        //builder.setMessage("Sorry, there are no Aid-Providers right now, continue requesting?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, nevermind!",dialogClickListener).show(); commented on 19
+        builder.setMessage("Sorry, there are no Aid-Providers right now, continue requesting?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, nevermind!",dialogClickListener).setCancelable(false).show();
+
     }
 
     public void cancelCleaner()

@@ -704,7 +704,8 @@ public class AidProviderMainDash extends AppCompatActivity {
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(AidProviderMainDash.this);
-        builder.setMessage("There are no Aid-Seekers for now, continue searching?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+        //builder.setMessage("There are no Aid-Seekers for now, continue searching?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();  commented on 19
+        builder.setMessage("There are no Aid-Seekers for now, continue searching?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).setCancelable(false).show();
     }
 
     public void startingTheSearch()
