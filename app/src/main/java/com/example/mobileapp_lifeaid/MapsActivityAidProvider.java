@@ -756,13 +756,37 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                 //4/7/2023
                                 else {
                                     if (!checkIfStillOngGoing.equals(ma.userid)) {
-                                        cd.cancel();
+                                        /*cd.cancel();
                                         gettingRidOfPartnerUID();
                                         Toast.makeText(MapsActivityAidProvider.this, "Someone else responded first, Thank you for your service!", Toast.LENGTH_SHORT).show();
                                         mMap.clear(); //3/15/2023
                                         Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
-                                        startActivity(intent);
+                                        startActivity(intent);*/ //commented on 4/22/2023 orig
+
+                                        //4/22/2023
+                                        if(apm.criticalEmergency)
+                                        {
+                                            cd.cancel();
+                                            respondClicked = false;
+                                            sending.setEnabled(false);
+                                            conversation.setText("Due to critical emergency requested by Seeker\n\n Communication is disabled.\nPlease show integrity in your profession and help if you clicked respond!\nRest-assured you get an auto-commend feedback in these situations.");
+                                            conversation.setGravity(Gravity.CENTER);
+                                            suwatan.setEnabled(false);
+                                            startTimerForCriticalEm();
+                                        }
+                                        else
+                                        {
+                                            cd.cancel();
+                                            gettingRidOfPartnerUID();
+                                            Toast.makeText(MapsActivityAidProvider.this, "Someone else responded first, Thank you for your service!", Toast.LENGTH_SHORT).show();
+                                            mMap.clear(); //3/15/2023
+                                            Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
+                                            startActivity(intent);
+                                        }
+                                        //---
                                     }
+
+
 
                                 }
                                 //---
@@ -910,7 +934,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         {
             respondClicked = false;
             sending.setEnabled(false);
-            conversation.setText("Due to critical emergency, communication is disabled.\nPlease show integrity in your profession and help if you clicked respond!\nRest-assured you get an auto-commend feedback in these situations.");
+            conversation.setText("Due to critical emergency requested by Seeker\n\n Communication is disabled.\nPlease show integrity in your profession and help if you clicked respond!\nRest-assured you get an auto-commend feedback in these situations.");
             conversation.setGravity(Gravity.CENTER);
             suwatan.setEnabled(false);
             startTimerForCriticalEm();
@@ -946,6 +970,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                     case DialogInterface.BUTTON_POSITIVE:
                         Date currentDateTime = Calendar.getInstance().getTime();
                         dateAndTime = currentDateTime.toString();
+                        whatdidyoudo = "Respond";//4/22/2023
                         savingToHistory("1");
                         mMap.clear();
                         Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
