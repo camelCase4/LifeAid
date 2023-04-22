@@ -53,6 +53,9 @@ public class AidSeekerChat extends AppCompatActivity {
     String locationOfIncident = "";
 
     ImageView profileP;
+
+    boolean stillpartners = true; //4/21/2023
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,28 +103,31 @@ public class AidSeekerChat extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            switch (i) {
-                                case DialogInterface.BUTTON_POSITIVE:
-                                    //asm.foundIt = false; //3/30/2023 commented on 4/2/2023
-                                    savingToHistory();
-                                    ratingsPrompt();
-                                    cleansingData();
-                                    break;
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //asm.foundIt = false; //3/30/2023 commented on 4/2/2023
+                                savingToHistory();
+                                    /*ratingsPrompt();
+                                    cleansingData();*/ //commented on 4/21/2023 original
+                                //4/21/2023
+                                checkIfStillPartners();
+                                //---
+                                break;
 
-                                case DialogInterface.BUTTON_NEGATIVE:
-                                    //do nothing
-                                    break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //do nothing
+                                break;
 
-                            }
                         }
-                    };
-                    AlertDialog.Builder builder = new AlertDialog.Builder(AidSeekerChat.this);
-                    builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
-                }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(AidSeekerChat.this);
+                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+            }
 
         });
 
@@ -145,27 +151,27 @@ public class AidSeekerChat extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
 
-                            if (task.isSuccessful()) {
-                                if (task.getResult().exists()) {
-                                    DataSnapshot snaps = task.getResult();
-                                    String fullname = String.valueOf(snaps.child("fname").getValue()) + " " + String.valueOf(snaps.child("lname").getValue());
-                                    fullnametv.setText(fullname);
-                                    fnameprov = String.valueOf(snaps.child("fname").getValue());
-                                    numbertv.setText(String.valueOf(snaps.child("phonenum").getValue()));
-                                    addresstv.setText(String.valueOf(snaps.child("address").getValue()));
-                                    // 3/10/2023 10 pm
-                                    commendCount = String.valueOf(snaps.child("commends").getValue());
-                                    unsatisfiedCount = String.valueOf(snaps.child("decommends").getValue());
-                                    //--------
+                        if (task.isSuccessful()) {
+                            if (task.getResult().exists()) {
+                                DataSnapshot snaps = task.getResult();
+                                String fullname = String.valueOf(snaps.child("fname").getValue()) + " " + String.valueOf(snaps.child("lname").getValue());
+                                fullnametv.setText(fullname);
+                                fnameprov = String.valueOf(snaps.child("fname").getValue());
+                                numbertv.setText(String.valueOf(snaps.child("phonenum").getValue()));
+                                addresstv.setText(String.valueOf(snaps.child("address").getValue()));
+                                // 3/10/2023 10 pm
+                                commendCount = String.valueOf(snaps.child("commends").getValue());
+                                unsatisfiedCount = String.valueOf(snaps.child("decommends").getValue());
+                                //--------
 
-                                    //4/14/2023
-                                    String imagepic = String.valueOf(snaps.child("trustedname_2").getValue());
-                                    if(!imagepic.equals("")) {
-                                        imageDisplayer(imagepic);
-                                    }
-                                    //---
+                                //4/14/2023
+                                String imagepic = String.valueOf(snaps.child("trustedname_2").getValue());
+                                if(!imagepic.equals("")) {
+                                    imageDisplayer(imagepic);
                                 }
+                                //---
                             }
+                        }
 
                     }
                 });
@@ -244,9 +250,13 @@ public class AidSeekerChat extends AppCompatActivity {
 
             @Override
             public void onTick(long l) {
-                if((l/1000) % 2 == 0) {
+                /*if((l/1000) % 2 == 0) {
                     getProviderMessage();
-                }
+                }*/ //commented on 4/21/2023
+
+                //4/21/2023
+                getProviderMessage();
+                //---
             }
 
             @Override
@@ -338,9 +348,9 @@ public class AidSeekerChat extends AppCompatActivity {
     }
 
     //3/10/2023 10 pm
-    public void ratingsPrompt()
+    public void ratingsPrompt(boolean continuationStatus) //added boolean on 4/21/2023
     {
-        cdt.cancel();//3/11/2023
+       /* cdt.cancel();//3/11/2023
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 
             @Override
@@ -360,11 +370,49 @@ public class AidSeekerChat extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //builder.setMessage("Did the provider do well?").setPositiveButton("Commended",dialogClickListener).setNegativeButton("No",dialogClickListener).show(); original cmtend in 18
         builder.setMessage("Did the provider do well?").setPositiveButton("Commended",dialogClickListener).setNegativeButton("No",dialogClickListener).setCancelable(false).show();
+        */ //commented on 4/21/2023 original
+
+        //4/21/2023
+        if(continuationStatus)
+        {
+            cdt.cancel();//3/11/2023
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    switch (i){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            updatingCommendCount();
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            updatingUnsatisfiedCount();
+                            break;
+
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            //builder.setMessage("Did the provider do well?").setPositiveButton("Commended",dialogClickListener).setNegativeButton("No",dialogClickListener).show(); original cmtend in 18
+            builder.setMessage("Did the provider do well?").setPositiveButton("Commended",dialogClickListener).setNegativeButton("No",dialogClickListener).setCancelable(false).show();
+
+
+        }
+        else
+        {
+            cdt.cancel();
+            Toast.makeText(AidSeekerChat.this,"Aid - Provider left early!",Toast.LENGTH_SHORT).show();
+            cleansingData(false);
+        }
+
+        //----
+
     }
 
-    public void cleansingData()
+    public void cleansingData(boolean contStats) //added boolean on 4/21/2023
     {
-        HashMap hm = new HashMap();
+
+        /*HashMap hm = new HashMap();
         hm.put("message","");
         hm.put("partner_uid","");
 
@@ -387,7 +435,47 @@ public class AidSeekerChat extends AppCompatActivity {
 
         //4/10/2023
         gettingRidOfDuration();
-        //---
+        //---*/ //commented on 4/21/2023 original
+
+        //4/21/2023
+        boolean continueCleaningDuration = true;
+        HashMap hm = new HashMap();
+        hm.put("message","");
+        hm.put("partner_uid","");
+        if(contStats)
+        {
+
+            DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+            dr.child(asm.responderUID).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+
+                }
+            });
+
+            DatabaseReference dr2 = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+            dr2.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+
+                }
+            });
+            continueCleaningDuration = true;
+        }
+        else
+        {
+            DatabaseReference dr2 = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+            dr2.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+
+                }
+            });
+            continueCleaningDuration = false;
+        }
+        gettingRidOfDuration(continueCleaningDuration);
+        //----
     }
 
     public void updatingCommendCount()
@@ -408,8 +496,11 @@ public class AidSeekerChat extends AppCompatActivity {
         //3/22/2023
         savingProviderHistory("1");
         //-----
-        Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
-        startActivity(intent);
+        //4/21/2023
+        cleansingData(true);
+        //----
+        /*Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
+        startActivity(intent);*/ //original commented on 4/21/2023
     }
     public void updatingUnsatisfiedCount()
     {
@@ -427,8 +518,11 @@ public class AidSeekerChat extends AppCompatActivity {
         //3/22/2023
         savingProviderHistory("0");
         //-----
-        Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
-        startActivity(intent);
+        //4/21/2023
+        cleansingData(true);
+        //----
+        /*Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
+        startActivity(intent);*/ //original commented on 4/21/2023
     }
 
     //------
@@ -476,9 +570,9 @@ public class AidSeekerChat extends AppCompatActivity {
     //------
 
     //4/10/2023
-    public void gettingRidOfDuration()
+    public void gettingRidOfDuration(boolean continueDeleting)//added boolean on 4/21/2023
     {
-        HashMap hm = new HashMap();
+        /*HashMap hm = new HashMap();
         hm.put("trustedname_1","");
 
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
@@ -488,7 +582,65 @@ public class AidSeekerChat extends AppCompatActivity {
 
 
             }
-        });
+        });*/ //commented on 4/21/2023 original
+
+        //4/21/2023
+        if(continueDeleting)
+        {
+            HashMap hm = new HashMap();
+            hm.put("trustedname_1","");
+
+            DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+            dr.child(asm.responderUID).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+
+                }
+            });
+        }
+
+        Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
+        startActivity(intent);
+
+        //----
     }
     //--
+
+    //4/21/2023
+    public void checkIfStillPartners()
+    {
+        dbprovs.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dbprovs.child(asm.responderUID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            if(task.getResult().exists())
+                            {
+                                DataSnapshot snaps = task.getResult();
+                                if(!String.valueOf(snaps.child("partner_uid").getValue()).equals(ma.userid))
+                                {
+                                    stillpartners = false;
+                                }
+                                else
+                                {
+                                    stillpartners = true;
+                                }
+                                ratingsPrompt(stillpartners);
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    //---
 }

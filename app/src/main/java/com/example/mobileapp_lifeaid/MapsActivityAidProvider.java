@@ -142,6 +142,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
     boolean ifAllAndNotPrio = false; //4/18/2023
 
+    String arrivalTimeHolder = "",commendCount = "";//4/21/2023
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,9 +291,9 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 try {
                     mMap.clear(); // 3/30/2023
                     latLng = new LatLng(location.getLatitude(),location.getLongitude());
-                        //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
+                    //mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!")).showInfoWindow();
                     mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
-                        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f)); commented on 4/16/2023
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f)); commented on 4/16/2023
                     //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
 
                     //4/16/2023
@@ -302,9 +304,9 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                     }
                     //---
 
-                        seekerloc();
-                        yourlocstr.setText(showAddress(Double.toString(location.getLatitude()),Double.toString(location.getLongitude())));
-                        gettingPath();
+                    seekerloc();
+                    yourlocstr.setText(showAddress(Double.toString(location.getLatitude()),Double.toString(location.getLongitude())));
+                    gettingPath();
 
 
 
@@ -417,23 +419,23 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     public void seekerloc()
     {
 
-            //3/15/2023 Latlng
-            seekerPosition = new LatLng(Double.parseDouble(apm.latiOfSeeker), Double.parseDouble(apm.longiOfSeeker));
-            //mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location! Phone # : "+apm.seekerPhoneNum)).showInfoWindow(); original commented on 16
-            //mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition)); commented on 16
+        //3/15/2023 Latlng
+        seekerPosition = new LatLng(Double.parseDouble(apm.latiOfSeeker), Double.parseDouble(apm.longiOfSeeker));
+        //mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location! Phone # : "+apm.seekerPhoneNum)).showInfoWindow(); original commented on 16
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition)); commented on 16
 
-            //4/16/2023
-            Marker seekerMarker = mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location!  |  Name: "+apm.seekerfName));
-            seekerMarker.showInfoWindow();
+        //4/16/2023
+        Marker seekerMarker = mMap.addMarker(new MarkerOptions().position(seekerPosition).title("Seeker's Location!  |  Name: "+apm.seekerfName));
+        seekerMarker.showInfoWindow();
 
 
-            if(mapSpanOnce2)
-            {
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition));
-                mapSpanOnce2 = false;
-                Toast.makeText(MapsActivityAidProvider.this,"Tap seeker's position to call!",Toast.LENGTH_SHORT).show();
-            }
-            //---
+        if(mapSpanOnce2)
+        {
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(seekerPosition));
+            mapSpanOnce2 = false;
+            Toast.makeText(MapsActivityAidProvider.this,"Tap seeker's position to call!",Toast.LENGTH_SHORT).show();
+        }
+        //---
 
         //4/16/2023
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -583,7 +585,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                     }
                                     else
                                     {
-                                        cd.cancel();
+                                        //cd.cancel(); commented on 4/22
                                         gettingRidOfPartnerUID();
                                         Toast.makeText(MapsActivityAidProvider.this,"Seeker is in good hands, Thank you for your service!",Toast.LENGTH_SHORT).show();
                                         mMap.clear(); //3/15/2023
@@ -601,7 +603,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                     //4/18/2023
                                     if(!apm.criticalEmergency)
                                     {
-                                        cd.cancel();//3/27/2023
+                                        //cd.cancel();//3/27/2023 commented on 4/22
                                         Toast.makeText(MapsActivityAidProvider.this,"Supported! Somebody else is on the move!",Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
                                         startActivity(intent);
@@ -619,7 +621,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                             //3/26/2023
                             else
                             {
-                                cd.cancel();
+                                //cd.cancel(); commented on 4/22
                                 ifcancelled = true;
                                 Toast.makeText(MapsActivityAidProvider.this,"Seeker Cancelled!",Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
@@ -729,78 +731,80 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     public void gettingSeekerMSG()
     {
 
-            dbseek.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-                    dbseek.child(apm.seeker_id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                if (task.getResult().exists()) {
-                                    DataSnapshot snaps = task.getResult();
-                                    String chat = String.valueOf(snaps.child("message").getValue());
-                                    String ifCancelledReq = String.valueOf(snaps.child("commends").getValue()); // 4/5/2023
-                                    //3/11/2023
-                                    String checkIfStillOngGoing = String.valueOf(snaps.child("partner_uid").getValue());
-                                    if (checkIfStillOngGoing.equals("")) {
-                                        cd.cancel();
-                                        Toast.makeText(MapsActivityAidProvider.this, "Seeker Satisfied, Thank you for your service!", Toast.LENGTH_SHORT).show();
-                                        mMap.clear(); //3/15/2023
-                                        Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
-                                        startActivity(intent);
-                                    }
-                                    //4/7/2023
-                                    else {
-                                        if (!checkIfStillOngGoing.equals(ma.userid)) {
-                                            cd.cancel();
-                                            gettingRidOfPartnerUID();
-                                            Toast.makeText(MapsActivityAidProvider.this, "Someone else responded first, Thank you for your service!", Toast.LENGTH_SHORT).show();
-                                            mMap.clear(); //3/15/2023
-                                            Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
-                                            startActivity(intent);
-                                        }
+        dbseek.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dbseek.child(apm.seeker_id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().exists()) {
+                                DataSnapshot snaps = task.getResult();
+                                String chat = String.valueOf(snaps.child("message").getValue());
+                                String ifCancelledReq = String.valueOf(snaps.child("commends").getValue()); // 4/5/2023
+                                //3/11/2023
+                                String checkIfStillOngGoing = String.valueOf(snaps.child("partner_uid").getValue());
 
-                                    }
-                                    //---
-                                    //------
 
-                                    //4/5/2023
-                                    if (ifCancelledReq.equals("1")) {
+                                if (checkIfStillOngGoing.equals("")) {
+                                    cd.cancel();
+                                    Toast.makeText(MapsActivityAidProvider.this, "Seeker Satisfied, Thank you for your service!", Toast.LENGTH_SHORT).show();
+                                    mMap.clear(); //3/15/2023
+                                    Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
+                                    startActivity(intent);
+                                }
+                                //4/7/2023
+                                else {
+                                    if (!checkIfStillOngGoing.equals(ma.userid)) {
                                         cd.cancel();
                                         gettingRidOfPartnerUID();
-                                        Toast.makeText(MapsActivityAidProvider.this, "Seeker Cancelled! Thank you for your service!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MapsActivityAidProvider.this, "Someone else responded first, Thank you for your service!", Toast.LENGTH_SHORT).show();
                                         mMap.clear(); //3/15/2023
                                         Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
                                         startActivity(intent);
-                                    }
-                                    //----
-                                    if (!chat.equals("")) {
-                                        if (!chat.equals(comparer)) {
-                                            //conversation.append("\n                                             "+chat);
-                                            addMessage("                                                                       " + chat + "\n\n");
-                                            comparer = chat;
-                                        }
                                     }
 
-                                } else {
-                                    if (!ifcancelled) {
-                                        cd.cancel();
-                                        Toast.makeText(MapsActivityAidProvider.this, "Thank you for your service!", Toast.LENGTH_SHORT).show();
-                                        mMap.clear(); //3/15/2023
-                                        Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
-                                        startActivity(intent);
+                                }
+                                //---
+                                //------
+
+                                //4/5/2023
+                                if (ifCancelledReq.equals("1")) {
+                                    cd.cancel();
+                                    gettingRidOfPartnerUID();
+                                    Toast.makeText(MapsActivityAidProvider.this, "Seeker Cancelled! Thank you for your service!", Toast.LENGTH_SHORT).show();
+                                    mMap.clear(); //3/15/2023
+                                    Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
+                                    startActivity(intent);
+                                }
+                                //----
+                                if (!chat.equals("")) {
+                                    if (!chat.equals(comparer)) {
+                                        //conversation.append("\n                                             "+chat);
+                                        addMessage("                                                                       " + chat + "\n\n");
+                                        comparer = chat;
                                     }
+                                }
+
+                            } else {
+                                if (!ifcancelled) {
+                                    cd.cancel();
+                                    Toast.makeText(MapsActivityAidProvider.this, "Thank you for your service!", Toast.LENGTH_SHORT).show();
+                                    mMap.clear(); //3/15/2023
+                                    Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
+                                    startActivity(intent);
                                 }
                             }
                         }
-                    });
-                }
+                    }
+                });
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
+            }
+        });
 
     }
 
@@ -879,14 +883,18 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         //4/18/2023
         if(!ifAllAndNotPrio)
         {
-            cd = new CountDownTimer(300000,1000)
+            cd = new CountDownTimer(60000,1000)
             {
 
                 @Override
                 public void onTick(long l) {
-                    if((l/1000) % 2 == 0) {
+                    /*if((l/1000) % 2 == 0) {
                         gettingSeekerMSG();
-                    }
+                    }*/ //commented on 4/21
+
+                    //4/21/2023
+                    gettingSeekerMSG();
+                    //---
                 }
 
                 @Override
@@ -902,7 +910,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         {
             respondClicked = false;
             sending.setEnabled(false);
-            conversation.setText("Due to critical emergency, communication is disabled.\nPlease show integrity in your profession and help if you clicked respond!\nRest-assured you get an auto-commend feedback in this situations.");
+            conversation.setText("Due to critical emergency, communication is disabled.\nPlease show integrity in your profession and help if you clicked respond!\nRest-assured you get an auto-commend feedback in these situations.");
             conversation.setGravity(Gravity.CENTER);
             suwatan.setEnabled(false);
             startTimerForCriticalEm();
@@ -964,7 +972,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     public void askProviderForUpdate()
     {
 
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        /*DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -987,8 +995,64 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show(); //commented on 18 original
         builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).setCancelable(false).show();
+        */ //commented on 4/21/2023 original
 
+        //4/21/2023
+        if(Long.parseLong(arrivalTimeHolder) <= 3)
+        {
+            DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
 
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    switch (i){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            updateCommendCount();
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //3/11/2023
+                            msgGetter();
+                            Toast.makeText(MapsActivityAidProvider.this,"Please continue serving",Toast.LENGTH_SHORT).show();
+                            //---
+                            //cd.cancel();
+                            break;
+
+                    }
+                }
+            };
+            AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+            //builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show(); //commented on 18 original
+            builder2.setMessage("Done responding to Aid - Seeker?").setPositiveButton("Yes",dialogClickListener2).setNegativeButton("No",dialogClickListener2).setCancelable(false).show();
+
+        }
+        else
+        {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    switch (i){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            msgGetter();
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //3/11/2023
+                            msgGetter();
+                            Toast.makeText(MapsActivityAidProvider.this,"Please continue serving",Toast.LENGTH_SHORT).show();
+                            //---
+                            //cd.cancel();
+                            break;
+
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            //builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).show(); //commented on 18 original
+            builder.setMessage("Are you still there?").setPositiveButton("Yes",dialogClickListener).setNegativeButton("No",dialogClickListener).setCancelable(false).show();
+
+        }
+        //---
     }
 
     //3/17/2023 cp
@@ -1009,7 +1073,9 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                 DataSnapshot snaps = task.getResult();
                                 provisionCount = String.valueOf(snaps.child("provision_count").getValue());
                                 supportCount = String.valueOf(snaps.child("support_count").getValue());
-
+                                //4/21/2023
+                                commendCount = String.valueOf(snaps.child("commends").getValue());
+                                //---
                             }
                         }
                     }
@@ -1080,29 +1146,31 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     //4/10/2023
     public void getTripDuration(GeoApiContext context,double startla, double startlo, double endla, double endlo)
     {
-       DirectionsApiRequest request = DirectionsApi.newRequest(context).origin(new com.google.maps.model.LatLng(startla,startlo))
-               .destination(new com.google.maps.model.LatLng(endla,endlo))
-               .mode(TravelMode.WALKING);
+        DirectionsApiRequest request = DirectionsApi.newRequest(context).origin(new com.google.maps.model.LatLng(startla,startlo))
+                .destination(new com.google.maps.model.LatLng(endla,endlo))
+                .mode(TravelMode.WALKING);
 
 
-       try {
-           DirectionsResult result = request.await();
-           if (result.routes != null && result.routes.length > 0) {
-               long durationInSeconds = result.routes[0].legs[0].duration.inSeconds;
+        try {
+            DirectionsResult result = request.await();
+            if (result.routes != null && result.routes.length > 0) {
+                long durationInSeconds = result.routes[0].legs[0].duration.inSeconds;
 
-               long durationInMinutes = durationInSeconds / 60;
+                long durationInMinutes = durationInSeconds / 60;
 
-               storingDuration(Long.toString(durationInMinutes) + " minutes");
+                storingDuration(Long.toString(durationInMinutes) + " minutes");
 
-           }
-       }
-       catch (Exception e)
-       {
+            }
+        }
+        catch (Exception e)
+        {
 
-       }
+        }
     }
     public void storingDuration(String tobeput)
     {
+
+        arrivalTimeHolder = tobeput.split(" ")[0]; //4/21/2023
 
         HashMap hm = new HashMap();
         hm.put("trustedname_1",tobeput); //trustedname_1 akoang ge himo nga temporary holder sa duration time
@@ -1118,8 +1186,65 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
 
 
-
     }
     //---
+
+    //4/21/2023
+    public void updateCommendCount()
+    {
+        HashMap hm = new HashMap();
+        hm.put("commends",Integer.toString(Integer.parseInt(commendCount)+1));
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+
+            }
+        });
+        savingToHist();
+    }
+    public void savingToHist()
+    {
+        Date currentDateTime = Calendar.getInstance().getTime();
+        String dateAndTime = currentDateTime.toString();
+
+        ProviderHistory ph = new ProviderHistory(dateAndTime,apm.seekerfName,"Respond",apm.seeker_id,ma.userid,"1",locationOfIncident);
+
+        FirebaseDatabase.getInstance().getReference("AidProviderHistory").push().setValue(ph).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful())
+                {
+                    Toast.makeText(MapsActivityAidProvider.this, "Thank you for your service!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(MapsActivityAidProvider.this, "Failed to record!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        finalizeCleaning();
+    }
+    public void finalizeCleaning()
+    {
+        HashMap hm = new HashMap();
+        hm.put("message","");
+        hm.put("partner_uid","");
+        hm.put("trustedname_1","");
+
+        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+    //----
 
 }

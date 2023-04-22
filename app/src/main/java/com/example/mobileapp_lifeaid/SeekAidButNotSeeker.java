@@ -345,15 +345,9 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
 
             @Override
             public void onTick(long l) {
-                if((l/1000) % 2 == 0) {
+                /*if((l/1000) % 2 == 0) {
                     //gettingtheproviderID();
-                    /*if (providerFound) {
-                        Toast.makeText(SeekAidButNotSeeker.this,"Aid - Provider Is Here!",Toast.LENGTH_SHORT).show();
-                        getProviderData();
-                        msgLooper();
-                        cancel();
 
-                    }*/
                     if(cancelled)
                     {
                         cancel();
@@ -370,7 +364,26 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
 
                         }
                     }
+                }*/ //commented on 4/21
+
+                //4/21/2023
+                if(cancelled)
+                {
+                    cancel();
+                    cancelledReq();
                 }
+                else
+                {
+                    gettingtheproviderID();
+                    if (providerFound) {
+                        Toast.makeText(SeekAidButNotSeeker.this,"Aid - Provider Is Here!",Toast.LENGTH_SHORT).show();
+                        getProviderData();
+                        msgLooper();
+                        cancel();
+
+                    }
+                }
+                //---
             }
 
             @Override
@@ -530,9 +543,13 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
 
             @Override
             public void onTick(long l) {
-                if((l/1000) % 2 == 0) {
+                /*if((l/1000) % 2 == 0) {
                     getProviderMessage();
-                }
+                }*/
+
+                //4/21/2023
+                getProviderMessage();
+                //----
             }
 
             @Override

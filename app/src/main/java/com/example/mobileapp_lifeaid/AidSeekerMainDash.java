@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
+import android.os.Handler;
 import android.os.Vibrator;
 import android.telephony.SmsManager;
 
@@ -284,6 +285,16 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                     //---------
                 }*/ //original commented on 4/6/2023
                 //storing();
+
+                //4/21/2023
+                alertallbtn.setImageResource(R.drawable.greybuttonpressed);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        alertallbtn.setImageResource(R.drawable.greybutton);
+                    }
+                },100);
+                //----
 
                 //4/6/2023
                 if (isLocationEnabled) {
@@ -765,19 +776,28 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         }*/
 
         //checkpoint 3/6/2023
-        new CountDownTimer(300000,1000)
+        new CountDownTimer(60000,1000)
         {
 
             @Override
             public void onTick(long l) {
-                if((l/1000) % 2 == 0) {
+                /*if((l/1000) % 2 == 0) {
                     gettingtheproviderID();
                     if (providerFound) {
                         Toast.makeText(AidSeekerMainDash.this, "Aid Provider coming! Go To Provider Info!", Toast.LENGTH_SHORT).show();
                         foundresponder = true;
                         cancel();
                     }
+                }*/ //commented on 4/21/2023
+
+                //4/21/2023
+                gettingtheproviderID();
+                if (providerFound) {
+                    Toast.makeText(AidSeekerMainDash.this, "Aid Provider coming! Go To Provider Info!", Toast.LENGTH_SHORT).show();
+                    foundresponder = true;
+                    cancel();
                 }
+                //---
             }
 
             @Override

@@ -152,7 +152,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                 if(isLocationEnabled)
                 {
                     if(seekerfound) {
-                        seekerfound = false;
+                        //seekerfound = false; commented on 4/22/2023
 
                     /*Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
                     startActivity(intent);*/
@@ -191,7 +191,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                 if(isLocationEnabled)
                 {
                     if(seekerfound) {
-                        seekerfound = false;
+                        //seekerfound = false; commented on 4/22/2023
 
                     /*Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
                     startActivity(intent);*/
@@ -268,6 +268,7 @@ public class AidProviderMainDash extends AppCompatActivity {
 
         createNotificationChannel();//4/14/2023
 
+        criticalEmergency = false; //4/22/2023
 
 
 
@@ -373,7 +374,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                 if(isLocationEnabled)
                 {
                     if(seekerfound) {
-                        seekerfound = false;
+                        //seekerfound = false; commented on 4/22/2023
 
                     /*Intent intent = new Intent(AidProviderMainDash.this, MapsActivityAidProvider.class);
                     startActivity(intent);*/
@@ -490,6 +491,12 @@ public class AidProviderMainDash extends AppCompatActivity {
                 for (DataSnapshot ds : datasnapshot.getChildren()) {
                     String key = ds.getKey();
 
+                    //4/22/2023
+                    if(seekerfound)
+                    {
+                        break;
+                    }
+                    //---
 
                     dr.child(key).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
@@ -555,6 +562,26 @@ public class AidProviderMainDash extends AppCompatActivity {
                                                 }
                                                 //----
 
+                                                //4/22/2023
+                                                if(!latiOfSeeker.equals(""))
+                                                {
+                                                    showNotification(); // 4/14/2023
+                                                    //Toast.makeText(AidProviderMainDash.this, "Please Respond!", Toast.LENGTH_SHORT).show();
+                                                    tap.setText("S E E K E R   F O U N D !");
+                                                    als.setText("ALERT FOUND!");
+                                                    alarm2.setImageResource(R.drawable.redsiren);
+                                                    seekerfound = true;
+                                                    //3/31/2023
+                                                    cdFind.cancel();
+                                                    //---
+
+                                                    //4/1/2023
+                                                    findSeekerClicked = true;
+                                                    //---
+
+                                                }
+                                                //---
+
                                             }
                                         }//else if below 3/5/2023
                                         else if((jobchoice.equals("health") && ma.ap_job.toLowerCase().equals("nurse")) || (jobchoice.equals("health") && ma.ap_job.toLowerCase().equals("doctor")))
@@ -568,6 +595,25 @@ public class AidProviderMainDash extends AppCompatActivity {
                                                 seekerPhoneNum = String.valueOf(snaps.child("phonenum").getValue()); //4/16/2023
 
 
+                                                //4/22/2023
+                                                if(!latiOfSeeker.equals(""))
+                                                {
+                                                    showNotification(); // 4/14/2023
+                                                    //Toast.makeText(AidProviderMainDash.this, "Please Respond!", Toast.LENGTH_SHORT).show();
+                                                    tap.setText("S E E K E R   F O U N D !");
+                                                    als.setText("ALERT FOUND!");
+                                                    alarm2.setImageResource(R.drawable.redsiren);
+                                                    seekerfound = true;
+                                                    //3/31/2023
+                                                    cdFind.cancel();
+                                                    //---
+
+                                                    //4/1/2023
+                                                    findSeekerClicked = true;
+                                                    //---
+
+                                                }
+                                                //---
                                             }
                                         }
                                     }
@@ -586,7 +632,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                         }
                     });
 
-                    if(!latiOfSeeker.equals(""))
+                    /*if(!latiOfSeeker.equals(""))
                     {
                         showNotification(); // 4/14/2023
                         //Toast.makeText(AidProviderMainDash.this, "Please Respond!", Toast.LENGTH_SHORT).show();
@@ -602,7 +648,7 @@ public class AidProviderMainDash extends AppCompatActivity {
                         findSeekerClicked = true;
                         //---
                         break;
-                    }
+                    }*/ //commented on 4/22/2023
 
                 }
 
@@ -717,6 +763,8 @@ public class AidProviderMainDash extends AppCompatActivity {
             @Override
             public void onTick(long l) {
                 checkForSeekers();
+
+
                 //4/2/2023
                 countertime++;
                 if(countertime == 1)
@@ -747,6 +795,8 @@ public class AidProviderMainDash extends AppCompatActivity {
             }
         }.start();
         //---
+
+
     }
 
     //----
