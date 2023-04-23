@@ -35,6 +35,8 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
     ImageView star1,star2,star3,star4,bk;
     Button delbtn;
 
+    TextView headerCol;//4/23/2023
+
     AdminManageRecords amr = new AdminManageRecords();
     AidSeekerLeaderboardDash ald = new AidSeekerLeaderboardDash(); //4/3/2023
     AidProviderLeaderboardDash apld = new AidProviderLeaderboardDash();//4/3/2023
@@ -74,6 +76,8 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
 
         delbtn = (Button) findViewById(R.id.delbutton);
 
+        headerCol = (TextView) findViewById(R.id.leadersCol);//4/23/2023
+
 
 
         conts.setMovementMethod(new ScrollingMovementMethod());
@@ -111,6 +115,11 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
         //4/3/2023
         if(ald.isInfoclicked || apld.isInfoclicked || adld.isInfoclicked)
         {
+            //4/23/2023
+            adld.isInfoclicked = false;
+            apld.isInfoclicked = false;
+            ald.isInfoclicked = false;
+            //---
             gettingUserData("Aid-Provider");
             delbtn.setText("Contact this provider?");
 
@@ -143,6 +152,16 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
         else {
             gettingUserData(amr.chosenRole);
 
+            //4/23/2023
+            if(amr.chosenRole.equals("Aid-Seeker"))
+            {
+                headerCol.setText("DATE - TIME                 ACTION                PROVIDER - NAME");
+            }
+            else if(amr.chosenRole.equals("Aid-Provider"))
+            {
+                headerCol.setText("DATE - TIME                 ACTION                  SEEKER - NAME");
+            }
+            //----
             delbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

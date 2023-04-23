@@ -495,7 +495,7 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
                                 String timeHolder = String.valueOf(snaps.child("trustedname_1").getValue());
                                 if(timeHolder.equals("0 minutes"))
                                 {
-                                    duration.setText("Aid-Provider Arrived!");
+                                    duration.setText("Arrived!");
                                 }
                                 else {
                                     duration.setText(String.valueOf(snaps.child("trustedname_1").getValue()));

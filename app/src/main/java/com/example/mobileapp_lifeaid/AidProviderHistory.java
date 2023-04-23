@@ -143,7 +143,7 @@ public class AidProviderHistory extends AppCompatActivity {
                                                 ds.setUnderlineText(false);
                                             }
                                         };
-                                        ss.setSpan(clickableSpan, 37, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                        ss.setSpan(clickableSpan, 53, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);//changed 37 to 53
 
                                         /*TextView textView = (TextView) findViewById(R.id.hello);
                                         textView.setText(ss);

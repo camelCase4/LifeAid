@@ -970,8 +970,9 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                     case DialogInterface.BUTTON_POSITIVE:
                         Date currentDateTime = Calendar.getInstance().getTime();
                         dateAndTime = currentDateTime.toString();
-                        whatdidyoudo = "Respond";//4/22/2023
-                        savingToHistory("1");
+                        //whatdidyoudo = "Respond";//4/22/2023 //commented on 4/23 murag useless
+                        //savingToHistory("1"); commented on 4/23
+                        updateCommendCount();//4/23/2023
                         mMap.clear();
                         Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
                         startActivity(intent);
@@ -1031,6 +1032,10 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 public void onClick(DialogInterface dialogInterface, int i) {
                     switch (i){
                         case DialogInterface.BUTTON_POSITIVE:
+                            //4/23/2023
+                            Date currentDateTime = Calendar.getInstance().getTime();
+                            dateAndTime = currentDateTime.toString();
+                            //---
                             updateCommendCount();
                             break;
 
@@ -1232,8 +1237,8 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     }
     public void savingToHist()
     {
-        Date currentDateTime = Calendar.getInstance().getTime();
-        String dateAndTime = currentDateTime.toString();
+        /*Date currentDateTime = Calendar.getInstance().getTime();
+        String dateAndTime = currentDateTime.toString();*/ //commented on 4/23
 
         ProviderHistory ph = new ProviderHistory(dateAndTime,apm.seekerfName,"Respond",apm.seeker_id,ma.userid,"1",locationOfIncident);
 
@@ -1264,6 +1269,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                mMap.clear();//4/23/2023
                 Intent intent = new Intent(MapsActivityAidProvider.this,AidProviderMainDash.class);
                 startActivity(intent);
             }
