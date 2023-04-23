@@ -146,7 +146,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     double latis,longis;
     //---
 
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -419,10 +419,17 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
 
 
                gettingPath(latis,longis);
-               contactnum.setText(  ((stationcontact.get(stationlats.indexOf(Double.toString(latis)))).equals("0")?"No Number":stationcontact.get(stationlats.indexOf(Double.toString(latis))))  );
+               //contactnum.setText(  ((stationcontact.get(stationlats.indexOf(Double.toString(latis)))).equals("0")?"No Number":stationcontact.get(stationlats.indexOf(Double.toString(latis))))  ); commented on 4/23
                 //Toast.makeText(AidSeekerMapCrisis.this,"Lati: "+latis+", Longi:"+longis,Toast.LENGTH_SHORT).show();
 
+                //4/23/2023
+                try {
+                    contactnum.setText(  ((stationcontact.get(stationlats.indexOf(Double.toString(latis)))).equals("0")?"No Number":stationcontact.get(stationlats.indexOf(Double.toString(latis))))  );
+                }catch (ArrayIndexOutOfBoundsException e)
+                {
 
+                }
+                //----
 
 
                 return false;
