@@ -146,7 +146,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     double latis,longis;
     //---
 
-
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -341,6 +341,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+
         // Add a marker in Sydney and move the camera
         /*LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -368,6 +369,7 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)); commented on 4/16/2023
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
                         showAddress();//3/16/2023
+
 
 
                     }
@@ -419,6 +421,9 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                gettingPath(latis,longis);
                contactnum.setText(  ((stationcontact.get(stationlats.indexOf(Double.toString(latis)))).equals("0")?"No Number":stationcontact.get(stationlats.indexOf(Double.toString(latis))))  );
                 //Toast.makeText(AidSeekerMapCrisis.this,"Lati: "+latis+", Longi:"+longis,Toast.LENGTH_SHORT).show();
+
+
+
 
                 return false;
             }
@@ -933,6 +938,8 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f)); commendted on 4/16/2023
 
+
+
                         //4/16/2023
                         if(polyline != null) {
                             polyline.remove();
@@ -981,6 +988,8 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                         mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f)); commendted on 4/16/2023
+
+
 
                         //4/16/2023
                         if(polyline != null) {
@@ -1031,6 +1040,8 @@ public class AidSeekerMapCrisis extends FragmentActivity implements OnMapReadyCa
                         mMap.addMarker(new MarkerOptions().position(latLng).title("You're Here!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).showInfoWindow();
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f)); commendted on 4/16/2023
+
+
 
                         //4/16/2023
                         if(polyline != null) {
