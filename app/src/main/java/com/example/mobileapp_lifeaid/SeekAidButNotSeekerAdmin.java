@@ -141,8 +141,9 @@ public class SeekAidButNotSeekerAdmin extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             switch (i) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    ratingsPrompt();
-                                    cleansingData();
+                                    /*ratingsPrompt();
+                                    cleansingData();*/ // commetend on 4/24/2023
+                                    checkIfStillPartners();//4/24/2023
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -263,7 +264,7 @@ public class SeekAidButNotSeekerAdmin extends AppCompatActivity {
         //3/22/2023
         savingProviderHistory("1");
         //-----
-        Intent intent = new Intent(SeekAidButNotSeekerAdmin.this,AidProviderMainDash.class);
+        Intent intent = new Intent(SeekAidButNotSeekerAdmin.this,AdminMainDash.class);
         startActivity(intent);
     }
     public void updatingUnsatisfiedCount()
@@ -282,7 +283,7 @@ public class SeekAidButNotSeekerAdmin extends AppCompatActivity {
         //3/22/2023
         savingProviderHistory("0");
         //-----
-        Intent intent = new Intent(SeekAidButNotSeekerAdmin.this,AidProviderMainDash.class);
+        Intent intent = new Intent(SeekAidButNotSeekerAdmin.this,AdminMainDash.class);
         startActivity(intent);
     }
     public void gettingLocationName()
@@ -483,7 +484,7 @@ public class SeekAidButNotSeekerAdmin extends AppCompatActivity {
                                 String timeHolder = String.valueOf(snaps.child("trustedname_1").getValue());
                                 if(timeHolder.equals("0 minutes"))
                                 {
-                                    duration.setText("Aid-Provider Arrived!");
+                                    duration.setText("Arrived!");
                                 }
                                 else {
                                     duration.setText(String.valueOf(snaps.child("trustedname_1").getValue()));
@@ -678,4 +679,49 @@ public class SeekAidButNotSeekerAdmin extends AppCompatActivity {
     }
 
     //---
+
+    //4/24/2023
+    public void checkIfStillPartners()
+    {
+        dbprovs.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dbprovs.child(responderUID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            if(task.getResult().exists())
+                            {
+                                DataSnapshot snaps = task.getResult();
+                                if(!String.valueOf(snaps.child("partner_uid").getValue()).equals(ma.userid))
+                                {
+
+                                    cdt.cancel();
+                                    Toast.makeText(SeekAidButNotSeekerAdmin.this,"Aid - Provider Left Early!",Toast.LENGTH_SHORT).show();
+                                    DatabaseReference dr2 = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+                                    dr2.child(mfa.generatedUID).setValue(null);//---deleting
+                                    Intent intent = new Intent(SeekAidButNotSeekerAdmin.this,AdminMainDash.class);
+                                    startActivity(intent);
+
+                                }
+                                else
+                                {
+                                    ratingsPrompt();
+                                    cleansingData();
+                                }
+
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    //----
 }

@@ -150,8 +150,9 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             switch (i) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    ratingsPrompt();
-                                    cleansingData();
+                                    /*ratingsPrompt();
+                                    cleansingData();*/ //commented on 4/24/2023 original
+                                    checkIfStillPartners(); //4/24/2023
                                     mp.gotLoc = false; // 3/30/2023
                                     break;
 
@@ -691,5 +692,50 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
     }
 
     //---
+
+    //4/24/2023
+    public void checkIfStillPartners()
+    {
+        dbprovs.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                dbprovs.child(responderUID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            if(task.getResult().exists())
+                            {
+                                DataSnapshot snaps = task.getResult();
+                                if(!String.valueOf(snaps.child("partner_uid").getValue()).equals(ma.userid))
+                                {
+
+                                    cdt.cancel();
+                                    Toast.makeText(SeekAidButNotSeeker.this,"Aid - Provider Left Early!",Toast.LENGTH_SHORT).show();
+                                    DatabaseReference dr2 = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+                                    dr2.child(mp.generatedUID).setValue(null);//---deleting
+                                    Intent intent = new Intent(SeekAidButNotSeeker.this,AidProviderMainDash.class);
+                                    startActivity(intent);
+
+                                }
+                                else
+                                {
+                                    ratingsPrompt();
+                                    cleansingData();
+                                }
+
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    //----
 
 }
