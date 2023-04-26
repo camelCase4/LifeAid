@@ -707,7 +707,7 @@ public class SeekAidButNotSeeker extends AppCompatActivity {
                             if(task.getResult().exists())
                             {
                                 DataSnapshot snaps = task.getResult();
-                                if(!String.valueOf(snaps.child("partner_uid").getValue()).equals(ma.userid))
+                                if(!String.valueOf(snaps.child("partner_uid").getValue()).equals(mp.generatedUID)) // changed generatedUID 4/26/2023
                                 {
 
                                     cdt.cancel();

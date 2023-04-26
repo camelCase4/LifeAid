@@ -56,6 +56,8 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
     MainActivity ma = new MainActivity();
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
     //---
+
+    boolean stopper = true;//4/26/2023
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -287,8 +289,8 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
             public void onSuccess(Void unused) {
                 //generatedUID = FirebaseDatabase.getInstance().getReference("Aid-Seeker").push().getKey();
 
-                Intent intent = new Intent(MenuForAdmins.this,SeekAidButNotSeekerAdmin.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(MenuForAdmins.this,SeekAidButNotSeekerAdmin.class);
+                startActivity(intent);*/ //commented on 4/26
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -304,12 +306,19 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
     //3/26/2023
     public void gettingTheGeneratedUID()
     {
+
         dr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
                 for (DataSnapshot ds : datasnapshot.getChildren()) {
                     String uid = ds.getKey();
 
+                    //4/26/2023
+                    if(!stopper)
+                    {
+                        break;
+                    }
+                    //---
                     dr.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -321,6 +330,12 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
                                     if(String.valueOf(snaps.child("id").getValue()).equals(ma.userid))
                                     {
                                         generatedUID = uid;
+
+                                        stopper = false;//4/26/2023
+                                        //4/26/2023
+                                        Intent intent = new Intent(MenuForAdmins.this,SeekAidButNotSeekerAdmin.class);
+                                        startActivity(intent);
+                                        //---
                                     }
 
                                 }
@@ -336,12 +351,13 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
                         }
                     });
 
-                    if(!generatedUID.equals(""))
+                    /*if(!generatedUID.equals(""))
                     {
                         break;
-                    }
+                    }*/ //commented on 4/26
 
                 }
+
 
 
             }

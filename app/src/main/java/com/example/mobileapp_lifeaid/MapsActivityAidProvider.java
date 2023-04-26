@@ -145,6 +145,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     String arrivalTimeHolder = "",commendCount = "";//4/21/2023
 
 
+    String seekerIDidAdminOrProviderNeededAid = "";//4/26/2023
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -562,6 +563,9 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                 String who = String.valueOf(snaps.child("whatRole").getValue());//3/25/2023
                                 providerChecker = String.valueOf(snaps.child("partner_uid").getValue());
                                 String la = String.valueOf(snaps.child("lati").getValue()); //4/7/2023
+
+                                seekerIDidAdminOrProviderNeededAid = String.valueOf(snaps.child("id").getValue());//4/26/2023
+
                                 //3/25/2023
                                 if(who.equals("AidProvider"))
                                 {
@@ -1240,7 +1244,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
         /*Date currentDateTime = Calendar.getInstance().getTime();
         String dateAndTime = currentDateTime.toString();*/ //commented on 4/23
 
-        ProviderHistory ph = new ProviderHistory(dateAndTime,apm.seekerfName,"Respond",apm.seeker_id,ma.userid,"1",locationOfIncident);
+        ProviderHistory ph = new ProviderHistory(dateAndTime,apm.seekerfName,"Respond",seekerIDidAdminOrProviderNeededAid,ma.userid,"1",locationOfIncident);//changed seeker_id 4/26
 
         FirebaseDatabase.getInstance().getReference("AidProviderHistory").push().setValue(ph).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

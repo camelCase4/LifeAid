@@ -694,7 +694,7 @@ public class SeekAidButNotSeekerAdmin extends AppCompatActivity {
                             if(task.getResult().exists())
                             {
                                 DataSnapshot snaps = task.getResult();
-                                if(!String.valueOf(snaps.child("partner_uid").getValue()).equals(ma.userid))
+                                if(!String.valueOf(snaps.child("partner_uid").getValue()).equals(mfa.generatedUID))//changed ma.userid 4/26
                                 {
 
                                     cdt.cancel();
