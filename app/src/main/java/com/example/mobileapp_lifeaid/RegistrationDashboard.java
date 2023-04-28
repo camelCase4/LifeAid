@@ -143,7 +143,7 @@ public class RegistrationDashboard extends AppCompatActivity implements AdapterV
                     }
                     else
                     {
-                        Toast.makeText(RegistrationDashboard.this, "Requirement Incomplete!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistrationDashboard.this, "Downloading image, try again!", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else

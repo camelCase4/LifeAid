@@ -424,9 +424,9 @@ public class AidSeekerLeaderboardDash extends AppCompatActivity {
 
             //4/14/23
             String nameTemp = fnames.get(i);
-            if(nameTemp.length() > 7)
+            if(nameTemp.length() > 5)//changed 7 to 5 4/28/2023
             {
-                nameTemp = fnames.get(i).substring(0,7);
+                nameTemp = fnames.get(i).substring(0,5);
             }
             String initialNums = "     " + Integer.toString(i + 1) + space + Position.get(i).toLowerCase() + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + nameTemp;
             //---

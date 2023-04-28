@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ import java.util.Objects;
 public class AidProviderClaimCert extends AppCompatActivity {
 
     TextView commendsProvs,downloadCert;
+    TextView tvMsg; //4/28/2023
     ImageView certificate,menu;
 
     MainActivity ma = new MainActivity();
@@ -61,6 +63,9 @@ public class AidProviderClaimCert extends AppCompatActivity {
         commendsProvs = (TextView) findViewById(R.id.commendsandprovisions);
         certificate = (ImageView) findViewById(R.id.cert);
         downloadCert = (TextView) findViewById(R.id.dlcert);
+
+        tvMsg = (TextView) findViewById(R.id.tv_message);//4/28/2023
+        tvMsg.setMovementMethod(new ScrollingMovementMethod());//4/28/2023
 
         //4/17/2023
         menu = (ImageView) findViewById(R.id.imageView18);

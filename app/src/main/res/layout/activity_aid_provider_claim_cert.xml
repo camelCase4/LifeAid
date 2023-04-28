@@ -147,6 +147,7 @@
                 android:text="Greetings Aid Provider!\n\n\t\t\tOn behalf of all the Aid-Seek\ners and the admins out there, your selfless sacrifice is deeply appreciated. We would love to extend our gratitude via a certificate of merit signed by the Mayor of Lapu-Lapu.\n\t\t\tAll the best in your future endeavors!\n\nRegards,\nLifeAid Team"
                 android:textColor="@color/black"
                 android:textSize="12dp"
+                android:scrollbars = "vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

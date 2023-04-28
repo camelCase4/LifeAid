@@ -33,8 +33,11 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
     ProgressBar progressBar;
     String firstName,lastName,edad,phoneNumber,lugar,kasarian,job;
     boolean isProvider = true;
+    boolean isPhoneValid = true;//4/28/2023
+    boolean canProceed = true; //4/28/2023
 
     List<String> jobchoices = new ArrayList<>();
+    EditText[] tbBoxes = {fname,lname,age,phonenum,address,gender,occupation};//4/29
 
     //FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -114,108 +117,238 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
 
                 //--
 
-
-                if (jobchoices.contains(job.toLowerCase()) || !isProvider)
+                //4/28/2023
+                if(!firstName.equals("") && !lastName.equals("") && !edad.equals("") && !lugar.equals("") && !kasarian.equals(""))
                 {
-                    progressBar.setVisibility(View.VISIBLE);
-                    (rd.mAuth).createUserWithEmailAndPassword(rd.email_holder, rd.password_holder)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        User us = new User(rd.email_holder, rd.username_holder, rd.password_holder, rd.user_role, firstName, lastName, edad, phoneNumber, lugar, kasarian, addedcontacts, trustednum_1, trustednum_2, trustedname_1, trustedname_2, admin_approved, rd.IMG_URI, lati, longi, job,partner_uid,message,commends,decommends,suppCount,provCount,certReq,certificateURL);
-                                        if (rd.user_role.equals("AidSeeker")) {
-                                            FirebaseDatabase.getInstance().getReference("Aid-Seeker")
-                                                    .child(rd.mAuth.getCurrentUser().getUid()) //this line change the auth logic
-                                                    .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
-                                                                progressBar.setVisibility(View.GONE);
+                    if(edad.matches("\\d+"))
+                    {
+                        if(phoneNumber.matches("\\d+") && phoneNumber.length() == 11)
+                        {
+                            if (jobchoices.contains(job.toLowerCase()) || !isProvider)
+                            {
+                                progressBar.setVisibility(View.VISIBLE);
+                                (rd.mAuth).createUserWithEmailAndPassword(rd.email_holder, rd.password_holder)
+                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    User us = new User(rd.email_holder, rd.username_holder, rd.password_holder, rd.user_role, firstName, lastName, edad, phoneNumber, lugar, kasarian, addedcontacts, trustednum_1, trustednum_2, trustedname_1, trustedname_2, admin_approved, rd.IMG_URI, lati, longi, job, partner_uid, message, commends, decommends, suppCount, provCount, certReq, certificateURL);
+                                                    if (rd.user_role.equals("AidSeeker")) {
+                                                        FirebaseDatabase.getInstance().getReference("Aid-Seeker")
+                                                                .child(rd.mAuth.getCurrentUser().getUid()) //this line change the auth logic
+                                                                .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
+                                                                            progressBar.setVisibility(View.GONE);
 
-                                                                //4/12/2023
-                                                                rd.email_holder = "";
-                                                                rd.password_holder = "";
-                                                                rd.username_holder = "";
-                                                                //---
+                                                                            //4/12/2023
+                                                                            rd.email_holder = "";
+                                                                            rd.password_holder = "";
+                                                                            rd.username_holder = "";
+                                                                            //---
 
-                                                                Intent intent = new Intent(RegistratinDashboardFinal.this,MainActivity.class);
-                                                                startActivity(intent);
-                                                            } else {
-                                                                Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
-                                                                progressBar.setVisibility(View.GONE);
-                                                            }
-                                                        }
-                                                    });
-
-
-                                        } else if (rd.user_role.equals("AidProvider")) {
-
-                                            FirebaseDatabase.getInstance().getReference("Aid-Provider")
-                                                    .child(rd.mAuth.getCurrentUser().getUid())
-                                                    .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
-                                                                progressBar.setVisibility(View.GONE);
-
-                                                                //4/12/2023
-                                                                rd.email_holder = "";
-                                                                rd.password_holder = "";
-                                                                rd.username_holder = "";
-                                                                //---
-
-                                                                Intent intent = new Intent(RegistratinDashboardFinal.this,MainActivity.class);
-                                                                startActivity(intent);
-                                                            } else {
-                                                                Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
-                                                                progressBar.setVisibility(View.GONE);
-                                                            }
-                                                        }
-                                                    });
+                                                                            Intent intent = new Intent(RegistratinDashboardFinal.this, MainActivity.class);
+                                                                            startActivity(intent);
+                                                                        } else {
+                                                                            Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
+                                                                            progressBar.setVisibility(View.GONE);
+                                                                        }
+                                                                    }
+                                                                });
 
 
-                                        } else {
-                                            FirebaseDatabase.getInstance().getReference("Admin")
-                                                    .child(rd.mAuth.getCurrentUser().getUid())
-                                                    .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
-                                                                progressBar.setVisibility(View.GONE);
+                                                    } else if (rd.user_role.equals("AidProvider")) {
 
-                                                                //4/12/2023
-                                                                rd.email_holder = "";
-                                                                rd.password_holder = "";
-                                                                rd.username_holder = "";
-                                                                //---
+                                                        FirebaseDatabase.getInstance().getReference("Aid-Provider")
+                                                                .child(rd.mAuth.getCurrentUser().getUid())
+                                                                .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
+                                                                            progressBar.setVisibility(View.GONE);
 
-                                                                Intent intent = new Intent(RegistratinDashboardFinal.this,MainActivity.class);
-                                                                startActivity(intent);
-                                                            } else {
-                                                                Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
-                                                                progressBar.setVisibility(View.GONE);
-                                                            }
-                                                        }
-                                                    });
-                                        }
+                                                                            //4/12/2023
+                                                                            rd.email_holder = "";
+                                                                            rd.password_holder = "";
+                                                                            rd.username_holder = "";
+                                                                            //---
 
-                                    } else {
-                                        Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed!", Toast.LENGTH_LONG).show();
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
+                                                                            Intent intent = new Intent(RegistratinDashboardFinal.this, MainActivity.class);
+                                                                            startActivity(intent);
+                                                                        } else {
+                                                                            Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
+                                                                            progressBar.setVisibility(View.GONE);
+                                                                        }
+                                                                    }
+                                                                });
+
+
+                                                    } else {
+                                                        FirebaseDatabase.getInstance().getReference("Admin")
+                                                                .child(rd.mAuth.getCurrentUser().getUid())
+                                                                .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
+                                                                            progressBar.setVisibility(View.GONE);
+
+                                                                            //4/12/2023
+                                                                            rd.email_holder = "";
+                                                                            rd.password_holder = "";
+                                                                            rd.username_holder = "";
+                                                                            //---
+
+                                                                            Intent intent = new Intent(RegistratinDashboardFinal.this, MainActivity.class);
+                                                                            startActivity(intent);
+                                                                        } else {
+                                                                            Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
+                                                                            progressBar.setVisibility(View.GONE);
+                                                                        }
+                                                                    }
+                                                                });
+                                                    }
+
+                                                } else {
+                                                    Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed!", Toast.LENGTH_LONG).show();
+                                                    progressBar.setVisibility(View.GONE);
+                                                }
+                                            }
+                                        });
+                            } else {
+                                occupation.setError("e.g. Fireman, Nurse, Doctor, LGU, Police");
+                                occupation.requestFocus();
+                            }
+                        }
+                        else
+                        {
+                            phonenum.setError("Please provider proper number");
+                            phonenum.requestFocus();
+                        }
+                    }
+                    else
+                    {
+                        age.setError("Please provider proper age.");
+                        age.requestFocus();
+                    }
                 }
                 else
                 {
+                    Toast.makeText(RegistratinDashboardFinal.this,"Please fill the necessary requirements!",Toast.LENGTH_SHORT).show();
+
+                }
+
+
+                //----
+
+
+
+                    /*if (jobchoices.contains(job.toLowerCase()) || !isProvider)
+                    {
+                        progressBar.setVisibility(View.VISIBLE);
+                        (rd.mAuth).createUserWithEmailAndPassword(rd.email_holder, rd.password_holder)
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            User us = new User(rd.email_holder, rd.username_holder, rd.password_holder, rd.user_role, firstName, lastName, edad, phoneNumber, lugar, kasarian, addedcontacts, trustednum_1, trustednum_2, trustedname_1, trustedname_2, admin_approved, rd.IMG_URI, lati, longi, job, partner_uid, message, commends, decommends, suppCount, provCount, certReq, certificateURL);
+                                            if (rd.user_role.equals("AidSeeker")) {
+                                                FirebaseDatabase.getInstance().getReference("Aid-Seeker")
+                                                        .child(rd.mAuth.getCurrentUser().getUid()) //this line change the auth logic
+                                                        .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
+                                                                    progressBar.setVisibility(View.GONE);
+
+                                                                    //4/12/2023
+                                                                    rd.email_holder = "";
+                                                                    rd.password_holder = "";
+                                                                    rd.username_holder = "";
+                                                                    //---
+
+                                                                    Intent intent = new Intent(RegistratinDashboardFinal.this, MainActivity.class);
+                                                                    startActivity(intent);
+                                                                } else {
+                                                                    Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
+                                                                    progressBar.setVisibility(View.GONE);
+                                                                }
+                                                            }
+                                                        });
+
+
+                                            } else if (rd.user_role.equals("AidProvider")) {
+
+                                                FirebaseDatabase.getInstance().getReference("Aid-Provider")
+                                                        .child(rd.mAuth.getCurrentUser().getUid())
+                                                        .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
+                                                                    progressBar.setVisibility(View.GONE);
+
+                                                                    //4/12/2023
+                                                                    rd.email_holder = "";
+                                                                    rd.password_holder = "";
+                                                                    rd.username_holder = "";
+                                                                    //---
+
+                                                                    Intent intent = new Intent(RegistratinDashboardFinal.this, MainActivity.class);
+                                                                    startActivity(intent);
+                                                                } else {
+                                                                    Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
+                                                                    progressBar.setVisibility(View.GONE);
+                                                                }
+                                                            }
+                                                        });
+
+
+                                            } else {
+                                                FirebaseDatabase.getInstance().getReference("Admin")
+                                                        .child(rd.mAuth.getCurrentUser().getUid())
+                                                        .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Toast.makeText(RegistratinDashboardFinal.this, "Registered Successfully", Toast.LENGTH_LONG).show();
+                                                                    progressBar.setVisibility(View.GONE);
+
+                                                                    //4/12/2023
+                                                                    rd.email_holder = "";
+                                                                    rd.password_holder = "";
+                                                                    rd.username_holder = "";
+                                                                    //---
+
+                                                                    Intent intent = new Intent(RegistratinDashboardFinal.this, MainActivity.class);
+                                                                    startActivity(intent);
+                                                                } else {
+                                                                    Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed! Try again!", Toast.LENGTH_LONG).show();
+                                                                    progressBar.setVisibility(View.GONE);
+                                                                }
+                                                            }
+                                                        });
+                                            }
+
+                                        } else {
+                                            Toast.makeText(RegistratinDashboardFinal.this, "Registration Failed!", Toast.LENGTH_LONG).show();
+                                            progressBar.setVisibility(View.GONE);
+                                        }
+                                    }
+                                });
+                    } else {
                     occupation.setError("e.g. Fireman, Nurse, Doctor, LGU, Police");
                     occupation.requestFocus();
-                }
+                    }*/ //commented on 4/29
+
+
             }
         });
     }
+
+
 }
