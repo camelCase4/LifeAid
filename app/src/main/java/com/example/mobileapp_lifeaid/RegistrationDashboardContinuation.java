@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class RegistrationDashboardContinuation extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
@@ -41,6 +43,11 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
 
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     DatabaseReference dr = fd.getReference().child("Admin");
+
+    //4/29/2023
+    EditText email,username,password;
+    boolean checker = true;
+    //---
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +66,13 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
 
 
 
-        EditText email = (EditText) findViewById(R.id.et_email);
+        /*EditText email = (EditText) findViewById(R.id.et_email);
         EditText username = (EditText) findViewById(R.id.et_username);
-        EditText password = (EditText) findViewById(R.id.et_password);
+        EditText password = (EditText) findViewById(R.id.et_password);*/ //commented on 4/29/2023
+
+        email = (EditText) findViewById(R.id.et_email);
+        username = (EditText) findViewById(R.id.et_username);
+        password = (EditText) findViewById(R.id.et_password);
 
         nameholder = (EditText) findViewById(R.id.et_pass3);
 
@@ -100,10 +111,11 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
             public void onClick(View view) {
                 rd.user_role = "Admin";
                 checkifnameExists();
+                validateInputs();//4/29/2023
 
 
-                if(passinput.getText().toString().equals(admin_password)) {
-                    if(allnames2.contains(nameholder.getText().toString().trim())) {
+                if(passinput.getText().toString().equals(admin_password) && checker) { //added checker 4/29/2023
+                    if(allnames2.contains(nameholder.getText().toString().trim().toLowerCase())) { // added tolowercase on 4/29/2023
 
                         EditText email = (EditText) findViewById(R.id.et_email);
                         EditText username = (EditText) findViewById(R.id.et_username);
@@ -124,8 +136,20 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
                 }
                 else
                 {
-                    Toast.makeText(RegistrationDashboardContinuation.this, "Wrong Admin Key!", Toast.LENGTH_LONG).show();
-                    passinput.setText("");
+                    /*Toast.makeText(RegistrationDashboardContinuation.this, "Wrong Admin Key!", Toast.LENGTH_LONG).show();
+                    passinput.setText("");*/ //commented on 4/29/2023
+                    //4/29/2023
+                    if(!checker)
+                    {
+                        checker = true;
+                        Toast.makeText(RegistrationDashboardContinuation.this, "Please fill the necesarry requirements!", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(RegistrationDashboardContinuation.this, "Wrong Admin Key!", Toast.LENGTH_LONG).show();
+                        passinput.setText("");
+                    }
+                    //---
 
                 }
             }
@@ -184,8 +208,8 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
                                 if(task.getResult().exists())
                                 {
                                     DataSnapshot snaps = task.getResult();
-                                    allnames += String.valueOf(snaps.child("fname").getValue()) +" "+String.valueOf(snaps.child("lname").getValue())+" ";
-
+                                    allnames += String.valueOf(snaps.child("fname").getValue()).toLowerCase() +" "+String.valueOf(snaps.child("lname").getValue()).toLowerCase()+" ";
+                                    //added tolowercase on 4/29/2023
                                 }
                                 else
                                 {
@@ -210,4 +234,52 @@ public class RegistrationDashboardContinuation extends AppCompatActivity impleme
         allnames2 = Arrays.asList(allnames.split(" "));
     }
     //-----
+
+    //4/29/2023
+    public void validateInputs()
+    {
+        rd.email_holder = email.getText().toString().trim();
+        rd.username_holder = username.getText().toString().trim();
+        rd.password_holder = password.getText().toString().trim();
+
+        if(rd.email_holder.isEmpty())
+        {
+            email.setError("Email is required!");
+            email.requestFocus();
+            checker = false;
+            return;
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(rd.email_holder).matches())
+        {
+            email.setError("Please provide valid email!");
+            email.requestFocus();
+            checker = false;
+            return;
+        }
+
+        if(rd.username_holder.isEmpty())
+        {
+            username.setError("Username is required!");
+            username.requestFocus();
+            checker = false;
+            return;
+        }
+
+        if(rd.password_holder.isEmpty())
+        {
+            password.setError("Password is required!");
+            password.requestFocus();
+            checker = false;
+            return;
+        }
+
+        if(rd.password_holder.length() < 6)
+        {
+            password.setError("Password length too small!");
+            password.requestFocus();
+            checker = false;
+            return;
+        }
+    }
+    //---
 }
