@@ -62,7 +62,6 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
         jobchoices.add("nurse");
         jobchoices.add("doctor");
         jobchoices.add("police");
-        jobchoices.add("lgu");
         jobchoices.add("policeman");
         //-------
 
@@ -219,7 +218,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                             }
                                         });
                             } else {
-                                occupation.setError("e.g. Fireman, Nurse, Doctor, LGU, Police");
+                                occupation.setError("e.g. Fireman, Nurse, Doctor, Police");
                                 occupation.requestFocus();
                             }
                         }
