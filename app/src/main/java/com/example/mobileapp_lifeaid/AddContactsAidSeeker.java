@@ -122,7 +122,7 @@ public class AddContactsAidSeeker extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(AddContactsAidSeeker.this, "Please enter some details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddContactsAidSeeker.this, "Please enter some details or make the details valid", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -131,6 +131,7 @@ public class AddContactsAidSeeker extends AppCompatActivity {
 
     public boolean gosignal()
     {
-        return !et_usern.getText().toString().equals("")&&!et_usernum.getText().toString().equals("");
+        //return !et_usern.getText().toString().equals("")&&!et_usernum.getText().toString().equals("");
+        return !et_usern.getText().toString().equals("")&&!et_usernum.getText().toString().equals("")&&et_usernum.getText().toString().length()==11&&et_usernum.getText().toString().matches("\\d+");
     }
 }

@@ -99,7 +99,7 @@
         android:layout_height="82dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="14dp"
-        android:text="HOW ARE THEYGONNA SOLVE THIS PROBLEM?"
+        android:text="HOW ARE THEY GONNA SOLVE THIS PROBLEM?"
         android:textColor="@color/black"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
