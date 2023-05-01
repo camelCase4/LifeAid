@@ -17,6 +17,10 @@
     <string-array name="LifeAidUsers">
         <item>Aid-Seeker</item>
         <item>Aid-Provider</item>
+        <item>Nurses</item>
+        <item>Policemen</item>
+        <item>Firemen</item>
+        <item>Doctors</item>
     </string-array>
     <!-- 3/28/2023 -->
     <string name="title_activity_maps_aid_provider">MapsActivityAidProvider</string>

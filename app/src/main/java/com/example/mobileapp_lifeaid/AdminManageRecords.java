@@ -36,13 +36,16 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
 
     int role_holder = 0;
     public static String chosenRole = "";
-    TextView conts,search;
+    TextView conts,search,totalCount;
 
     ImageView menu;
 
     public static String user_id ="";
     public static String specifiedID = "";
 
+    int choosing = 0;//5/1/2023
+    String checkSpecific = "";//5/1/2023
+    int countOfUsers = 0;//5/1/2023
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
 
         conts = (TextView) findViewById(R.id.contents);
         search = (TextView) findViewById(R.id.srch);
+        totalCount = (TextView) findViewById(R.id.countTotal);
 
 
         conts.setMovementMethod(new ScrollingMovementMethod());//3/29/2023
@@ -92,12 +96,50 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
 
         if(temp.equals("Aid-Provider"))
         {
+            totalCount.setText("0 In Total");
+            choosing = 0;//5/1/2023
+            countOfUsers = 0;//5/1/2023
             chosenRole = "Aid-Provider";
             gettingUsers(chosenRole);
         }
         else if(temp.equals("Aid-Seeker"))
         {
+            totalCount.setText("0 In Total");
+            choosing = 0;//5/1/2023
+            countOfUsers = 0;//5/1/2023
             chosenRole = "Aid-Seeker";
+            gettingUsers(chosenRole);
+        }
+        else if(temp.equals("Nurses"))
+        {
+            totalCount.setText("0 In Total");
+            choosing = 1;
+            countOfUsers = 0;//5/1/2023
+            chosenRole = "Aid-Provider";
+            gettingUsers(chosenRole);
+        }
+        else if(temp.equals("Policemen"))
+        {
+            totalCount.setText("0 In Total");
+            choosing = 2;
+            countOfUsers = 0;//5/1/2023
+            chosenRole = "Aid-Provider";
+            gettingUsers(chosenRole);
+        }
+        else if(temp.equals("Firemen"))
+        {
+            totalCount.setText("0 In Total");
+            choosing = 3;
+            countOfUsers = 0;//5/1/2023
+            chosenRole = "Aid-Provider";
+            gettingUsers(chosenRole);
+        }
+        else if(temp.equals("Doctors"))
+        {
+            totalCount.setText("0 In Total");
+            choosing = 4;
+            countOfUsers = 0;//5/1/2023
+            chosenRole = "Aid-Provider";
             gettingUsers(chosenRole);
         }
 
@@ -110,6 +152,28 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
 
     public void gettingUsers(String cr)
     {
+        //5/1/2023
+        if(choosing == 0)
+        {
+            checkSpecific = "fire police doctor nurse all";
+        }
+        else if(choosing == 1)
+        {
+            checkSpecific = "nurse";
+        }
+        else if(choosing == 2)
+        {
+            checkSpecific = "police";
+        }
+        else if(choosing == 3)
+        {
+            checkSpecific = "fire";
+        }
+        else if(choosing == 4)
+        {
+            checkSpecific = "doctor";
+        }
+        //----
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference(cr);
         dr.addValueEventListener(new ValueEventListener() {
             @Override
@@ -126,7 +190,7 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
                                 if(task.getResult().exists())
                                 {
                                     DataSnapshot snaps = task.getResult();
-                                    String tempproviderUID = uid;
+                                    /*String tempproviderUID = uid;
                                     String con_num = String.valueOf(snaps.child("phonenum").getValue());
 
 
@@ -161,7 +225,51 @@ public class AdminManageRecords extends AppCompatActivity implements AdapterView
                                     conts.append("\n\n");
                                     conts.setMovementMethod(LinkMovementMethod.getInstance());
                                     conts.setHighlightColor(Color.TRANSPARENT);
+                                    */
 
+                                    //5/1/2023
+                                   if(checkSpecific.contains(String.valueOf(snaps.child("job").getValue()).toLowerCase()))
+                                    {
+                                        countOfUsers++;
+                                        totalCount.setText(countOfUsers+"  In Total");
+                                        String tempproviderUID = uid;
+                                        String con_num = String.valueOf(snaps.child("phonenum").getValue());
+
+
+
+                                        //String temp = con_num +"             "+tempproviderUID+"\n\n"; original
+                                        //4/2/2023
+                                        String temp = con_num +"             "+tempproviderUID;
+                                        //---
+                                        SpannableString ss = new SpannableString(temp);
+                                        ClickableSpan clickableSpan = new ClickableSpan() {
+
+                                            @Override
+                                            public void onClick(View textView) {
+                                                //3/29/2023
+
+                                                Intent intent = new Intent(AdminManageRecords.this,AdminManageRecordsSecondPage.class);
+                                                intent.putExtra("UserUid", tempproviderUID);
+                                                startActivity(intent);
+
+                                                //---
+                                            }
+                                            @Override
+                                            public void updateDrawState(TextPaint ds) {
+                                                super.updateDrawState(ds);
+                                                ds.setUnderlineText(false);
+                                            }
+                                        };
+                                        ss.setSpan(clickableSpan, 23, temp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+                                        conts.append(ss);
+                                        conts.append("\n\n");
+                                        conts.setMovementMethod(LinkMovementMethod.getInstance());
+                                        conts.setHighlightColor(Color.TRANSPARENT);
+
+                                   }
+                                    //----
 
                                 }
                                 else
