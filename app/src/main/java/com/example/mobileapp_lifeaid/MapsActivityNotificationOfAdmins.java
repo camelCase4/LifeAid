@@ -262,7 +262,6 @@ public class MapsActivityNotificationOfAdmins extends FragmentActivity implement
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
                 mMap.clear();
-                Toast.makeText(MapsActivityNotificationOfAdmins.this,"New Seeker Found!",Toast.LENGTH_SHORT).show();
 
                 for (DataSnapshot ds : datasnapshot.getChildren()) {
                     String key = ds.getKey();

@@ -23,6 +23,15 @@
         <item>Doctors</item>
     </string-array>
     <!-- 3/28/2023 -->
+
+    <!-- 5/1/2023 -->
+    <string-array name="LeaderBoardFilter">
+        <item>Ratings</item>
+        <item>Commends</item>
+        <item>Provisions</item>
+    </string-array>
+    <!-- 5/1/2023 -->
+
     <string name="title_activity_maps_aid_provider">MapsActivityAidProvider</string>
     <string name="title_activity_aid_seeker_map_crisis">AidSeekerMapCrisis</string>
     <string name="title_activity_maps_notification_of_admins">MapsActivityNotificationOfAdmins

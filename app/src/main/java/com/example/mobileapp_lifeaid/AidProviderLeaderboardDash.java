@@ -5,11 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -19,7 +15,10 @@ import android.text.method.ScrollingMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,10 +35,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class AidProviderLeaderboardDash extends AppCompatActivity {
+public class AidProviderLeaderboardDash extends AppCompatActivity implements AdapterView.OnItemSelectedListener{//added implements on 5/1
 
-    TextView leadProvs,switching;
+    TextView leadProvs, switching,leaderCol;
     ImageView menu;
+    int role_holder = 0;
 
     List<String> provCount_uid = new ArrayList<>();
     List<String> UIDinOrder = new ArrayList<>();
@@ -62,13 +62,15 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
     public static boolean isInfoclicked = false;
     //---
 
+    String temp = "Ratings";//5/1/2023
+    boolean displayTrigger = false;//5/2/2023
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aid_provider_leaderboard_dash);
 
         //3/16/2023
-        leadProvs = (TextView) findViewById(R.id.leaders);
+        leadProvs = (TextView) findViewById(R.id.leaders2);
 
         leadProvs.setMovementMethod(new ScrollingMovementMethod());
 
@@ -90,7 +92,7 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
         });
         //---
 
-        gettingCountAndUID();
+        //gettingCountAndUID(); commented on 5/1/2023
         //amount();
 
 
@@ -99,38 +101,84 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 roleCounter++;// 0 = nurses, 1 = policemen, 2 = firemen, 3 = doctors;
-                if(roleCounter == 0)
-                {
+                if (roleCounter == 0) {
                     switching.setText("P O L I C E M E N   > > >");
-                }
-                else if(roleCounter == 1)
-                {
+                } else if (roleCounter == 1) {
                     switching.setText("F I R E M E N   > > >");
-                }
-                else if(roleCounter == 2)
-                {
+                } else if (roleCounter == 2) {
                     switching.setText("D O C T O R S   > > >");
-                }
-                else
-                {
+                } else {
                     switching.setText("N U R S E S   > > >");
 
                 }
-                gettingCountAndUID();
+                //gettingCountAndUID(); commented on 5/2/2023
+
+                //5/2/2023
+                if(temp.equals("Ratings"))
+                {
+                    gettingRankingOfRatings();
+                }
+                else if(temp.equals("Commends"))
+                {
+                    gettingRankingOfCommends();
+                }
+                else
+                {
+                    gettingCountAndUID();
+                }
+                //----
             }
         });
         //--
 
+        //5/1/2023
+        leaderCol = (TextView) findViewById(R.id.leadersCol);
 
+
+        Spinner sp = findViewById(R.id.sp_drop);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.LeaderBoardFilter, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp.setAdapter(adapter);
+        sp.setOnItemSelectedListener(this);
+        sp.setSelection(role_holder);
+        //---
+
+    }
+
+    //5/1/2023
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        temp = adapterView.getItemAtPosition(i).toString();//made temp field var
+
+        if(temp.equals("Ratings"))
+        {
+            leaderCol.setText("RANK       POSITION       RATINGS(%)             NAME");
+            gettingRankingOfRatings();
+        }
+        else if(temp.equals("Commends"))
+        {
+            leaderCol.setText("RANK       POSITION       COMMENDS             NAME");
+            gettingRankingOfCommends();
+        }
+        else if(temp.equals("Provisions"))
+        {
+            leaderCol.setText("RANK       POSITION       PROVISIONS             NAME");
+            gettingCountAndUID();
+        }
 
 
     }
 
-    //3/17/2023
-    public void gettingCountAndUID()
-    {
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
-        dr.addValueEventListener(new ValueEventListener() {
+    }
+    //---
+
+    //3/17/2023
+    public void gettingCountAndUID() {
+
+        dr.addListenerForSingleValueEvent(new ValueEventListener() { //changed addvalueeventlistner to addlistenerforsinglevalueevent
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
                 //3/19/2023
@@ -139,18 +187,18 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                 Position.clear();
                 fnames.clear();
                 leadProvs.setText("");
+
                 //-----
 
                 for (DataSnapshot ds : datasnapshot.getChildren()) {
                     String uid = ds.getKey();
 
+
                     dr.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if(task.isSuccessful())
-                            {
-                                if(task.getResult().exists())
-                                {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
                                     roleSize++; //4/3/2023
                                     DataSnapshot snaps = task.getResult();
 
@@ -184,7 +232,7 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                                     //4/3/2023
                                     String occupationJob = String.valueOf(snaps.child("job").getValue());
 
-                                    if(roleCounter == 0) {
+                                    if (roleCounter == 0) {
                                         if (occupationJob.toLowerCase().contains("nurse")) {
                                             provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
                                         }
@@ -213,11 +261,10 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                                                 }
                                             });
                                             Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
                                             populatingUID();
                                         }
-                                    }
-                                    else if(roleCounter == 1)
-                                    {
+                                    } else if (roleCounter == 1) {
                                         if (occupationJob.toLowerCase().contains("police")) {
                                             provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
 
@@ -246,11 +293,10 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                                                 }
                                             });
                                             Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
                                             populatingUID();
                                         }
-                                    }
-                                    else if(roleCounter == 2)
-                                    {
+                                    } else if (roleCounter == 2) {
                                         if (occupationJob.toLowerCase().contains("fire")) {
                                             provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
 
@@ -279,11 +325,10 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                                                 }
                                             });
                                             Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
                                             populatingUID();
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         if (occupationJob.toLowerCase().contains("doctor")) {
                                             provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
 
@@ -313,21 +358,17 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                                                 }
                                             });
                                             Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
                                             populatingUID();
                                         }
                                     }
                                     //----
 
 
-
-                                }
-                                else
-                                {
+                                } else {
                                     Toast.makeText(AidProviderLeaderboardDash.this, "Failed to read!", Toast.LENGTH_SHORT).show();
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 Toast.makeText(AidProviderLeaderboardDash.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -336,29 +377,23 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                 }
 
 
-
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
 
 
-
         });
-
-
 
 
     }
 
-    public void populatingUID()
-    {
-        for(String i : provCount_uid)
-        {
+    public void populatingUID() {
+        for (String i : provCount_uid) {
             UIDinOrder.add(i.split(" ")[1]);
-            if(UIDinOrder.size() == provCount_uid.size())
-            {
+            if (UIDinOrder.size() == provCount_uid.size()) {
                 gettingUIDvalue();
             }
         }
@@ -439,8 +474,7 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
 
         }
     }*/ //original
-    public void displaying()
-    {
+    public void displaying() {
        /* String initialNums = "";
         for (int i = 0; i < provCount_uid.size(); i++) {
             if (i < 3) {
@@ -470,7 +504,6 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
         String space = "";
 
 
-
         for (int i = 0; i < provCount_uid.size(); i++) {
 
             if (Position.get(i).toLowerCase().equals("policeman")) {
@@ -492,7 +525,7 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
             //original     //String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i) + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i) + "\n\n";
             //3/29/2023
 
-            //String initialNums = "     "+Integer.toString(i + 1) + space + Position.get(i).toLowerCase() + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i); original on 14
+            //String initialNums = "     " + Integer.toString(i + 1) + space + Position.get(i).toLowerCase() + "                     " + provCount_uid.get(i).split(" ")[0] + "                       " + fnames.get(i); original on 14
             //4/14/23
             String nameTemp = fnames.get(i);
             if(nameTemp.length() > 5)//changed 7 to 5 4/28/2023
@@ -503,7 +536,6 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
             //---
 
 
-
             //SpannableString ss = new SpannableString(initialNums); 3/29/2023
             SpannableString spannableString = new SpannableString(initialNums);
             ClickableSpan clickableSpan = new ClickableSpan() {
@@ -512,12 +544,13 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                 public void onClick(View textView) {
 
                     isInfoclicked = true;//4/3/2023
-                    Intent intent = new Intent(AidProviderLeaderboardDash.this,AdminManageRecordsSecondPage.class);
+                    Intent intent = new Intent(AidProviderLeaderboardDash.this, AdminManageRecordsSecondPage.class);
                     intent.putExtra("UserUid", uidToUse);
                     startActivity(intent);
                     //Toast.makeText(AidSeekerLeaderboardDash.this,uidToUse,Toast.LENGTH_SHORT).show();
 
                 }
+
                 @Override
                 public void updateDrawState(TextPaint ds) {
                     super.updateDrawState(ds);
@@ -547,63 +580,516 @@ public class AidProviderLeaderboardDash extends AppCompatActivity {
                 leadProvs.append(spannableString);
                 leadProvs.append("\n\n");//3/30/2023
 
-            } else if(i == 2){
+            } else if (i == 2) {
                 ForegroundColorSpan bronzespan = new ForegroundColorSpan(Color.rgb(205, 127, 50));
                 spannableString.setSpan(bronzespan, 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 leadProvs.append(spannableString);
                 leadProvs.append("\n\n");//3/30/2023
 
-            }
-            else
-            {
+            } else {
                 leadProvs.append(spannableString);
                 leadProvs.append("\n\n");//3/30/2023
             }
 
 
-
         }
     }
 
-    public void gettingUIDvalue()
-    {
+    public void gettingUIDvalue() {
 
 
-            dr.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-                    for(int i = 0; i < UIDinOrder.size(); i++) {
-                        dr.child(UIDinOrder.get(i)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    if (task.getResult().exists()) {
-                                        DataSnapshot snaps = task.getResult();
-                                        Position.add(String.valueOf(snaps.child("job").getValue()));
-                                        fnames.add(String.valueOf(snaps.child("fname").getValue()));
-                                        if (Position.size() == provCount_uid.size()) {
-                                            displaying();
-                                        }
+        dr.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
 
+                for (int i = 0; i < UIDinOrder.size() && displayTrigger; i++) { //added display trigger 5/2/2023
+                    dr.child(UIDinOrder.get(i)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    DataSnapshot snaps = task.getResult();
+                                    Position.add(String.valueOf(snaps.child("job").getValue()));
+                                    fnames.add(String.valueOf(snaps.child("fname").getValue()));
+                                    if (Position.size() == provCount_uid.size()) {
+                                        displaying();
+                                        displayTrigger = false;//5/2/2023
                                     }
+
                                 }
                             }
-                        });
-                    }
+                        }
+                    });
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
+            }
+        });
 
 
     }
 
+    //5/1/2023
+    public void gettingRankingOfRatings()
+    {
+        dr.addListenerForSingleValueEvent(new ValueEventListener() { //changed addvalueeventlistner to addlistenerforsinglevalueevent
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                //3/19/2023
+                provCount_uid.clear();
+                UIDinOrder.clear();
+                Position.clear();
+                fnames.clear();
+                leadProvs.setText("");
+
+                //-----
+
+                for (DataSnapshot ds : datasnapshot.getChildren()) {
+                    String uid = ds.getKey();
+
+                    //5/2/2023
+                    if(!temp.equals("Ratings"))
+                    {
+                        break;
+                    }
+                    //---
+
+                    dr.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    roleSize++; //4/3/2023
+                                    DataSnapshot snaps = task.getResult();
+
+                                    /*provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
+                                    if (provCount_uid.size() == datasnapshot.getChildrenCount()) {
+                                        //Collections.sort(provCount_uid);
+                                        Collections.sort(provCount_uid, new Comparator<String>() {
+                                            @Override
+                                            public int compare(String s1, String s2) {
+                                                int num1 = extractLeadingNumber(s1);
+                                                int num2 = extractLeadingNumber(s2);
+                                                return Integer.compare(num1, num2);
+                                            }
+
+                                            private int extractLeadingNumber(String s) {
+                                                StringBuilder sb = new StringBuilder();
+                                                for (char c : s.toCharArray()) {
+                                                    if (Character.isDigit(c)) {
+                                                        sb.append(c);
+                                                    } else {
+                                                        break;
+                                                    }
+                                                }
+                                                return Integer.parseInt(sb.toString());
+                                            }
+                                        });
+                                        Collections.reverse(provCount_uid);
+                                        populatingUID();
+                                    }*/ // commented on 4/3
+
+                                    //4/3/2023
+                                    String occupationJob = String.valueOf(snaps.child("job").getValue());
+
+                                    if (roleCounter == 0) {
+                                        if (occupationJob.toLowerCase().contains("nurse")) {
+                                            String commendC = String.valueOf(snaps.child("commends").getValue());
+                                            String provisionC = String.valueOf(snaps.child("provision_count").getValue());
+                                            double holderForRatings = (Double.parseDouble(commendC) / Double.parseDouble(provisionC)) * 100;
+
+                                            provCount_uid.add((int)Math.round(holderForRatings) + " " + uid);
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
+                                            populatingUID();
+                                        }
+                                    } else if (roleCounter == 1) {
+                                        if (occupationJob.toLowerCase().contains("police")) {
+                                            String commendC = String.valueOf(snaps.child("commends").getValue());
+                                            String provisionC = String.valueOf(snaps.child("provision_count").getValue());
+                                            double holderForRatings = (Double.parseDouble(commendC) / Double.parseDouble(provisionC)) * 100;
+
+                                            provCount_uid.add((int)Math.round(holderForRatings) + " " + uid);
+
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
+                                            populatingUID();
+                                        }
+                                    } else if (roleCounter == 2) {
+                                        if (occupationJob.toLowerCase().contains("fire")) {
+                                            String commendC = String.valueOf(snaps.child("commends").getValue());
+                                            String provisionC = String.valueOf(snaps.child("provision_count").getValue());
+                                            double holderForRatings = (Double.parseDouble(commendC) / Double.parseDouble(provisionC)) * 100;
+
+                                            provCount_uid.add((int)Math.round(holderForRatings) + " " + uid);
+
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
+                                            populatingUID();
+                                        }
+                                    } else {
+                                        if (occupationJob.toLowerCase().contains("doctor")) {
+                                            String commendC = String.valueOf(snaps.child("commends").getValue());
+                                            String provisionC = String.valueOf(snaps.child("provision_count").getValue());
+                                            double holderForRatings = (Double.parseDouble(commendC) / Double.parseDouble(provisionC)) * 100;
+
+                                            provCount_uid.add((int)Math.round(holderForRatings) + " " + uid);
+
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+                                            roleCounter = -1;
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
+                                            populatingUID();
+                                        }
+                                    }
+                                    //----
 
 
+                                } else {
+                                    Toast.makeText(AidProviderLeaderboardDash.this, "Failed to read!", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(AidProviderLeaderboardDash.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+
+        });
+    }
+
+    public void gettingRankingOfCommends()
+    {
+        dr.addListenerForSingleValueEvent(new ValueEventListener() { //changed addvalueeventlistner to addlistenerforsinglevalueevent
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                //3/19/2023
+                provCount_uid.clear();
+                UIDinOrder.clear();
+                Position.clear();
+                fnames.clear();
+                leadProvs.setText("");
+                //-----
+
+                for (DataSnapshot ds : datasnapshot.getChildren()) {
+                    String uid = ds.getKey();
+
+                    //5/2/2023
+                    if(!temp.equals("Commends"))
+                    {
+                        break;
+                    }
+                    //---
+
+
+                    dr.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    roleSize++; //4/3/2023
+                                    DataSnapshot snaps = task.getResult();
+
+                                    /*provCount_uid.add((String.valueOf(snaps.child("provision_count").getValue()) + " " + uid));
+                                    if (provCount_uid.size() == datasnapshot.getChildrenCount()) {
+                                        //Collections.sort(provCount_uid);
+                                        Collections.sort(provCount_uid, new Comparator<String>() {
+                                            @Override
+                                            public int compare(String s1, String s2) {
+                                                int num1 = extractLeadingNumber(s1);
+                                                int num2 = extractLeadingNumber(s2);
+                                                return Integer.compare(num1, num2);
+                                            }
+
+                                            private int extractLeadingNumber(String s) {
+                                                StringBuilder sb = new StringBuilder();
+                                                for (char c : s.toCharArray()) {
+                                                    if (Character.isDigit(c)) {
+                                                        sb.append(c);
+                                                    } else {
+                                                        break;
+                                                    }
+                                                }
+                                                return Integer.parseInt(sb.toString());
+                                            }
+                                        });
+                                        Collections.reverse(provCount_uid);
+                                        populatingUID();
+                                    }*/ // commented on 4/3
+
+                                    //4/3/2023
+                                    String occupationJob = String.valueOf(snaps.child("job").getValue());
+
+                                    if (roleCounter == 0) {
+                                        if (occupationJob.toLowerCase().contains("nurse")) {
+                                            String commendC = String.valueOf(snaps.child("commends").getValue());
+
+                                            provCount_uid.add(commendC + " " + uid);
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
+                                            populatingUID();
+                                        }
+                                    } else if (roleCounter == 1) {
+                                        if (occupationJob.toLowerCase().contains("police")) {
+                                            String commendC = String.valueOf(snaps.child("commends").getValue());
+
+                                            provCount_uid.add(commendC + " " + uid);
+
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
+                                            populatingUID();
+                                        }
+                                    } else if (roleCounter == 2) {
+                                        if (occupationJob.toLowerCase().contains("fire")) {
+                                            String commendC = String.valueOf(snaps.child("commends").getValue());
+
+                                            provCount_uid.add(commendC + " " + uid);
+
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            populatingUID();
+                                        }
+                                    } else {
+                                        if (occupationJob.toLowerCase().contains("doctor")) {
+                                            String commendC = String.valueOf(snaps.child("commends").getValue());
+
+                                            provCount_uid.add(commendC + " " + uid);
+
+                                        }
+                                        if (roleSize == datasnapshot.getChildrenCount()) {
+                                            roleCounter = -1;
+                                            roleSize = 0;
+                                            //Collections.sort(provCount_uid);
+                                            Collections.sort(provCount_uid, new Comparator<String>() {
+                                                @Override
+                                                public int compare(String s1, String s2) {
+                                                    int num1 = extractLeadingNumber(s1);
+                                                    int num2 = extractLeadingNumber(s2);
+                                                    return Integer.compare(num1, num2);
+                                                }
+
+                                                private int extractLeadingNumber(String s) {
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (char c : s.toCharArray()) {
+                                                        if (Character.isDigit(c)) {
+                                                            sb.append(c);
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    return Integer.parseInt(sb.toString());
+                                                }
+                                            });
+                                            Collections.reverse(provCount_uid);
+                                            displayTrigger = true;//5/2/2023
+                                            populatingUID();
+                                        }
+                                    }
+                                    //----
+
+
+                                } else {
+                                    Toast.makeText(AidProviderLeaderboardDash.this, "Failed to read!", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(AidProviderLeaderboardDash.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+
+        });
+    }
     //---
-
-
 }

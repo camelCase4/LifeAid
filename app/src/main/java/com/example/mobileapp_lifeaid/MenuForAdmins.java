@@ -459,9 +459,9 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
         dr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-                cdt.cancel();
+                /*cdt.cancel();
                 adminNotif.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
-                adminNotif.setTextColor(Color.BLACK);
+                adminNotif.setTextColor(Color.BLACK);*/ //commetend on 5/2
                 for (DataSnapshot ds : datasnapshot.getChildren()) {
                     String key = ds.getKey();
 
