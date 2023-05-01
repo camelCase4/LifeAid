@@ -65,7 +65,7 @@
         app:layout_constraintHorizontal_bias="0.490"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.338">
+        app:layout_constraintVertical_bias="0.3">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -111,64 +111,16 @@
         android:background="@drawable/my_button"
 
         android:text="E D I T    A C C O U N T"
-        app:backgroundTint="#ffffff"
-        android:textColor="@color/black"
-
-
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.493" />
-
-
-    <ImageView
-        android:id="@+id/imageView49"
-        android:layout_width="205dp"
-        android:layout_height="186dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.558"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.11"
-        app:srcCompat="@drawable/adminpic" />
-
-    <Button
-        android:id="@+id/askaid"
-        android:layout_width="343dp"
-        android:layout_height="52dp"
-        android:background="@drawable/my_button"
-
-        android:text="A S K    A I D"
-        app:backgroundTint="#ffffff"
-        android:textColor="@color/black"
-
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.67" />
-
-
-    <Button
-        android:id="@+id/givecert"
-        android:layout_width="343dp"
-        android:layout_height="52dp"
-        android:background="@drawable/my_button"
-
-        android:text="G I V E     C E R T I F I C A T E"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/black"
+
 
         app:backgroundTint="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.76" />
+        app:layout_constraintVertical_bias="0.424" />
 
     <Button
         android:id="@+id/loginbutton3"
@@ -185,7 +137,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintVertical_bias="0.872" />
+    <Button
+        android:id="@+id/andminNotif"
+        android:layout_width="343dp"
+        android:layout_height="52dp"
+        android:background="@drawable/my_button"
+
+        android:text="C R I S I S     T R A C K E R"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/black"
+
+        app:backgroundTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.782" />
+
+    <Button
+        android:id="@+id/askaid"
+        android:layout_width="343dp"
+        android:layout_height="52dp"
+        android:background="@drawable/my_button"
+
+        android:text="A S K    A I D"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/black"
+
+        app:backgroundTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6" />
 
     <Button
         android:id="@+id/faqbtn"
@@ -194,15 +179,44 @@
         android:background="@drawable/my_button"
 
         android:text="F A Q"
-        app:backgroundTint="#ffffff"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/black"
 
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:backgroundTint="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.582" />
+        app:layout_constraintVertical_bias="0.512" />
+
+    <Button
+        android:id="@+id/givecert"
+        android:layout_width="343dp"
+        android:layout_height="52dp"
+        android:background="@drawable/my_button"
+
+        android:text="G I V E     C E R T I F I C A T E"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/black"
+
+        app:backgroundTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.69" />
+
+    <ImageView
+        android:id="@+id/imageView49"
+        android:layout_width="205dp"
+        android:layout_height="186dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.558"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.053"
+        app:srcCompat="@drawable/adminpic" />
 
 
     <ImageView

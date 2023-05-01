@@ -40,6 +40,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
     EditText[] tbBoxes = {fname,lname,age,phonenum,address,gender,occupation};//4/29
 
     //FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    String contactNumbers = "";//4/29/2023
 
 
     @Override
@@ -131,7 +132,7 @@ public class RegistratinDashboardFinal extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                 if (task.isSuccessful()) {
-                                                    User us = new User(rd.email_holder, rd.username_holder, rd.password_holder, rd.user_role, firstName, lastName, edad, phoneNumber, lugar, kasarian, addedcontacts, trustednum_1, trustednum_2, trustedname_1, trustedname_2, admin_approved, rd.IMG_URI, lati, longi, job, partner_uid, message, commends, decommends, suppCount, provCount, certReq, certificateURL);
+                                                    User us = new User(rd.email_holder, rd.username_holder, rd.password_holder, rd.user_role, firstName, lastName, edad, phoneNumber, lugar, kasarian, addedcontacts, trustednum_1, trustednum_2, trustedname_1, trustedname_2, admin_approved, rd.IMG_URI, lati, longi, job, partner_uid, message, commends, decommends, suppCount, provCount, certReq, certificateURL,contactNumbers);
                                                     if (rd.user_role.equals("AidSeeker")) {
                                                         FirebaseDatabase.getInstance().getReference("Aid-Seeker")
                                                                 .child(rd.mAuth.getCurrentUser().getUid()) //this line change the auth logic

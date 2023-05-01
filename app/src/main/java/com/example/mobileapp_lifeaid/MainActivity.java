@@ -32,7 +32,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     //user values
-    public static String fullname,gender,age,useremail,address,phonenum,userrole,username,addedcontact,approved_byadmin;
+    public static String fullname,gender,age,useremail,address,phonenum,userrole,username,addedcontact,approved_byadmin,contactPhoneNums;//added contactPhoneNums on 5/1
     public static String trustedcontact1,trustedcontact2;
 
     //checkpoint 3/1/2023
@@ -243,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
                                                             approved_byadmin = String.valueOf(ds.child("admin_approved").getValue());
                                                             trustedcontact1 = String.valueOf(ds.child("trustedphonenum_1").getValue());
                                                             trustedcontact2 = String.valueOf(ds.child("trustedphonenum_2").getValue());
+                                                            contactPhoneNums = String.valueOf(ds.child("contactNumbers").getValue());
 
                                                             if(approved_byadmin.equals("true")) {
 

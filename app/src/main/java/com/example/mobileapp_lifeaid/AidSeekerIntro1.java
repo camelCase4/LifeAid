@@ -26,13 +26,13 @@ public class AidSeekerIntro1 extends AppCompatActivity {
             }
         });
 
-        tv = (TextView) findViewById(R.id.tv_registration21);
+        /*tv = (TextView) findViewById(R.id.tv_registration21);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AidSeekerIntro1.this,AidSeekerMainDash.class);
                 startActivity(intent);
             }
-        });
+        });*///commented on 5/1
     }
 }

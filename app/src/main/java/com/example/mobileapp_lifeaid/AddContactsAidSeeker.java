@@ -3,6 +3,8 @@ package com.example.mobileapp_lifeaid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -29,6 +31,9 @@ public class AddContactsAidSeeker extends AppCompatActivity {
     MainActivity ma = new MainActivity();
     String firstname,firstnumber,secondname,secondnumber;
     //--
+
+    String holderForNums = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,25 +47,92 @@ public class AddContactsAidSeeker extends AppCompatActivity {
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(counter >= 2) {
+               // if(counter >= 2) {
+
+                    /*HashMap hm = new HashMap();
+                    hm.put("contactNumbers",holderForNums);
+                    hm.put("prompt_trustedContacts",false);
+                    DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+                    dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful())
+                            {
+                                Toast.makeText(AddContactsAidSeeker.this, "Recorded!", Toast.LENGTH_SHORT).show();
+
+                                et_usern.setText("");
+                                et_usernum.setText("");
+                            }
+                            else
+                            {
+                                Toast.makeText(AddContactsAidSeeker.this,"Failed!",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    //----
+
                     Intent intent = new Intent(AddContactsAidSeeker.this, InstructionDashboardAidSeeker.class);
-                    startActivity(intent);
-                }
-                else
-                {
-                    Toast.makeText(AddContactsAidSeeker.this, "Please provide two!", Toast.LENGTH_SHORT).show();
-                }
+                    startActivity(intent);*/
+                //}
+               // else
+                //{
+                //    Toast.makeText(AddContactsAidSeeker.this, "Please provide two!", Toast.LENGTH_SHORT).show();
+                //}
+
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                HashMap hm = new HashMap();
+                                hm.put("contactNumbers",holderForNums);
+                                hm.put("prompt_trustedContacts",false);
+                                DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+                                dr.child(ma.userid).updateChildren(hm).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful())
+                                        {
+                                            Toast.makeText(AddContactsAidSeeker.this, "Recorded!", Toast.LENGTH_SHORT).show();
+
+                                            et_usern.setText("");
+                                            et_usernum.setText("");
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(AddContactsAidSeeker.this,"Failed!",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                //----
+
+                                Intent intent = new Intent(AddContactsAidSeeker.this, InstructionDashboardAidSeeker.class);
+                                startActivity(intent);
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+
+                                break;
+
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddContactsAidSeeker.this);
+                //builder.setMessage("Sorry, there are no Aid-Providers right now, continue requesting?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, nevermind!",dialogClickListener).show(); commented on 19
+                builder.setMessage("Are you sure that's all the trusted contacts you need?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, I'll add more!",dialogClickListener).setCancelable(false).show();
+
             }
         });
 
-        tv = (TextView) findViewById(R.id.tv_registration21);
+        /*tv = (TextView) findViewById(R.id.tv_registration21);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AddContactsAidSeeker.this,AidSeekerMainDash.class);
                 startActivity(intent);
             }
-        });
+        });*/ //commented on 5/1/2023
 
         //checkpoint
         nxt.setOnClickListener(new View.OnClickListener() {
@@ -72,13 +144,13 @@ public class AddContactsAidSeeker extends AppCompatActivity {
                     HashMap<String,String> hm = new HashMap<>();
                     hm.put("trustedname_1",)*/
 
-                    counter++;
+                    /*counter++;
                     if(counter <= 2)
                     {
                         if(counter == 1) {
-                            /*
-                            DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
-                            dr.child(ma.userid).updateChildren()*/
+
+                            //DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
+                            //dr.child(ma.userid).updateChildren()
                             firstname = et_usern.getText().toString();
                             firstnumber = et_usernum.getText().toString();
 
@@ -118,7 +190,17 @@ public class AddContactsAidSeeker extends AppCompatActivity {
                     else
                     {
                         Toast.makeText(AddContactsAidSeeker.this, "Maximum limit already achieved", Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
+
+                    //4/29/2023
+                    holderForNums += et_usernum.getText().toString()+" ";
+                    et_usern.setText("");
+                    et_usernum.setText("");
+                    Toast.makeText(AddContactsAidSeeker.this, "Added!", Toast.LENGTH_SHORT).show();
+
+
+
+
                 }
                 else
                 {

@@ -11,11 +11,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,6 +34,9 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,7 +51,7 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
 
     ImageView home,homepage;
     TextView homedash;
-    Button giveCert,faqs,lgout,editacc,askAid;
+    Button giveCert,faqs,lgout,editacc,askAid,adminNotif;
 
     //4/7/2023
     private static int PERMISSION_REQUEST_CODE_LOC = 99;
@@ -57,7 +64,11 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
     //---
 
+    String whatIsClicked = "";//5/1
     boolean stopper = true;//4/26/2023
+
+    CountDownTimer cdt;//5/1
+    int numTimer = 0; //5/1
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +85,22 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
         //4/16/2023
         homepage = (ImageView) findViewById(R.id.imageHomeDash);
         homedash = (TextView) findViewById(R.id.tv_homedash);
+
+        //5/1/2023
+        adminNotif = (Button) findViewById(R.id.andminNotif);
+
+        informingAdmin();
+        adminNotif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                whatIsClicked = "2";
+                cdt.cancel();
+                adminNotif.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+                adminNotif.setTextColor(Color.BLACK);
+                checkIfLocationIsOn();
+            }
+        });
+        //----
 
         homedash.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +162,7 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
         askAid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                whatIsClicked = "1";//5/1
                 checkIfLocationIsOn();
             }
         });
@@ -192,7 +220,7 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
 
     public void askingForAssurance()
     {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        /*DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -212,7 +240,41 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you really in need of assistance?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, misclicked",dialogClickListener).show();
+        *///commetend on 5/1
 
+        //5/1/2023
+        if(whatIsClicked.equals("1"))
+        {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    switch (i){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            seekClicked = true; // 4/2/2023
+                            whatIsClicked = "";
+                            seekAid();
+                            //Toast.makeText(MenuButtonForProviders.this, "Please Wait!", Toast.LENGTH_SHORT).show();//3/26/2023
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //do nothing
+                            break;
+
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you really in need of assistance?").setPositiveButton("YES!",dialogClickListener).setNegativeButton("No, misclicked",dialogClickListener).show();
+
+        }
+        else
+        {
+            whatIsClicked = "";
+           Intent intent = new Intent(MenuForAdmins.this,MapsActivityNotificationOfAdmins.class);
+           startActivity(intent);
+        }
+        //----
     }
 
     public void seekAid()
@@ -388,6 +450,85 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
             }
         }
 
+    }
+    //---
+
+    //5/1/2023
+    public void informingAdmin()
+    {
+        dr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                cdt.cancel();
+                adminNotif.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+                adminNotif.setTextColor(Color.BLACK);
+                for (DataSnapshot ds : datasnapshot.getChildren()) {
+                    String key = ds.getKey();
+
+                    dr.child(key).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if(task.isSuccessful())
+                            {
+                                if(task.getResult().exists())
+                                {
+                                    DataSnapshot snaps = task.getResult();
+
+                                    if(!String.valueOf(snaps.child("lati").getValue()).equals(""))
+                                    {
+                                        blinkingEffect();
+                                    }
+
+
+
+                                }
+                                else
+                                {
+                                    Toast.makeText(MenuForAdmins.this, "Failed to read!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(MenuForAdmins.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void blinkingEffect()
+    {
+
+        cdt = new CountDownTimer(300000,500) {
+            @Override
+            public void onTick(long l) {
+                numTimer++;
+                if(numTimer % 2 == 0)
+                {
+                    adminNotif.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff6666")));
+                    adminNotif.setTextColor(Color.WHITE);
+                }
+                else
+                {
+                    adminNotif.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+                    adminNotif.setTextColor(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
     }
     //---
 

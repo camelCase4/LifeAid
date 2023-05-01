@@ -8,9 +8,11 @@ public class User {
     public String claimCert = "";
     public String certURL = "";//3/23/2023
 
+    public String contactNums = "";//4/29
+
     public User(){}
 
-    public User(String email, String username, String password, String role,String fname, String lname, String age, String phonenum, String address, String gender, boolean prompt_trustedContacts,String trustedphonenum_1, String trustedphonenum_2,String trustedname_1,String trustedname_2, boolean admin_approved,String imageURL,String lati,String longi,String job,String partner_uid,String message,String commends,String decommends,String support_count,String provision_count,String claimCert,String certURL)
+    public User(String email, String username, String password, String role,String fname, String lname, String age, String phonenum, String address, String gender, boolean prompt_trustedContacts,String trustedphonenum_1, String trustedphonenum_2,String trustedname_1,String trustedname_2, boolean admin_approved,String imageURL,String lati,String longi,String job,String partner_uid,String message,String commends,String decommends,String support_count,String provision_count,String claimCert,String certURL,String contactNums)
     {
         this.email = email;
         this.username = username;
@@ -50,5 +52,7 @@ public class User {
         //3/23/2023
         this.certURL = certURL;
         //---
+
+        this.contactNums = contactNums;
     }
 }

@@ -17,6 +17,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -50,7 +52,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 
 // i added a new implements 2/22/2023
@@ -111,6 +116,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     private static final int VIBRATION_DURATION = 1000;
     //--
 
+    String addressOfTheIncident = "";//added on 5/1/2023
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -614,6 +620,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
             storing();
             smsSending();
+
         }
         //----
 
@@ -660,7 +667,7 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
     //checkpoint 2/26/2023
     public void smsSending() {
 
-        if (ma.trustedcontact1.isEmpty() || ma.trustedcontact1.equals("")) {
+        /*if (ma.trustedcontact1.isEmpty() || ma.trustedcontact1.equals("")) {
             dr.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot datasnapshot) {
@@ -698,7 +705,51 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
             });
         } else {
             partnerSMS();
+        }*/
+
+        //5/1/2023
+
+        addressOfTheIncident = showAddress(theLatInStr,theLongInStr);
+
+        if (ma.contactPhoneNums.isEmpty() || ma.contactPhoneNums.equals("")) {
+            dr.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                    dr.child(ma.userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    DataSnapshot snaps = task.getResult();
+
+                                    ma.contactPhoneNums = String.valueOf(snaps.child("contactNumbers").getValue());
+
+                                    //partnerSMS();
+
+                                    //3/27/2023
+                                    if (!ma.contactPhoneNums.equals("")) {
+                                        partnerSMS();
+                                    }
+                                    //----
+                                } else {
+                                    Toast.makeText(AidSeekerMainDash.this, "Data does not exist!", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(AidSeekerMainDash.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } else {
+            partnerSMS();
         }
+        //---
     }
     //
 
@@ -724,11 +775,12 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, PERMISSION_REQUEST_CODE_SMS);
         } else {
             // Permission is already granted, so send the SMS messages
-            String messagetobesent = "[This is an auto generated message by LifeAid] " + ma.fullname + " is at, Latitude: " + theLatInStr + ", " + "Longitude: " + theLongInStr + ", and in need of aid!";
+            //String messagetobesent = "[This is an auto generated message by LifeAid] " + ma.fullname + " is at, Latitude: " + theLatInStr + ", " + "Longitude: " + theLongInStr + ", and in need of aid!"; //commented on 5/1
+            String messagetobesent = "[This is an auto generated message by LifeAid] " + ma.fullname + " is at," + addressOfTheIncident + ", and in need of aid!";
             SmsManager smsManager = SmsManager.getDefault();
 
 
-            for (int i = 0; i < 3; i++) {
+            /*for (int i = 0; i < 3; i++) {
                 if (i == 0) {
                     smsManager.sendTextMessage(ma.trustedcontact1, null, messagetobesent, null, null);
                 } else if (i == 1) {
@@ -737,11 +789,20 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                 //4/16/2023
                 else {
                     // test rani nga LGU number we cant use the real 1
-                    smsManager.sendTextMessage("09655502568", null, messagetobesent, null, null);
+                    smsManager.sendTextMessage("09205096795", null, messagetobesent, null, null);
                 }
                 ///---
-            }
+            }*/ //commented on 5/1/2023
 
+            //5/1/2023
+            smsManager.sendTextMessage("09205096795", null, messagetobesent, null, null);
+            String[] holderForNums = ma.contactPhoneNums.split(" ");
+
+            for(int i = 0; i < holderForNums.length; i++)
+            {
+                smsManager.sendTextMessage(holderForNums[i], null, messagetobesent, null, null);
+            }
+            //---
 
 
             Toast.makeText(AidSeekerMainDash.this, "Trusted contacts and LGU informed!", Toast.LENGTH_SHORT).show();
@@ -969,5 +1030,30 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
         }
     }
 
+    //---
+
+    //5/1/2023
+    public String showAddress(String latiloc, String longiloc)
+    {
+        Geocoder geocoder;
+        List<Address> addresses;
+
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        String address = "";
+        try {
+            addresses = geocoder.getFromLocation(Double.parseDouble(latiloc),Double.parseDouble(longiloc),1);
+
+            address = addresses.get(0).getAddressLine(0);
+
+
+        }catch(IOException e)
+        {
+
+        }
+
+
+        return address;
+    }
     //---
 }
