@@ -31,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class AdminManageRecordsSecondPage extends AppCompatActivity {
 
-    TextView fullname,email,job,address,commendcount,provcount,ifnoStar,conts;
+    TextView fullname,email,job,address,commendcount,provcount,ifnoStar,conts,password;
     ImageView star1,star2,star3,star4,bk;
     Button delbtn;
 
@@ -62,6 +62,7 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
         provcount = (TextView) findViewById(R.id.provcount);
         ifnoStar = (TextView) findViewById(R.id.tv_registration22);
         conts = (TextView) findViewById(R.id.contents);
+        password = (TextView) findViewById(R.id.pw);
 
         star1 = (ImageView) findViewById(R.id.star1);
         star2 = (ImageView)  findViewById(R.id.star2);
@@ -155,7 +156,7 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
             //4/23/2023
             if(amr.chosenRole.equals("Aid-Seeker"))
             {
-                headerCol.setText("DATE - TIME                 ACTION                PROVIDER - NAME");
+                headerCol.setText("DATE - TIME                EMERGENCY              PROVIDER - NAME");
             }
             else if(amr.chosenRole.equals("Aid-Provider"))
             {
@@ -237,6 +238,7 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
                                     address.setText("Address : "+addresS);
                                     commendcount.setText("Commends : "+commendcounT);
                                     provcount.setText("Provisions : "+provcounT);
+                                    password.setText("Password: "+ String.valueOf(snaps.child("password").getValue()));//5/1
 
                                     /*if(whatRole.equals("Aid-Provider")) {
                                         formulaStars(commendcounT, provcounT);
@@ -359,6 +361,13 @@ public class AdminManageRecordsSecondPage extends AppCompatActivity {
                                             String et = String.valueOf(snaps.child("emergencytype").getValue());
                                             String pn = String.valueOf(snaps.child("providername").getValue());
 
+
+                                            //5/1/2023
+                                            if(et.equals("All"))
+                                            {
+                                                et = "Critical";
+                                            }
+                                            //---
                                            conts.append("   "+dt + "                  "+et+"                  "+pn+"\n\n");
 
                                         }
