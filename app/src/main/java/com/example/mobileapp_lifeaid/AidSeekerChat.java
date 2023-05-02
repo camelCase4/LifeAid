@@ -50,11 +50,15 @@ public class AidSeekerChat extends AppCompatActivity {
     String commendCount = "", unsatisfiedCount = "";
 
     //-----------
-    String locationOfIncident = "";
+    public static String locationOfIncident = "";//changed to public static 5/2
 
     ImageView profileP;
 
     boolean stillpartners = true; //4/21/2023
+
+    public static int totalWhoResponded = 0;//5/2/2023
+    int counterForProvs = 0;//5/2/2023
+    boolean stopper = true; //5/2/2023
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -497,10 +501,11 @@ public class AidSeekerChat extends AppCompatActivity {
         savingProviderHistory("1");
         //-----
         //4/21/2023
-        cleansingData(true);
+        //cleansingData(true); commented on 5/2/2023
         //----
         /*Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
         startActivity(intent);*/ //original commented on 4/21/2023
+        countTheProvidersWhoResponded();//5/2/2023
     }
     public void updatingUnsatisfiedCount()
     {
@@ -519,10 +524,12 @@ public class AidSeekerChat extends AppCompatActivity {
         savingProviderHistory("0");
         //-----
         //4/21/2023
-        cleansingData(true);
+        //cleansingData(true); commented on 5/2/2023
         //----
         /*Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
         startActivity(intent);*/ //original commented on 4/21/2023
+
+        countTheProvidersWhoResponded();//5/2/2023
     }
 
     //------
@@ -600,9 +607,22 @@ public class AidSeekerChat extends AppCompatActivity {
             });
         }
 
-        Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
+        startActivity(intent);*/ //commented on 5/2/2023
 
+        //5/2/2023
+
+        //----
+        if(asm.whatjob == 0)
+        {
+            Intent intent = new Intent(AidSeekerChat.this,GenerateReportsForAllEmergency.class);
+            startActivity(intent);
+        }
+        else
+        {
+            Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
+            startActivity(intent);
+        }
         //----
     }
     //--
@@ -643,4 +663,65 @@ public class AidSeekerChat extends AppCompatActivity {
         });
     }
     //---
+
+    //5/2/2023
+
+    public void countTheProvidersWhoResponded()
+    {
+        dbprovs.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                for (DataSnapshot ds : datasnapshot.getChildren()) {
+                    String key = ds.getKey();
+
+                    if(!stopper)
+                    {
+                        break;
+                    }
+                    dbprovs.child(key).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if(task.isSuccessful())
+                            {
+                                if(task.getResult().exists())
+                                {
+                                    DataSnapshot snaps = task.getResult();
+                                    counterForProvs++;
+                                    if(String.valueOf(snaps.child("partner_uid").getValue()).equals(ma.userid))
+                                    {
+                                        totalWhoResponded++;
+                                    }
+
+                                    if(counterForProvs == datasnapshot.getChildrenCount())
+                                    {
+                                        cleansingData(true);
+                                        stopper = false;
+                                    }
+
+                                }
+                                else
+                                {
+                                    Toast.makeText(AidSeekerChat.this, "Failed to read!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(AidSeekerChat.this, "Task was not successful!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+
+
+                }
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    //----
 }
