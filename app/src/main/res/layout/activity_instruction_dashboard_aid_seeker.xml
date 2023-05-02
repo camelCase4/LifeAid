@@ -126,7 +126,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="14dp"
         android:lineSpacingExtra="6sp"
-        android:text="DOUBLE TAP RED BUTTON TO REQUEST ASSISTANCE FROM "
+        android:text="DOUBLE TAP BLUE BUTTON TO REQUEST ASSISTANCE FROM "
         android:textColor="@color/black"
         android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -134,7 +134,7 @@
         app:layout_constraintHorizontal_bias="0.683"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.699" />
+        app:layout_constraintVertical_bias="0.715" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="130dp"
@@ -143,10 +143,10 @@
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.654"
+        app:layout_constraintHorizontal_bias="0.644"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.727">
+        app:layout_constraintVertical_bias="0.745">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -210,7 +210,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="14dp"
         android:lineSpacingExtra="6sp"
-        android:text="DOUBLE TAP RED BUTTON TO REQUEST ASSISTANCE FROM "
+        android:text="DOUBLE TAP GREEN BUTTON TO REQUEST ASSISTANCE FROM "
         android:textColor="@color/black"
         android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -227,10 +227,10 @@
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintHorizontal_bias="0.610"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.556">
+        app:layout_constraintVertical_bias="0.59">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
