@@ -94,9 +94,9 @@ public class MenuForAdmins extends AppCompatActivity implements LocationListener
             @Override
             public void onClick(View view) {
                 whatIsClicked = "2";
-                cdt.cancel();
+                /*cdt.cancel();
                 adminNotif.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
-                adminNotif.setTextColor(Color.BLACK);
+                adminNotif.setTextColor(Color.BLACK);*/ //5/2
                 checkIfLocationIsOn();
             }
         });
