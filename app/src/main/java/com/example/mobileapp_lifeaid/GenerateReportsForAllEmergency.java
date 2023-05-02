@@ -182,6 +182,8 @@ public class GenerateReportsForAllEmergency extends AppCompatActivity {
             fileOutputStream.flush();
             fileOutputStream.close();
             Toast.makeText(GenerateReportsForAllEmergency.this,"Copy Saved!",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(GenerateReportsForAllEmergency.this,AidSeekerMainDash.class);
+            startActivity(intent);
         }
         catch (Exception e){
             Toast.makeText(GenerateReportsForAllEmergency.this,"Failed!",Toast.LENGTH_SHORT).show();
