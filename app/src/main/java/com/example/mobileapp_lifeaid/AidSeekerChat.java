@@ -60,6 +60,8 @@ public class AidSeekerChat extends AppCompatActivity {
     int counterForProvs = 0;//5/2/2023
     boolean stopper = true; //5/2/2023
 
+    public static String seekerFeedback = "";//5/8/2023
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -497,6 +499,9 @@ public class AidSeekerChat extends AppCompatActivity {
             }
         });
 
+        //5/8/2023
+        seekerFeedback = "Commended";
+        //---
         //3/22/2023
         savingProviderHistory("1");
         //-----
@@ -520,6 +525,9 @@ public class AidSeekerChat extends AppCompatActivity {
 
             }
         });
+        //5/8/2023
+        seekerFeedback = "Not Satisfied";
+        //---
         //3/22/2023
         savingProviderHistory("0");
         //-----
@@ -613,7 +621,7 @@ public class AidSeekerChat extends AppCompatActivity {
         //5/2/2023
 
         //----
-        if(asm.whatjob == 0)
+        /*if(asm.whatjob == 0)
         {
             Intent intent = new Intent(AidSeekerChat.this,GenerateReportsForAllEmergency.class);
             startActivity(intent);
@@ -622,7 +630,12 @@ public class AidSeekerChat extends AppCompatActivity {
         {
             Intent intent = new Intent(AidSeekerChat.this,AidSeekerMainDash.class);
             startActivity(intent);
-        }
+        }*/ //commented on 5/9/2023
+        //----
+
+        //5/9/2023
+        Intent intent = new Intent(AidSeekerChat.this,GenerateReportsForAllEmergency.class);
+        startActivity(intent);
         //----
     }
     //--

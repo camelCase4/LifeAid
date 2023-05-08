@@ -58,6 +58,7 @@ import com.google.maps.model.EncodedPolyline;
 import com.google.maps.model.TravelMode;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -130,7 +131,7 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
     //---
 
     //3/22/2023
-    String locationOfIncident = "";
+    public static String locationOfIncident = "";//changed to public static 5/9/2023
     //----
 
     //3/26/2023
@@ -146,6 +147,9 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
 
 
     String seekerIDidAdminOrProviderNeededAid = "";//4/26/2023
+
+    Date currentDT;//5/9/2023
+    public static String timeAided = "";//5/9/2023
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,6 +205,13 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                 }*/
                 resp_btn.setEnabled(false);
                 supp_btn.setEnabled(false); //4/12/2023
+
+                //5/9/2023
+                currentDT = Calendar.getInstance().getTime();//5/8/2023
+
+                SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+                timeAided = timeFormat.format(currentDT);
+                //---
             }
         });
 
@@ -754,8 +765,13 @@ public class MapsActivityAidProvider extends FragmentActivity implements OnMapRe
                                     cd.cancel();
                                     Toast.makeText(MapsActivityAidProvider.this, "Seeker Satisfied, Thank you for your service!", Toast.LENGTH_SHORT).show();
                                     mMap.clear(); //3/15/2023
-                                    Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
+                                    /*Intent intent = new Intent(MapsActivityAidProvider.this, AidProviderMainDash.class);
+                                    startActivity(intent);*/ //commented on 5/9/2023
+
+                                    //5/9/2023
+                                    Intent intent = new Intent(MapsActivityAidProvider.this,GenerateReportsProvider.class);
                                     startActivity(intent);
+                                    //---
                                 }
                                 //4/7/2023
                                 else {

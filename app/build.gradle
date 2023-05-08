@@ -61,5 +61,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     //---
 
+    //5/8/2023
+    implementation 'com.itextpdf:itext7-core:7.1.10'
+    //----
+
 
 }

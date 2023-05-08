@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -29,7 +27,6 @@ import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
-
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
@@ -38,69 +35,48 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.HorizontalAlignment;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Comment;
-import org.w3c.dom.DOMConfiguration;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.DOMImplementation;
-//import org.w3c.dom.Document; commented on 5/8/2023
-import org.w3c.dom.DocumentFragment;
-import org.w3c.dom.DocumentType;
-import org.w3c.dom.Element;
-import org.w3c.dom.EntityReference;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.ProcessingInstruction;
-import org.w3c.dom.Text;
-import org.w3c.dom.UserDataHandler;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
-public class GenerateReportsForAllEmergency extends AppCompatActivity {
+public class GenerateReportsProvider extends AppCompatActivity {
 
-    TextView timeOfIncident,nameOfMainResponder,numberOfMainResponder,emailOfResponder,addressOfResponder,locationOfIncident,amountOfProvider,print,emergencyTy;
+    TextView timeOfIncident,nameOfSeeker,numOfSeek,emailOfSeek,addressOfSeek,locationOfInci,print;
     ImageView bk;
-    AidSeekerChat asc = new AidSeekerChat();
-    AidSeekerMainDash asm = new AidSeekerMainDash();
+
+    MapsActivityAidProvider maap = new MapsActivityAidProvider();
+    AidProviderMainDash apm = new AidProviderMainDash();
 
     MainActivity ma = new MainActivity();//5/8/2023
     Date currentDT; //5/8/2023
     String emType = "";//5/8/2023
     //5/8/2023
-    String nameOfProvider = "";
-    String emailOfProvider = "";
-    String addressOfProvider = "";
-    String numOfProvider = "";
+    String nameOfSeekerpd = "";
+    String emailOfSeeker = "";
+    String addressOfSeeker = "";
+    String numOfSeeker = "";
     //------
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generate_reports_for_all_emergency);
-
+        setContentView(R.layout.activity_generate_reports_provider);
 
         timeOfIncident = (TextView) findViewById(R.id.timeD);
-        nameOfMainResponder = (TextView) findViewById(R.id.mainResponder);
-        numberOfMainResponder = (TextView) findViewById(R.id.num);
-        emailOfResponder = (TextView) findViewById(R.id.emailrepo);
-        addressOfResponder = (TextView) findViewById(R.id.addr);
-        locationOfIncident = (TextView) findViewById(R.id.incident);
-        amountOfProvider = (TextView) findViewById(R.id.amountOfProvider);
+        locationOfInci = (TextView) findViewById(R.id.incident);
+        addressOfSeek = (TextView) findViewById(R.id.seekeraddress);
+        emailOfSeek = (TextView) findViewById(R.id.seekeremail);
+        numOfSeek = (TextView) findViewById(R.id.seekernum);
+        nameOfSeeker = (TextView) findViewById(R.id.seekerName);
+
+
         print = (TextView) findViewById(R.id.switchrole);
-        emergencyTy = (TextView) findViewById(R.id.emTypetv);
 
         bk = (ImageView) findViewById(R.id.back);
 
@@ -110,42 +86,18 @@ public class GenerateReportsForAllEmergency extends AppCompatActivity {
         currentDT = Calendar.getInstance().getTime();//5/8/2023
 
         timeOfIncident.setText("Time & Date of Incident : "+currentDT.toString());
-        amountOfProvider.setText("Amount of Providers who Responded : "+asc.totalWhoResponded);
-        locationOfIncident.setText("Location of Incident : "+asc.locationOfIncident);
+        locationOfInci.setText("Location of Incident : "+maap.locationOfIncident);
 
-        gettingProviderData();
+        gettingSeekerData();
 
 
         bk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(GenerateReportsForAllEmergency.this,AidSeekerMainDash.class);
+                Intent intent = new Intent(GenerateReportsProvider.this,AidProviderMainDash.class);
                 startActivity(intent);
             }
         });
-
-
-        //5/8/2023
-
-        if(asm.whatjob == 1)
-        {
-            emType = "Crime Related";
-            emergencyTy.setText("EMERGENCY TYPE: CRIME-RELATED");
-        }
-        else if(asm.whatjob == 2)
-        {
-            emType = "Fire Related";
-            emergencyTy.setText("EMERGENCY TYPE: FIRE-RELATED");
-        }
-        else if(asm.whatjob == 3)
-        {
-            emType = "Health Related";
-            emergencyTy.setText("EMERGENCY TYPE: HEALTH-RELATED");
-        }
-        else
-        {
-            emType = "All-Out Critical Emergency";
-        }
 
         print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,18 +110,17 @@ public class GenerateReportsForAllEmergency extends AppCompatActivity {
                 }
             }
         });
-        ///---
 
     }
 
-    public void gettingProviderData()
+    public void gettingSeekerData()
     {
-        DatabaseReference dbprovs = FirebaseDatabase.getInstance().getReference("Aid-Provider");
+        DatabaseReference dbseek = FirebaseDatabase.getInstance().getReference("Aid-Seeker");
 
-        dbprovs.addListenerForSingleValueEvent(new ValueEventListener() {
+        dbseek.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-                dbprovs.child(asm.responderUID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                dbseek.child(apm.seeker_id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         if(task.isSuccessful())
@@ -178,16 +129,16 @@ public class GenerateReportsForAllEmergency extends AppCompatActivity {
                             {
                                 DataSnapshot snaps = task.getResult();
 
-                                nameOfMainResponder.setText("Full Name of Main Provider: "+String.valueOf(snaps.child("fname").getValue())+" "+String.valueOf(snaps.child("lname").getValue()));
-                                numberOfMainResponder.setText("Number of Main Provider : "+String.valueOf(snaps.child("phonenum").getValue()));
-                                emailOfResponder.setText("Email of Main Provider : "+String.valueOf(snaps.child("email").getValue()));
-                                addressOfResponder.setText("Address of Main Provider : "+String.valueOf(snaps.child("address").getValue()));
+                                nameOfSeeker.setText("Full Name of Aid - Seeker: "+String.valueOf(snaps.child("fname").getValue())+" "+String.valueOf(snaps.child("lname").getValue()));
+                                numOfSeek.setText("Number of Aid - Seeker : "+String.valueOf(snaps.child("phonenum").getValue()));
+                                emailOfSeek.setText("Email of Aid - Seeker : "+String.valueOf(snaps.child("email").getValue()));
+                                addressOfSeek.setText("Address of Aid - Seeker : "+String.valueOf(snaps.child("address").getValue()));
 
                                 //5/8/2023
-                                nameOfProvider = String.valueOf(snaps.child("fname").getValue())+" "+String.valueOf(snaps.child("lname").getValue());
-                                emailOfProvider = String.valueOf(snaps.child("email").getValue());
-                                addressOfProvider = String.valueOf(snaps.child("address").getValue());
-                                numOfProvider = String.valueOf(snaps.child("phonenum").getValue());
+                                nameOfSeekerpd = String.valueOf(snaps.child("fname").getValue())+" "+String.valueOf(snaps.child("lname").getValue());
+                                emailOfSeeker = String.valueOf(snaps.child("email").getValue());
+                                addressOfSeeker = String.valueOf(snaps.child("address").getValue());
+                                numOfSeeker = String.valueOf(snaps.child("phonenum").getValue());
                                 //----
 
                             }
@@ -270,7 +221,7 @@ public class GenerateReportsForAllEmergency extends AppCompatActivity {
 
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
         table1.addCell(new Cell().add(new Paragraph("Incident Location: ")).setBorder(Border.NO_BORDER));
-        table1.addCell(new Cell().add(new Paragraph(asc.locationOfIncident)).setBorder(Border.NO_BORDER));
+        table1.addCell(new Cell().add(new Paragraph(maap.locationOfIncident)).setBorder(Border.NO_BORDER));
 
         //table1.addCell(new Cell().add(new Paragraph("")));
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
@@ -287,19 +238,19 @@ public class GenerateReportsForAllEmergency extends AppCompatActivity {
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
 
-        table1.addCell(new Cell().add(new Paragraph(ma.fullname + "( Aid - Seeker )")).setBorder(Border.NO_BORDER));
+        table1.addCell(new Cell().add(new Paragraph(ma.fullname + "( Aid - Provider )")).setBorder(Border.NO_BORDER));
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
-        table1.addCell(new Cell().add(new Paragraph("Emergency Details: ").setBold()).setBorder(Border.NO_BORDER));
+        table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
 
         table1.addCell(new Cell().add(new Paragraph(ma.address)).setBorder(Border.NO_BORDER));
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
-        table1.addCell(new Cell().add(new Paragraph("Request Type : "+emType)).setBorder(Border.NO_BORDER));
+        table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
 
         table1.addCell(new Cell().add(new Paragraph(ma.phonenum)).setBorder(Border.NO_BORDER));
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
-        table1.addCell(new Cell().add(new Paragraph("Responder/s : "+asc.totalWhoResponded)).setBorder(Border.NO_BORDER));
+        table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
 
         float columnWidth2[] = {280,280};
@@ -309,29 +260,22 @@ public class GenerateReportsForAllEmergency extends AppCompatActivity {
         table2.addCell(new Cell().add(new Paragraph("Details").setFontColor(ColorConstants.WHITE)).setBackgroundColor(grn));
         table2.addCell(new Cell().add(new Paragraph("Contents").setFontColor(ColorConstants.WHITE)).setBackgroundColor(grn));
 
-        table2.addCell(new Cell().add(new Paragraph("Time of Request")).setBackgroundColor(gry));
-        table2.addCell(new Cell().add(new Paragraph(asm.timeStart)).setBackgroundColor(gry));
-
         table2.addCell(new Cell().add(new Paragraph("Time Aided")).setBackgroundColor(gry));
-        table2.addCell(new Cell().add(new Paragraph(asm.timeEnd)).setBackgroundColor(gry));
+        table2.addCell(new Cell().add(new Paragraph(maap.timeAided)).setBackgroundColor(gry));
 
-        table2.addCell(new Cell().add(new Paragraph("Waiting Duration")).setBackgroundColor(gry));
-        table2.addCell(new Cell().add(new Paragraph(calculateDuration(asm.timeStart,asm.timeEnd))).setBackgroundColor(gry));
 
-        table2.addCell(new Cell().add(new Paragraph("Name of Main Provider")).setBackgroundColor(gry));
-        table2.addCell(new Cell().add(new Paragraph(nameOfProvider)).setBackgroundColor(gry));
+        table2.addCell(new Cell().add(new Paragraph("Name of Aid - Seeker")).setBackgroundColor(gry));
+        table2.addCell(new Cell().add(new Paragraph(nameOfSeekerpd)).setBackgroundColor(gry));
 
-        table2.addCell(new Cell().add(new Paragraph("Email of Main Provider")).setBackgroundColor(gry));
-        table2.addCell(new Cell().add(new Paragraph(emailOfProvider)).setBackgroundColor(gry));
+        table2.addCell(new Cell().add(new Paragraph("Email of Aid - Seeker")).setBackgroundColor(gry));
+        table2.addCell(new Cell().add(new Paragraph(emailOfSeeker)).setBackgroundColor(gry));
 
-        table2.addCell(new Cell().add(new Paragraph("Address of Main Provider")).setBackgroundColor(gry));
-        table2.addCell(new Cell().add(new Paragraph(addressOfProvider)).setBackgroundColor(gry));
+        table2.addCell(new Cell().add(new Paragraph("Address of Aid - Seeker")).setBackgroundColor(gry));
+        table2.addCell(new Cell().add(new Paragraph(addressOfSeeker)).setBackgroundColor(gry));
 
-        table2.addCell(new Cell().add(new Paragraph("Contact Num of Main Provider")).setBackgroundColor(gry));
-        table2.addCell(new Cell().add(new Paragraph(numOfProvider)).setBackgroundColor(gry));
+        table2.addCell(new Cell().add(new Paragraph("Contact Num of Aid - Seeker")).setBackgroundColor(gry));
+        table2.addCell(new Cell().add(new Paragraph(numOfSeeker)).setBackgroundColor(gry));
 
-        table2.addCell(new Cell().add(new Paragraph("Transaction Feedback")).setBackgroundColor(gry));
-        table2.addCell(new Cell().add(new Paragraph(asc.seekerFeedback)).setBackgroundColor(gry));
 
 
         float columnWidth3[] = {50,250,260};
@@ -392,32 +336,12 @@ public class GenerateReportsForAllEmergency extends AppCompatActivity {
 
 
         document.close();
-        Toast.makeText(GenerateReportsForAllEmergency.this,"PDF downloaded!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(GenerateReportsProvider.this,"PDF downloaded!",Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(GenerateReportsForAllEmergency.this,AidSeekerMainDash.class);
+        Intent intent = new Intent(GenerateReportsProvider.this,AidProviderMainDash.class);
         startActivity(intent);
 
     }
-
-    public String calculateDuration(String t1, String t2)
-    {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            LocalTime time1 = LocalTime.parse(t1, DateTimeFormatter.ofPattern("h:mm a"));
-            LocalTime time2 = LocalTime.parse(t2, DateTimeFormatter.ofPattern("h:mm a"));
-
-
-            Duration duration = Duration.between(time1,time2);
-
-            long minutes = duration.toMinutes() % 60;
-
-            return minutes+" minute/s";
-        }
-        else
-        {
-            return "Not Recorded";
-        }
-    }
-    //---
 
 
 }

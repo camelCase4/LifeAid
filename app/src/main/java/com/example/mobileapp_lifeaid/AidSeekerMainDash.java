@@ -53,6 +53,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -118,6 +121,11 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
 
     String addressOfTheIncident = "";//added on 5/1/2023
 
+    //added on 5/8/2023
+    Date currentDT;
+    public static String timeStart = "";
+    public static String timeEnd = "";
+    //----
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -318,6 +326,14 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                         alertallbtn.setEnabled(false); //4/6/2023
                         whatjob = 0;
                         //---------
+
+                        //5/8/2023
+                        currentDT = Calendar.getInstance().getTime();//5/8/2023
+
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+                        timeStart = timeFormat.format(currentDT);
+
+                        //---
                     }
                 } else {
                     presscounter++;
@@ -361,6 +377,13 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                         btnfire.setEnabled(false);
                         btnhealth.setEnabled(false);
                         btncrime.setEnabled(false); //4/6/2023
+                        //5/8/2023
+                        currentDT = Calendar.getInstance().getTime();//5/8/2023
+
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+                        timeStart = timeFormat.format(currentDT);
+
+                        //---
                     }
                 } else {
                     presscounter++;
@@ -403,6 +426,14 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                         btncrime.setEnabled(false);
                         btnhealth.setEnabled(false);
                         btnfire.setEnabled(false);
+
+                        //5/8/2023
+                        currentDT = Calendar.getInstance().getTime();//5/8/2023
+
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+                        timeStart = timeFormat.format(currentDT);
+
+                        //---
                     }
                 } else {
                     presscounter++;
@@ -444,6 +475,14 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                         btncrime.setEnabled(false);
                         btnfire.setEnabled(false);
                         btnhealth.setEnabled(false);
+
+                        //5/8/2023
+                        currentDT = Calendar.getInstance().getTime();//5/8/2023
+
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+                        timeStart = timeFormat.format(currentDT);
+
+                        //---
                     }
                 } else {
                     presscounter++;
@@ -857,6 +896,14 @@ public class AidSeekerMainDash extends AppCompatActivity implements LocationList
                     Toast.makeText(AidSeekerMainDash.this, "Aid Provider coming! Go To Provider Info!", Toast.LENGTH_SHORT).show();
                     foundresponder = true;
                     cancel();
+
+                    //5/8/2023
+                    currentDT = Calendar.getInstance().getTime();//5/8/2023
+
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+                    timeEnd = timeFormat.format(currentDT);
+
+                    //---
                 }
                 //---
             }
