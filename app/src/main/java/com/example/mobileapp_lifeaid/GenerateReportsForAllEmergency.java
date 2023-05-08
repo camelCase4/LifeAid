@@ -262,7 +262,7 @@ public class GenerateReportsForAllEmergency extends AppCompatActivity {
 
         table1.addCell(new Cell(4,1).add(image1).setBorder(Border.NO_BORDER));
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
-        table1.addCell(new Cell(1,2).add(new Paragraph("LifeAid Transaction Report").setFontSize(26f).setFontColor(grn)).setBorder(Border.NO_BORDER));
+        table1.addCell(new Cell(1,2).add(new Paragraph("LifeAid Transaction").setFontSize(26f).setFontColor(grn)).setBorder(Border.NO_BORDER));
 
         table1.addCell(new Cell().add(new Paragraph("")).setBorder(Border.NO_BORDER));
         table1.addCell(new Cell().add(new Paragraph("Transaction Date: ")).setBorder(Border.NO_BORDER));
